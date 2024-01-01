@@ -1,7 +1,6 @@
 ## Atividade: Soluções Inovadoras
 
-<img src="" alt="Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos" title="Logo da aplicação agiDoc">
-![Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos]()
+<img src="./assets/logo2.png" alt="Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos" title="Logo da aplicação agiDoc">
 
 Bem-vindo ao repositório do agiDoc, um projeto inovador destinado a revolucionar a gestão de contratos na administração pública.
 Enfrentando os desafios críticos de morosidade, burocracia e falta de transparência, o agiDoc surge como uma solução abrangente para
@@ -52,8 +51,8 @@ Para o desenvolvimento da tarefa nos organizamos das seguintes maneiras:
 Após discutirmos a funcionalidade de nossa aplicação decidimos pelo *logo* e paleta de cor a seguir por trazerem a sensação de profissionalismo, sofisticação e sustentabilidade.
 Ainda mais sobre o *logo*, damos enfasê a documentos através do destaque das letras **DOC** e como desenho do relógio vinculamos o pensamento assertivo da agilidade nos processos.
 
-<img src="" alt="Paleta de Cores que será utilizada na aplicação" title="Paleta de Cores escolhida">
-<img src="" alt="Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos" title="Logo da aplicação agiDoc">
+<img src="./assets/paleta-de-cores-agiDoc.png" alt="Paleta de Cores que será utilizada na aplicação" title="Paleta de Cores escolhida">
+<img src="./assets/logo2.png" alt="Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos" title="Logo da aplicação agiDoc">
 
 ***
 
@@ -67,20 +66,20 @@ Para obter maiores informações sobre o projeto é necessário clicar no docume
 
 * Trilha Backend:
 
- [Ícaro Leon](https://github.com/icaroleon/)
- [Mariana Reis](https://github.com/MariSIN)
- [Rodirigo Carvalho](https://github.com/RodrigoFCC)
- [Vinicius Pires](https://github.com/ViniciusPiresB)
+- [Ícaro Leon](https://github.com/icaroleon/)
+- [Mariana Reis](https://github.com/MariSIN)
+- [Rodirigo Carvalho](https://github.com/RodrigoFCC)
+- [Vinicius Pires](https://github.com/ViniciusPiresB)
 
 * Trilha Frontend:
 
- [Camila Gonçalves](https://github.com/CamilaVerso)
- [Clara Maestri](https://github.com/vivalaclara)
+- [Camila Gonçalves](https://github.com/CamilaVerso)
+- [Clara Maestri](https://github.com/vivalaclara)
 
 * Trilha QA:
 
- [Aron Adams](https://github.com/AronAdamsRapetto)
- [Gabriel Sales](https://github.com/gabrielsalesdev)
+- [Aron Adams](https://github.com/AronAdamsRapetto)
+- [Gabriel Sales](https://github.com/gabrielsalesdev)
 
 
   
