@@ -1,10 +1,17 @@
+
+<div align="center">
+ 
 ## Atividade: Soluções Inovadoras
+<br>
 
-<img src="./assets/logo2.png" alt="Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos" title="Logo da aplicação agiDoc">
-
+<img align="center"  src="./assets/logo2.png" alt="Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos" title="Logo da aplicação agiDoc">
+<br>
+<br>
 Bem-vindo ao repositório do agiDoc, um projeto inovador destinado a revolucionar a gestão de contratos na administração pública.
 Enfrentando os desafios críticos de morosidade, burocracia e falta de transparência, o agiDoc surge como uma solução abrangente para
 otimizar o ciclo de vida dos contratos.
+</div>
+<hr>
 
 ## Índice
 * [1- Objetivo da tarefa](#objetivo-da-tarefa)
@@ -12,7 +19,6 @@ otimizar o ciclo de vida dos contratos.
 * [3- Metodologia](#metodologia)
 * [4- Instruções para acessar o projeto](#instruções-para-acessar-o-projeto)
 * [5- Lista de Integrantes](#lista-de-integrantes)
-
 
 ***
 
@@ -27,14 +33,14 @@ desafios específicos relacionados aos Objetivos de Desenvolvimento Sustentável
 
 Para esta atividade a *ODS* pincipal escolhida foi a: 
 
-- 16 Paz, Justiça e Instutuições Eficazes
+- 16 - Paz, Justiça e Instutuições Eficazes
 Foco em promover, através do fortalecimento do Estado de Direito, uma sociedade mais igualitária, pacífica, eficiente, transparente,
 com acesso público à informação - de qualidade -, bem como aprimorar a representação da população, ampliando o exercício de cidadania
 e participação popular através das instituições governamentais.
 
 E indiretamente estará ligada à outras 2 *ODS*:
-- 12 Consumo e Produção Responsáveis;
-- 17 Parcerias e Meios de Implementação;
+- 12 - Consumo e Produção Responsáveis;
+- 17 - Parcerias e Meios de Implementação;
 
   ***
 
@@ -48,8 +54,7 @@ Para o desenvolvimento da tarefa nos organizamos das seguintes maneiras:
 - Para a organização das atividades de cada integrante, utilizamos a ferramenta *Trello*;
 - Realizamos votações para decidir a paleta de cores e o logotipo;
 
-Após discutirmos a funcionalidade de nossa aplicação decidimos pelo *logo* e paleta de cor a seguir por trazerem a sensação de profissionalismo, sofisticação e sustentabilidade.
-Ainda mais sobre o *logo*, damos enfasê a documentos através do destaque das letras **DOC** e como desenho do relógio vinculamos o pensamento assertivo da agilidade nos processos.
+Após discutirmos a funcionalidade de nossa aplicação, escolhemos o *logo* e a paleta de cores seguintes. Eles transmitem a sensação de profissionalismo, sofisticação e sustentabilidade. Quanto ao *logo*, destacamos as letras DOC para enfatizar documentos, e o desenho do relógio está associado ao pensamento assertivo da agilidade nos processos.
 
 <img src="./assets/paleta-de-cores-agiDoc.png" alt="Paleta de Cores que será utilizada na aplicação" title="Paleta de Cores escolhida">
 <img src="./assets/logo2.png" alt="Logotipo da aplicação agiDoc com o slogan: trazendo agilidade para seus contratos" title="Logo da aplicação agiDoc">
