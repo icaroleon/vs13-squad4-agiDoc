@@ -74,7 +74,6 @@ Para obter maiores informações sobre o projeto basta clicar no documento em ex
 
 - [Ícaro Leon](https://github.com/icaroleon/)
 - [Mariana Reis](https://github.com/MariSIN)
-- [Rodrigo Carvalho](https://github.com/RodrigoFCC)
 - [Vinicius Pires](https://github.com/ViniciusPiresB)
 
 * Trilha Frontend:
@@ -86,6 +85,7 @@ Para obter maiores informações sobre o projeto basta clicar no documento em ex
 
 - [Aron Adams](https://github.com/AronAdamsRapetto)
 - [Gabriel Sales](https://github.com/gabrielsalesdev)
+- [Rodrigo Carvalho](https://github.com/RodrigoFCC)
 
 
   
