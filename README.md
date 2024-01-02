@@ -14,11 +14,11 @@ otimizar o ciclo de vida dos contratos.
 <hr>
 
 ## Índice
-* [1- Objetivo da tarefa](#objetivo-da-tarefa)
-* [2- Escolha ODS - Desafio de Desenvolvimento Sustentável da ONU](#escolha-ods-desafio-de-desenvolvimento-sustentável-da-onu)
+* [1- Objetivo da tarefa](#1-objetivo-da-tarefa)
+* [2- Escolha ODS - Desafio de Desenvolvimento Sustentável da ONU](#2-escolha-ods---desafio-de-desenvolvimento-sustentável-da-onu)
 * [3- Metodologia](#metodologia)
-* [4- Instruções para acessar o projeto](#instruções-para-acessar-o-projeto)
-* [5- Lista de Integrantes](#lista-de-integrantes)
+* [4- Instruções para acessar o projeto](#4-instruções-para-acessar-o-projeto)
+* [5- Lista de Integrantes](#5-lista-de-integrantes)
 
 ***
 
