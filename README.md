@@ -31,7 +31,7 @@ desafios específicos relacionados aos Objetivos de Desenvolvimento Sustentável
 
 ## 2. Escolha ODS - Objetivos de Desenvolvimento Sustentável da ONU
 
-Para esta atividade o *ODS* pincipal escolhida foi a: 
+Para esta atividade o *ODS* principal escolhida foi a: 
 
 - 16 - Paz, Justiça e Instutuições Eficazes
   
