@@ -15,7 +15,7 @@ otimizar o ciclo de vida dos contratos.
 
 ## Índice
 * [1- Objetivo da tarefa](#1-objetivo-da-tarefa)
-* [2- Escolha ODS - Desafio de Desenvolvimento Sustentável da ONU](#2-escolha-ods---desafio-de-desenvolvimento-sustentável-da-onu)
+* [2- Escolha ODS - Objetivos de Desenvolvimento Sustentável da ONU](#2-escolha-ods---objetivos-de-desenvolvimento-sustentável-da-onu)
 * [3- Metodologia](#metodologia)
 * [4- Instruções para acessar o projeto](#4-instruções-para-acessar-o-projeto)
 * [5- Lista de Integrantes](#5-lista-de-integrantes)
@@ -29,7 +29,7 @@ desafios específicos relacionados aos Objetivos de Desenvolvimento Sustentável
 
 ***
 
-## 2. Escolha ODS - Desafio de Desenvolvimento Sustentável da ONU
+## 2. Escolha ODS - Objetivos de Desenvolvimento Sustentável da ONU
 
 Para esta atividade o *ODS* pincipal escolhida foi a: 
 
