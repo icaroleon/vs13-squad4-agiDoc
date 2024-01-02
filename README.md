@@ -15,7 +15,7 @@ otimizar o ciclo de vida dos contratos.
 
 ## Índice
 * [1- Objetivo da tarefa](#objetivo-da-tarefa)
-* [2- Escolha: ODS - Desafio de Desenvolvimento Sustentável da ONU](#escolha-ods-desafio-de-desenvolvimento-sustentável-da-onu)
+* [2- Escolha ODS - Desafio de Desenvolvimento Sustentável da ONU](#escolha-ods-desafio-de-desenvolvimento-sustentável-da-onu)
 * [3- Metodologia](#metodologia)
 * [4- Instruções para acessar o projeto](#instruções-para-acessar-o-projeto)
 * [5- Lista de Integrantes](#lista-de-integrantes)
@@ -29,16 +29,17 @@ desafios específicos relacionados aos Objetivos de Desenvolvimento Sustentável
 
 ***
 
-## 2. Escolha: ODS - Desafio de Desenvolvimento Sustentável da ONU
+## 2. Escolha ODS - Desafio de Desenvolvimento Sustentável da ONU
 
-Para esta atividade a *ODS* pincipal escolhida foi a: 
+Para esta atividade o *ODS* pincipal escolhida foi a: 
 
 - 16 - Paz, Justiça e Instutuições Eficazes
+  
 Foco em promover, através do fortalecimento do Estado de Direito, uma sociedade mais igualitária, pacífica, eficiente, transparente,
 com acesso público à informação - de qualidade -, bem como aprimorar a representação da população, ampliando o exercício de cidadania
 e participação popular através das instituições governamentais.
 
-E indiretamente estará ligada à outras 2 *ODS*:
+E indiretamente estará ligada à outros 2 *ODS*:
 - 12 - Consumo e Produção Responsáveis;
 - 17 - Parcerias e Meios de Implementação;
 
@@ -46,10 +47,10 @@ E indiretamente estará ligada à outras 2 *ODS*:
 
 ## Metodologia
 
-Tarefa realizada em grupo com integrantres das três *staks* do projeto de estágio *Vem Ser* da empresa *DBC - Company*
-Para o desenvolvimento da tarefa nos organizamos das seguintes maneiras:
+Tarefa realizada em grupo com integrantres das três *stacks* do projeto de estágio *Vem Ser* da empresa *DBC - Company*
+Para o desenvolvimento da tarefa nos organizamos da seguinte maneira:
 
-- Em um primeiro momento utilizamos o site *Miro* para realizar o *brainstorm* e encontrar a nossa solução inovadora.
+- Em um primeiro momento utilizamos o site *Miro* para realizar o *brainstorm* e encontrar a nossa solução inovadora;
 - Realizamos reuniões diárias com o intuito de discutir sobre o tema, além de desenvolver o relatório e acertar todos os detalhes envolvidos;
 - Para a organização das atividades de cada integrante, utilizamos a ferramenta *Trello*;
 - Realizamos votações para decidir a paleta de cores e o logotipo;
@@ -63,7 +64,7 @@ Após discutirmos a funcionalidade de nossa aplicação, escolhemos o *logo* e a
 
 ## 4. Instruções para acessar o projeto
 
-Para obter maiores informações sobre o projeto é necessário clicar no documento em extensão *.pdf* de nome agiDoc que se encontra na pasta raíz deste repositório.
+Para obter maiores informações sobre o projeto basta clicar no documento em extensão *.pdf* de nome agiDoc que se encontra na pasta raíz deste repositório.
 
 ***
 
