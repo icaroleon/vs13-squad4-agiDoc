@@ -64,7 +64,7 @@ Após discutirmos a funcionalidade de nossa aplicação, escolhemos o *logo* e a
 
 ## 4. Instruções para acessar o projeto
 
-Para obter maiores informações sobre o projeto basta clicar no documento em extensão *.pdf* de nome agiDoc que se encontra na pasta raíz deste repositório.
+Para obter maiores informações sobre o projeto basta clicar no documento com extensão *.pdf* de nome **Atividade ODS - DBC - VemSer - Squad4.pdf** que se encontra na pasta raíz deste repositório.
 
 ***
 
