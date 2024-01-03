@@ -4,6 +4,10 @@ public class Employee {
     private String contact;
     private LegalPerson company;
 
+    public Employee(){
+
+    }
+
     public String getContact() {
         return contact;
     }
