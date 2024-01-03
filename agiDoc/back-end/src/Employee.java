@@ -4,7 +4,7 @@ public class Employee {
     private String contact;
     private LegalPerson company;
 
-    public String getContato() {
+    public String getContact() {
         return contact;
     }
 
@@ -12,19 +12,19 @@ public class Employee {
         this.contact = contact;
     }
 
-    public String getNome() {
+    public String getName() {
         return name;
     }
 
-    public void setNome(String nome) {
-        this.name = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LegalPerson getEmpresa() {
+    public LegalPerson getCompany() {
         return company;
     }
 
-    public void setEmpresa(LegalPerson company) {
+    public void setCompany(LegalPerson company) {
         this.company = company;
     }
 }
