@@ -1,3 +1,5 @@
+package document;
+
 public class Document {
     private String protocol;
     private String content;

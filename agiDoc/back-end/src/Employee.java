@@ -1,8 +1,10 @@
+import juridicalEntity.AbstractJuridicalEntity;
+
 public class Employee {
 
     private String name;
     private String contact;
-    private LegalPerson company;
+    private AbstractJuridicalEntity company;
 
     public Employee(){
 
@@ -24,11 +26,11 @@ public class Employee {
         this.name = name;
     }
 
-    public LegalPerson getCompany() {
+    public AbstractJuridicalEntity getCompany() {
         return company;
     }
 
-    public void setCompany(LegalPerson company) {
+    public void setCompany(AbstractJuridicalEntity company) {
         this.company = company;
     }
 }
