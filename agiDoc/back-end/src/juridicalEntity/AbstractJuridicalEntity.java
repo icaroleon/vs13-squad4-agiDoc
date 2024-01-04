@@ -4,8 +4,14 @@ import document.Document;
 
 public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
     private String cnpj;
-    private String endereco;
-    private String contato;
+    private String address;
+    private String contact;
+
+    public AbstractJuridicalEntity(String cpnj, String address, String contact) {
+            this.cnpj = cpnj;
+            this.address = address;
+            this.contact = contact;
+    }
 
     public String getCnpj() {
         return cnpj;
@@ -16,19 +22,19 @@ public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
     }
 
     public String getEndereco() {
-        return endereco;
+        return address;
     }
 
     public void setEndereco(String endereco) {
-        this.endereco = endereco;
+        this.address = endereco;
     }
 
     public String getContato() {
-        return contato;
+        return contact;
     }
 
     public void setContato(String contato) {
-        this.contato = contato;
+        this.contact = contato;
     }
 
     @Override
