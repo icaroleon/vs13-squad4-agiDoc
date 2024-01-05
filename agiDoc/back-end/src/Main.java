@@ -1,15 +1,56 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+import java.util.Stack;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scanner = new Scanner(System.in);
+        Stack<String> history = new Stack<>();
+        boolean isNotValidLogin = true;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (isNotValidLogin) {
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|              Login | agiDoc               |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Digite seu usuários: ");
+            String user = scanner.nextLine();
+
+            System.out.print("Digite sua senha: ");
+            String password = scanner.nextLine();
+
+            // TODO: Validar informações de login; Verificar se será usado método login do Employee
+            isNotValidLogin = false;
+        }
+
+        boolean running = true;
+//        Navigation nav = new Navigation();
+
+        while (running) {
+            String navigationOption = "";
+
+            if (history.isEmpty()) {
+                System.out.println("\n\n");
+                System.out.println("+-------------------------------------------+");
+                System.out.println("|                  agiDoc                   |");
+                System.out.println("+-------------------------------------------+");
+                System.out.println("| 1 - Processos                             |");
+                System.out.println("| 2 - Funcionários                          |");
+                System.out.println("|                                           |");
+                System.out.println("| 0 - Sair                                  |");
+                System.out.println("+-------------------------------------------+");
+                System.out.print("Digite uma opção: ");
+                String option = scanner.nextLine();
+
+                history.push(option);
+            } else {
+                navigationOption = "0";
+//                String navigationOption = Navigation.showMenu(history.peek());
+
+                switch (navigationOption) {
+                    case "9" -> history.pop();
+                    case "0" -> running = false;
+                    default -> history.push(navigationOption);
+                }
+            }
         }
     }
 }
