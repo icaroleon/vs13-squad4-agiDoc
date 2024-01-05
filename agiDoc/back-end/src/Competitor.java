@@ -1,9 +1,11 @@
+import document.Document;
+
 import java.util.ArrayList;
 
 public class Competitor {
 
     private boolean competitor;
-    private ArrayList<Documents> documents;
+    private ArrayList<Document> documents;
 
     public Competitor(boolean competitor, ArrayList documents) {
         this.competitor = competitor;
