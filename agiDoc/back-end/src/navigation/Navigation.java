@@ -18,6 +18,8 @@ public class Navigation {
             case "1" -> chooseNavigation = this.processesMenu();
             case "2" -> chooseNavigation = this.employeesMenu();
             case "3" -> chooseNavigation = this.oneProcessMenu();
+            case "5" -> chooseNavigation = this.documentsMenu();
+            case "6" -> chooseNavigation = this.competitorsMenu();
         }
 
         return chooseNavigation;
