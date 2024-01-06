@@ -1,15 +1,19 @@
+import juridicalEntity.AbstractJuridicalEntity;
+
 import java.util.ArrayList;
 
-public class Institution {
+public class Institution extends AbstractJuridicalEntity {
     private ArrayList<Process> processes;
     private ArrayList<Employee> employees;
 
     public Institution() {
+        super();
         this.processes = new ArrayList<>();
         this.employees = new ArrayList<>();
     }
 
-    public Institution(ArrayList<Process> processes, ArrayList<Employee> employees) {
+    public Institution(String cpnj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
+        super(cpnj, address, contact);
         this.processes = processes;
         this.employees = employees;
     }
