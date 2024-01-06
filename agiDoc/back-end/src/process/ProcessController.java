@@ -2,7 +2,7 @@ package process;
 
 import java.util.ArrayList;
 
- /*public class ProcessController {
+ public class ProcessController {
     private static ArrayList<Process> processes = new ArrayList<>();
 
     public ProcessController() {
@@ -53,4 +53,4 @@ import java.util.ArrayList;
             }
         }
     }
-}*/
+}
