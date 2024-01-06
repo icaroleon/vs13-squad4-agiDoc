@@ -7,7 +7,7 @@ public class Competitor {
     private boolean competitor;
     private ArrayList<Document> documents;
 
-    public Competitor(boolean competitor, ArrayList documents) {
+    public Competitor(boolean competitor, ArrayList<Document> documents) {
         this.competitor = competitor;
         this.documents = documents;
     }

@@ -1,3 +1,4 @@
+import employee.Employee;
 import juridicalEntity.AbstractJuridicalEntity;
 
 import java.util.ArrayList;
@@ -6,16 +7,25 @@ public class Institution extends AbstractJuridicalEntity {
     private ArrayList<Process> processes;
     private ArrayList<Employee> employees;
 
-    public Institution() {
-        super();
+    @Override
+    public String toString() {
+        return "Institution {" +
+                "\n\tCNPJ: '" + super.getCnpj() + '\'' +
+                ",\n\tAddress: '" + super.getAddress() + '\'' +
+                ",\n\tContact: '" + super.getContact() + '\'' +
+                ",\n\tProcesses: " + processes +
+                ",\n\tEmployees: " + employees +
+                "\n}";
+    }
+
+    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
+        super(cnpj, address, contact);
         this.processes = new ArrayList<>();
         this.employees = new ArrayList<>();
     }
 
-    public Institution(String cpnj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
-        super(cpnj, address, contact);
-        this.processes = processes;
-        this.employees = employees;
+    public Institution() {
+        super();
     }
 
     public ArrayList<Process> getProcesses() { return this.processes; }

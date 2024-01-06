@@ -15,6 +15,10 @@ public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
             this.contact = contact;
     }
 
+    public AbstractJuridicalEntity() {
+
+    }
+
     public String getCnpj() {
         return cnpj;
     }
@@ -23,20 +27,20 @@ public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
         this.cnpj = cnpj;
     }
 
-    public String getEndereco() {
+    public String getAddress() {
         return address;
     }
 
-    public void setEndereco(String endereco) {
-        this.address = endereco;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getContato() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContato(String contato) {
-        this.contact = contato;
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     @Override
