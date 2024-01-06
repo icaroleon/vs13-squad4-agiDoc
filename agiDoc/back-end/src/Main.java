@@ -1,3 +1,5 @@
+import navigation.Navigation;
+
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -22,11 +24,9 @@ public class Main {
         }
 
         boolean running = true;
-//        Navigation nav = new Navigation();
+        Navigation nav = new Navigation();
 
         while (running) {
-            String navigationOption = "";
-
             if (history.isEmpty()) {
                 System.out.println("\n\n");
                 System.out.println("+-------------------------------------------+");
@@ -40,10 +40,12 @@ public class Main {
                 System.out.print("Digite uma opção: ");
                 String option = scanner.nextLine();
 
-                history.push(option);
+                switch (option) {
+                    case "1", "2", "0" -> history.push(option);
+                    default -> System.out.println("Opção inválida! Tente novamente.");
+                }
             } else {
-                navigationOption = "0";
-//                String navigationOption = Navigation.showMenu(history.peek());
+                String navigationOption = nav.showMenu(history.peek());
 
                 switch (navigationOption) {
                     case "9" -> history.pop();
