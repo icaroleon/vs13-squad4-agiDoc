@@ -1,3 +1,5 @@
+import document.Document;
+
 import java.util.ArrayList;
 
 public class Process implements IProcess {
