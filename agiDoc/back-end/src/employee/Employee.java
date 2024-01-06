@@ -4,7 +4,7 @@ import juridicalEntity.AbstractJuridicalEntity;
 
 public class Employee {
 
-    private String id;
+    private String matricula;
     private String name;
     private String user;
     private String password;
@@ -15,7 +15,7 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "id='" + id + '\'' +
+                "matricula='" + matricula + '\'' +
                 ", name='" + name + '\'' +
                 ", user='" + user + '\'' +
                 ", password='" + password + '\'' +
@@ -25,22 +25,34 @@ public class Employee {
                 '}';
     }
 
-    public Employee(String id, String name, String user, String password, String address, String contact) {
-        this.id = id;
+    public Employee(String matricula, String name, String user, String password, String address, String contact) {
+        this.matricula = matricula;
         this.name = name;
         this.user = user;
         this.password = password;
         this.address = address;
         this.contact = contact;
-        this.contact = contact;
+        // TODO abstract juridical entity
     }
 
     public Employee(){
 
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getMatricula(){
+        return matricula;
+    }
+
+    public String setMatricula(){
+        this.matricula = matricula;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUser() {
@@ -59,31 +71,20 @@ public class Employee {
         this.password = password;
     }
 
-    public String getAdress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAdress(String adress) {
-        this.address = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getId(){
-        return id;
-    }
     public String getContact() {
         return contact;
     }
 
     public void setContact(String contact) {
         this.contact = contact;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public AbstractJuridicalEntity getCompany() {
@@ -93,4 +94,6 @@ public class Employee {
     public void setCompany(AbstractJuridicalEntity company) {
         this.company = company;
     }
+
+    //TODO LOGIN METHOD
 }
