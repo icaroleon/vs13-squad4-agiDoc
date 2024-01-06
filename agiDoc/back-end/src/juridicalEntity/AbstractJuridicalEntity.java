@@ -7,6 +7,8 @@ public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
     private String address;
     private String contact;
 
+    public AbstractJuridicalEntity() {}
+
     public AbstractJuridicalEntity(String cpnj, String address, String contact) {
             this.cnpj = cpnj;
             this.address = address;
