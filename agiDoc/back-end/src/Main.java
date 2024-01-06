@@ -28,21 +28,11 @@ public class Main {
 
         while (running) {
             if (history.isEmpty()) {
-                System.out.println("\n\n");
-                System.out.println("+-------------------------------------------+");
-                System.out.println("|                  agiDoc                   |");
-                System.out.println("+-------------------------------------------+");
-                System.out.println("| 1 - Processos                             |");
-                System.out.println("| 2 - Funcionários                          |");
-                System.out.println("|                                           |");
-                System.out.println("| 0 - Sair                                  |");
-                System.out.println("+-------------------------------------------+");
-                System.out.print("Digite uma opção: ");
-                String option = scanner.nextLine();
+                String navigationOption = nav.showMenu("0");
 
-                switch (option) {
+                switch (navigationOption) {
                     case "0" -> running = false;
-                    case "1", "2" -> history.push(option);
+                    case "1", "2" -> history.push(navigationOption);
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
             } else {

@@ -14,12 +14,31 @@ public class Navigation {
         String chooseNavigation = "";
 
         switch (option) {
+            case "0" -> chooseNavigation = this.mainMenu();
             case "1" -> chooseNavigation = this.processesMenu();
             case "2" -> chooseNavigation = this.employeesMenu();
             case "3" -> chooseNavigation = this.oneProcessMenu();
         }
 
         return chooseNavigation;
+    }
+
+    public String mainMenu() {
+        String option = "";
+
+        System.out.println("\n\n");
+        System.out.println("+-------------------------------------------+");
+        System.out.println("|                  agiDoc                   |");
+        System.out.println("+-------------------------------------------+");
+        System.out.println("| 1 - Processos                             |");
+        System.out.println("| 2 - Funcionários                          |");
+        System.out.println("|                                           |");
+        System.out.println("| 0 - Sair                                  |");
+        System.out.println("+-------------------------------------------+");
+        System.out.print("Digite uma opção: ");
+        option = scanner.nextLine();
+
+        return option;
     }
 
     public String employeesMenu() {
