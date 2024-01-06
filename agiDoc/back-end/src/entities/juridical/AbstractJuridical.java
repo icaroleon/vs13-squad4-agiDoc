@@ -1,22 +1,19 @@
-package juridicalEntity;
+package entities.juridical;
 
 import document.Document;
 
-public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
+public abstract class AbstractJuridical implements IJuridical {
     private String cnpj;
     private String address;
     private String contact;
 
-    public AbstractJuridicalEntity() {}
-
-    public AbstractJuridicalEntity(String cpnj, String address, String contact) {
-            this.cnpj = cpnj;
-            this.address = address;
-            this.contact = contact;
+    public AbstractJuridical() {
     }
 
-    public AbstractJuridicalEntity() {
-
+    public AbstractJuridical(String cpnj, String address, String contact) {
+        this.cnpj = cpnj;
+        this.address = address;
+        this.contact = contact;
     }
 
     public String getCnpj() {
