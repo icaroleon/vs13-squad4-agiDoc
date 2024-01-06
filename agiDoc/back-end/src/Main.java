@@ -41,7 +41,8 @@ public class Main {
                 String option = scanner.nextLine();
 
                 switch (option) {
-                    case "1", "2", "0" -> history.push(option);
+                    case "0" -> running = false;
+                    case "1", "2" -> history.push(option);
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
             } else {

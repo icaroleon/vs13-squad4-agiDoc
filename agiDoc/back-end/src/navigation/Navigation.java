@@ -14,15 +14,15 @@ public class Navigation {
         String chooseNavigation = "";
 
         switch (option) {
-            case "1" -> chooseNavigation = this.processMenu();
-            case "2" -> chooseNavigation = this.employeeMenu();
+            case "1" -> chooseNavigation = this.processesMenu();
+            case "2" -> chooseNavigation = this.employeesMenu();
             case "3" -> chooseNavigation = this.oneProcessMenu();
         }
 
         return chooseNavigation;
     }
 
-    public String employeeMenu() {
+    public String employeesMenu() {
         String option = "";
         boolean running = true;
 
@@ -55,14 +55,14 @@ public class Navigation {
         return option;
     }
 
-    public String processMenu() {
+    public String processesMenu() {
         String option = "";
         boolean running = true;
 
         do {
             System.out.println("\n\n");
             System.out.println("+-------------------------------------------+");
-            System.out.println("|           agiDoc | Processos              |");
+            System.out.println("|            agiDoc | Processos             |");
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1 - Listar Processos                      |");
             System.out.println("| 2 - Acessar Processo                      |");
@@ -128,6 +128,72 @@ public class Navigation {
 
         return option;
     }
-    // TODO: Adicionar submenu de documentos
-    // TODO: Adicionar submenu de concorrentes
+
+    public String documentsMenu() {
+        String option = "";
+        boolean running = true;
+
+        do {
+            System.out.println("\n\n");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|            agiDoc | Documentos            |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1 - Adicionar Documento                   |");
+            System.out.println("| 2 - Listar Documentos                     |");
+            System.out.println("| 3 - Editar Documento                      |");
+            System.out.println("| 4 - Excluir Documento                     |");
+            System.out.println("| 5 - Assinar Documento                     |");
+            System.out.println("|                                           |");
+            System.out.println("| 0 - Sair                                  |");
+            System.out.println("| 9 - Voltar                                |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Digite uma opção: ");
+            option = scanner.nextLine();
+
+            switch (option) {
+                case "1" -> System.out.println("Adicionar Documento");
+                case "2" -> System.out.println("Listar Documentos");
+                case "3" -> System.out.println("Editar Documento");
+                case "4" -> System.out.println("Excluir Documento");
+                case "5" -> System.out.println("Assinar Documento");
+                case "0", "9" -> running = false;
+                default -> System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (running);
+
+        return option;
+    }
+
+    public String competitorsMenu() {
+        String option = "";
+        boolean running = true;
+
+        do {
+            System.out.println("\n\n");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|           agiDoc | Concorrentes           |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1 - Adicionar Concorrente                 |");
+            System.out.println("| 2 - Listar Concorrentes                   |");
+            System.out.println("| 3 - Editar Concorrente                    |");
+            System.out.println("| 4 - Excluir Concorrente                   |");
+            System.out.println("|                                           |");
+            System.out.println("| 0 - Sair                                  |");
+            System.out.println("| 9 - Voltar                                |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Digite uma opção: ");
+            option = scanner.nextLine();
+
+            switch (option) {
+                case "1" -> System.out.println("Adicionar Concorrente");
+                case "2" -> System.out.println("Listar Concorrentes");
+                case "3" -> System.out.println("Editar Concorrente");
+                case "4" -> System.out.println("Excluir Concorrente");
+                case "0", "9" -> running = false;
+                default -> System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (running);
+
+        return option;
+    }
 }
