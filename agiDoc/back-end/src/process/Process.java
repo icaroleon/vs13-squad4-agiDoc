@@ -2,7 +2,7 @@ package process;
 
 import java.util.ArrayList;
 import document.Document;
- /*
+
 public class Process implements IProcess {
     private String id, status;
     private Competitor contracted;
@@ -56,4 +56,4 @@ public class Process implements IProcess {
     }
 
 
-}*/
+}
