@@ -1,12 +1,10 @@
 package process;
 
 import java.util.ArrayList;
-
 import document.Document;
 
 public class Process implements IProcess {
     private String id, status;
-
     private Competitor contracted;
     private ArrayList<Competitor> competitors;
     private ArrayList<Document> documents;
@@ -56,4 +54,6 @@ public class Process implements IProcess {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
 }
