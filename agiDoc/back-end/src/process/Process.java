@@ -1,10 +1,15 @@
+package process;
+
 import java.util.ArrayList;
 
+import document.Document;
+
 public class Process implements IProcess {
-    String id, status;
-    Competitor contracted;
-    ArrayList<Competitor> competitors;
-    ArrayList<Document> documents;
+    private String id, status;
+
+    private Competitor contracted;
+    private ArrayList<Competitor> competitors;
+    private ArrayList<Document> documents;
 
     public Process(String id, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
         this.id = id;
