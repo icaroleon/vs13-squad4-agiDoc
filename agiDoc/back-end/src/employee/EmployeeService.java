@@ -2,49 +2,48 @@ package employee;
 
 import java.util.ArrayList;
 
-
 public class EmployeeService {
 
-    private static ArrayList<Employee> listaEmployees = new ArrayList<>();;
+    private static ArrayList<Employee> listaEmployees = new ArrayList<>();
 
-    public EmployeeService(){
-
+    public EmployeeService() {
     }
 
     public Employee get(String employeeSearch) {
-        for(Employee employee : listaEmployees){
-            if (employee.getName().equals(employeeSearch)){
 
-                //TODO set pessoa juridica
+        for(Employee employee : listaEmployees){
+            if (employee.getRegistration().equals(employeeSearch)){
+                System.out.println(employee.toString());
+                return employee;
             }
         }
+        System.out.println("Empregado não encontrado!");
+        return null;
     }
 
     public void setEmployees(ArrayList<Employee> listaEmployees) {
         EmployeeService.listaEmployees = listaEmployees;
     }
 
-    public void create(Employee employee){
-        listaEmployees.add(employee);
-
-    }
-
-    public ArrayList<Employee> getAll(){
+    public static ArrayList<Employee> getAll() {
         return listaEmployees;
     }
 
-    public void update(String id, Employee newEmployeeDetails){
+    public void create(Employee employee){
+        listaEmployees.add(employee);
+    }
+
+    public void update(String registration, Employee newEmployeeDetails){
 
         for(Employee employee : listaEmployees){
-            if (employee.getId().equals(newEmployeeDetails.getId())){
+            if (employee.getRegistration().equals(newEmployeeDetails.getRegistration())){
                 employee.setName(newEmployeeDetails.getName());
                 employee.setUser(newEmployeeDetails.getUser());
                 employee.setPassword(newEmployeeDetails.getPassword());
                 employee.setAddress(newEmployeeDetails.getAddress());
                 employee.setContact(newEmployeeDetails.getContact());
-                //TODO set pessoa juridica
                 System.out.println("Update realizado!");
-                System.out.println(this.getAll());
+                System.out.println(getAll());
                 return;
             }
         }
@@ -53,9 +52,10 @@ public class EmployeeService {
 
     public boolean delete(String idEmployeeToDelete){
         for(Employee employee : listaEmployees){
-            if (employee.getId().equals(idEmployeeToDelete)){
+            if (employee.getRegistration().equals(idEmployeeToDelete)){
                 listaEmployees.remove(employee);
-                System.out.println(this.getAll());
+                System.out.println("Employee successfully deleted.");
+                System.out.println(getAll());
                 return true;
             }
         }

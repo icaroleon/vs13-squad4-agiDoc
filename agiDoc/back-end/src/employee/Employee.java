@@ -2,9 +2,11 @@ package employee;
 
 import juridicalEntity.AbstractJuridicalEntity;
 
+import java.util.ArrayList;
+
 public class Employee {
 
-    private String matricula;
+    private String registration;
     private String name;
     private String user;
     private String password;
@@ -14,37 +16,37 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "matricula='" + matricula + '\'' +
-                ", name='" + name + '\'' +
-                ", user='" + user + '\'' +
-                ", password='" + password + '\'' +
-                ", address='" + address + '\'' +
-                ", contact='" + contact + '\'' +
-                ", company=" + company +
-                '}';
+        return "Employee {" +
+                "\n\tRegistration: '" + registration + '\'' +
+                ",\n\tName: '" + name + '\'' +
+                ",\n\tUser: '" + user + '\'' +
+                ",\n\tPassword: '" + password + '\'' +
+                ",\n\tAddress: '" + address + '\'' +
+                ",\n\tContact: '" + contact + '\'' +
+                ",\n\tCompany: " + (company != null ? company.toString() : "null") +
+                "\n}";
     }
 
-    public Employee(String matricula, String name, String user, String password, String address, String contact) {
-        this.matricula = matricula;
+
+    public Employee(String registration, String name, String user, String password, String address, String contact, AbstractJuridicalEntity company) {
+        this.registration = registration;
         this.name = name;
         this.user = user;
         this.password = password;
         this.address = address;
         this.contact = contact;
-        // TODO abstract juridical entity
+        this.company = company;
     }
 
     public Employee(){
-
     }
 
-    public String getMatricula(){
-        return matricula;
+    public String getRegistration(){
+        return registration;
     }
 
-    public String setMatricula(){
-        this.matricula = matricula;
+    public void setRegistration(String registration) {
+        this.registration = registration;
     }
 
     public String getName() {
@@ -95,5 +97,15 @@ public class Employee {
         this.company = company;
     }
 
-    //TODO LOGIN METHOD
+    public boolean login(String user, String password){
+        ArrayList<Employee> listaEmployees = EmployeeService.getAll();
+        for(Employee employee : listaEmployees){
+           if(employee.getUser().equals(user) && employee.getPassword().equals(password)) {
+               System.out.println("Login efetuado!");
+               return true;
+           }
+        }
+        System.out.println("Usuário ou senha errados");
+        return false;
+    }
 }
