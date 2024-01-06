@@ -1,7 +1,12 @@
+package process;
+
 import java.util.ArrayList;
 
+import document.Document;
+
 public class Process implements IProcess {
-    String id, status;
+    private String id, status;
+
     Competitor contracted;
     ArrayList<Competitor> competitors;
     ArrayList<Document> documents;
