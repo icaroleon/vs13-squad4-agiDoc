@@ -13,7 +13,8 @@ public class Process implements IProcess {
     private ArrayList<Competitor> competitors;
     private ArrayList<Document> documents;
 
-    public Process() {}
+    public Process() {
+    }
 
     public Process(String title, String description) {
         UUID uuid = UUID.randomUUID();
@@ -22,6 +23,8 @@ public class Process implements IProcess {
         this.title = title;
         this.description = description;
         this.status = "Aberto";
+        this.competitors = new ArrayList<Competitor>();
+        this.documents = new ArrayList<Document>();
     }
 
     public Process(String title, String description, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
@@ -35,11 +38,17 @@ public class Process implements IProcess {
         this.documents = documents;
     }
 
-    public boolean chooseContractor() {
+    public boolean chooseContractor(Competitor competitor) {
+        this.contracted = competitor;
+
         return true;
     }
 
     public boolean subscribe(Competitor competitor) {
+        if (competitor == null)
+            return false;
+
+        this.competitors.add(competitor);
         return true;
     }
 
@@ -61,10 +70,6 @@ public class Process implements IProcess {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setContracted(Competitor contracted) {
-        this.contracted = contracted;
     }
 
     public ArrayList<Competitor> getCompetitors() {
@@ -97,5 +102,11 @@ public class Process implements IProcess {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + this.id + " Titulo: " + this.title + " Status: " + this.status + " Descricao: "
+                + this.description;
     }
 }

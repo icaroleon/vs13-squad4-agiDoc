@@ -1,24 +1,20 @@
 package service;
 
 import java.util.ArrayList;
-import entities.competitor.Competitor;
-import entities.document.Document;
 import entities.process.Process;
 
-
 public class ProcessService {
-    private static final ArrayList<Process> processes = new ArrayList<>();
+    private ArrayList<Process> processes = new ArrayList<>();
 
     public ProcessService() {
     }
 
-    //TODO: Mudar o método, seguir o padrão do CompetitorService
-    public Process create(String id, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
-        return new Process(id, competitors, documents);
+    public Process create(Process process) {
+        processes.add(process);
+        return process;
     }
 
-    //TODO: trocar nome do método para get
-    public Process findOne(String id) throws Exception {
+    public Process get(String id) throws Exception {
         for (Process process : processes) {
             String processId = process.getId();
 
@@ -26,16 +22,16 @@ public class ProcessService {
                 return process;
         }
 
-        throw new Exception("entities.process.Process not found!");
+        throw new Exception("Processo nao encontrado!");
     }
 
-    //TODO: trocar nome do método para getAll
-    public ArrayList<Process> findAll() {
+    // TODO: trocar nome do método para getAll
+    public ArrayList<Process> getAll() {
         return processes;
     }
 
     public Process update(String id, Process newProcess) throws Exception {
-        Process process = this.findOne(id);
+        Process process = this.get(id);
 
         process.setCompetitors(newProcess.getCompetitors());
         process.setDocuments(newProcess.getDocuments());
@@ -44,19 +40,17 @@ public class ProcessService {
         return process;
     }
 
-    public void delete(String id) {
-        try {
-            Process process = this.findOne(id);
+    public void delete(String id) throws Exception {
+        Process process = this.get(id);
 
-            processes.remove(process);
+        processes.remove(process);
 
-            System.out.println("entities.process.Process deleted successfully!");
+        System.out.println("entities.process.Process deleted successfully!");
 
-            return;
-        } catch (Exception e) {
-            if (e.getMessage().contains("not found")) {
-                System.out.println("entities.process.Process not found!");
-            }
-        }
+        return;
+    }
+
+    public void setProcesses(ArrayList<Process> processes) {
+        this.processes = processes;
     }
 }
