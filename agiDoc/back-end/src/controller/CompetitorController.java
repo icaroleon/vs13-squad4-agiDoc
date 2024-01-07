@@ -32,11 +32,12 @@ public abstract class CompetitorController {
 
         competitor.create(newCompetitor);
 
-        System.out.println(competitor.getAll().toString());
+        System.out.println(newCompetitor.toString());
     }
 
     public static void getAll(){
-        System.out.println(competitor.getAll().toString());
+        for (Competitor newCompetitor : competitor.getAll())
+            System.out.println(newCompetitor.toString());
     }
 
     public static void update() throws Exception {
