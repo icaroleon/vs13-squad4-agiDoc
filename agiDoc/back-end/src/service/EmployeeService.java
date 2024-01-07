@@ -6,38 +6,37 @@ import entities.employee.Employee;
 
 public class EmployeeService {
 
-    private static ArrayList<Employee> listaEmployees = new ArrayList<>();
+    private static ArrayList<Employee> listEmployees = new ArrayList<>();
 
     public EmployeeService() {
     }
 
-    public Employee get(String employeeSearch) {
-
-        for(Employee employee : listaEmployees){
+    public Employee get(String employeeSearch) throws Exception {
+        for(Employee employee : listEmployees){
             if (employee.getRegistration().equals(employeeSearch)){
-                System.out.println(employee.toString());
                 return employee;
             }
+
         }
-        System.out.println("Empregado não encontrado!");
-        return null;
+        throw new Exception("Colaborador não encontrado!");
     }
 
     public void setEmployees(ArrayList<Employee> listaEmployees) {
-        EmployeeService.listaEmployees = listaEmployees;
+        EmployeeService.listEmployees = listaEmployees;
     }
 
     public static ArrayList<Employee> getAll() {
-        return listaEmployees;
+        return listEmployees;
     }
 
-    public void create(Employee employee){
-        listaEmployees.add(employee);
+    public Employee create(Employee employee){
+        listEmployees.add(employee);
+        return employee;
     }
 
-    public void update(String registration, Employee newEmployeeDetails){
+    public void update(String registration, Employee newEmployeeDetails) throws Exception{
 
-        for(Employee employee : listaEmployees){
+        for(Employee employee : listEmployees){
             if (employee.getRegistration().equals(newEmployeeDetails.getRegistration())){
                 employee.setName(newEmployeeDetails.getName());
                 employee.setUser(newEmployeeDetails.getUser());
@@ -49,19 +48,18 @@ public class EmployeeService {
                 return;
             }
         }
-        System.out.println("Empregado não encontrado!");
+        throw new Exception("Colaborador não encontrado!");
     }
 
-    public boolean delete(String idEmployeeToDelete){
-        for(Employee employee : listaEmployees){
+    public boolean delete(String idEmployeeToDelete) throws Exception{
+        for(Employee employee : listEmployees){
             if (employee.getRegistration().equals(idEmployeeToDelete)){
-                listaEmployees.remove(employee);
+                listEmployees.remove(employee);
                 System.out.println("entities.employee.Employee successfully deleted.");
                 System.out.println(getAll());
                 return true;
             }
         }
-        System.out.println("Empregado não encontrado!");
-        return false;
+        throw new Exception("Empregado não encontrado!");
     }
 }
