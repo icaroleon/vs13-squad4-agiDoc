@@ -1,4 +1,4 @@
-package document;
+package entities.document;
 
 public class Document {
     private String protocol;

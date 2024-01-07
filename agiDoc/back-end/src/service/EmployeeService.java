@@ -1,6 +1,8 @@
-package employee;
+package service;
 
 import java.util.ArrayList;
+
+import entities.employee.Employee;
 
 public class EmployeeService {
 
@@ -54,7 +56,7 @@ public class EmployeeService {
         for(Employee employee : listaEmployees){
             if (employee.getRegistration().equals(idEmployeeToDelete)){
                 listaEmployees.remove(employee);
-                System.out.println("Employee successfully deleted.");
+                System.out.println("entities.employee.Employee successfully deleted.");
                 System.out.println(getAll());
                 return true;
             }

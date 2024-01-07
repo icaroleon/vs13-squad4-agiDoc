@@ -1,7 +1,9 @@
-package process;
+package entities.process;
 
 import java.util.ArrayList;
-import document.Document;
+
+import entities.competitor.Competitor;
+import entities.document.Document;
 
 public class Process implements IProcess {
     private String id, status;
