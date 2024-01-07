@@ -1,15 +1,18 @@
-import employee.Employee;
-import juridicalEntity.AbstractJuridicalEntity;
+package entities.institution;
+
+import entities.employee.Employee;
+import entities.process.Process;
+import entities.juridical.AbstractJuridical;
 
 import java.util.ArrayList;
 
-public class Institution extends AbstractJuridicalEntity {
+public class Institution extends AbstractJuridical {
     private ArrayList<Process> processes;
     private ArrayList<Employee> employees;
 
     @Override
     public String toString() {
-        return "Institution {" +
+        return "entities.institution.Institution {" +
                 "\n\tCNPJ: '" + super.getCnpj() + '\'' +
                 ",\n\tAddress: '" + super.getAddress() + '\'' +
                 ",\n\tContact: '" + super.getContact() + '\'' +

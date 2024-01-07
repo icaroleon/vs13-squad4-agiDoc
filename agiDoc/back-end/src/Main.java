@@ -19,7 +19,7 @@ public class Main {
             System.out.print("Digite sua senha: ");
             String password = scanner.nextLine();
 
-            // TODO: Validar informações de login; Verificar se será usado método login do Employee
+            // TODO: Validar informações de login; Verificar se será usado método login do entities.employee.Employee
             isNotValidLogin = false;
         }
 
