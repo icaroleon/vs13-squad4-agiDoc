@@ -1,5 +1,6 @@
 package navigation;
 
+import controller.DocumentController;
 import controller.CompetitorController;
 
 import java.util.Scanner;
@@ -7,6 +8,8 @@ import java.util.Scanner;
 public class Navigation {
     private final Scanner scanner;
     private String inputProcessId;
+
+    private static final DocumentController document = new DocumentController();
 
     public Navigation() {
         this.scanner = new Scanner(System.in);
@@ -163,9 +166,10 @@ public class Navigation {
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1 - Adicionar Documento                   |");
             System.out.println("| 2 - Listar Documentos                     |");
-            System.out.println("| 3 - Editar Documento                      |");
-            System.out.println("| 4 - Excluir Documento                     |");
-            System.out.println("| 5 - Assinar Documento                     |");
+            System.out.println("| 3 - Pesquisar um documento                |");
+            System.out.println("| 4 - Editar Documento                      |");
+            System.out.println("| 5 - Excluir Documento                     |");
+            System.out.println("| 6 - Assinar Documento                     |");
             System.out.println("|                                           |");
             System.out.println("| 0 - Sair                                  |");
             System.out.println("| 9 - Voltar                                |");
@@ -174,11 +178,12 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Adicionar Documento");
-                case "2" -> System.out.println("Listar Documentos");
-                case "3" -> System.out.println("Editar Documento");
-                case "4" -> System.out.println("Excluir Documento");
-                case "5" -> System.out.println("Assinar Documento");
+                case "1" -> System.out.println(document.createDocument());
+                case "2" -> System.out.println(document.getAllDocuments());
+                case "3" -> System.out.println(document.getDocument());
+                case "4" -> System.out.println(document.updateDocument());
+                case "5" -> System.out.println(document.deleteDocument());
+                case "6" -> System.out.println(document.signDocument());
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
