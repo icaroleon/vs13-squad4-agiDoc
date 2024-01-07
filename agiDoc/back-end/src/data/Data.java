@@ -4,6 +4,7 @@ import entities.document.Document;
 import entities.employee.Employee;
 import entities.competitor.Competitor;
 import entities.institution.Institution;
+import entities.juridical.AbstractJuridical;
 import entities.process.Process;
 
 import java.util.ArrayList;
@@ -51,15 +52,15 @@ public class Data {
 //      TODO: Setar company
         Employee employeeCompetitorOne = new Employee("João", "joao_girassol", "4321", "Rua dos Girassóis", "9 0000-0000");
 
-        Employee employeeCompetitorTwo = new Employee("Maria", "9 0000-0000");
+        Employee employeeCompetitorTwo = new Employee("Maria", "maria_rosa", "1234", "Rua das rosa", "9 0000-0000");
 
         Employee employeeCompetitorThree = new Employee("Everton", "everton_bromelia", "1234", "Rua das Bromélias", "9 0000-0000");
 
-        Employee employeeCompetitorFour = new Employee("Laura", "9 0000-0000");
+        Employee employeeCompetitorFour = new Employee("Laura", "laurinha_da_balada", "1234", "Rua das festa", "9 0000-0000");
 
         Employee employeeCompetitorFive = new Employee("Glória", "gloria_hibisco", "4321", "Rua dos Hibiscos", "9 0000-0000");
 
-        Employee employeeCompetitorSix = new Employee("Robson", "9 0000-0000");
+        Employee employeeCompetitorSix = new Employee("Robson", "Robson_dos_anjos", "1234", "Rua celeste", "9 0000-0000");
 
 //      TODO: Refatorar instâncias de Funcionários para Instituição
         Employee employeeOneInstitution = new Employee("Aron", "9 0000-0000");
