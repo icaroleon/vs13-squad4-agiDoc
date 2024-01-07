@@ -48,15 +48,16 @@ public class Data {
         Document documentTwoCompetitorSix = new Document("22", "documento: Portaria");
 
 //      TODO: Refatorar instâncias de Funcionários para Concorrentes
-        Employee employeeCompetitorOne = new Employee("João", "9 0000-0000");
+//      TODO: Setar company
+        Employee employeeCompetitorOne = new Employee("João", "joao_girassol", "4321", "Rua dos Girassóis", "9 0000-0000");
 
         Employee employeeCompetitorTwo = new Employee("Maria", "9 0000-0000");
 
-        Employee employeeCompetitorThree = new Employee("Everton", "9 0000-0000");
+        Employee employeeCompetitorThree = new Employee("Everton", "everton_bromelia", "1234", "Rua das Bromélias", "9 0000-0000");
 
         Employee employeeCompetitorFour = new Employee("Laura", "9 0000-0000");
 
-        Employee employeeCompetitorFive = new Employee("Glória", "9 0000-0000");
+        Employee employeeCompetitorFive = new Employee("Glória", "gloria_hibisco", "4321", "Rua dos Hibiscos", "9 0000-0000");
 
         Employee employeeCompetitorSix = new Employee("Robson", "9 0000-0000");
 
