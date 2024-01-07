@@ -31,6 +31,14 @@ public class Document {
         return type.ordinal();
     }
 
+    public String getTypeName() {
+        return type.name();
+    }
+
+    public int getTypeInt() {
+        return type.ordinal();
+    }
+
     public String getProtocol() {
         return protocol;
     }
