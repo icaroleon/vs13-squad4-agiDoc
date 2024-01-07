@@ -1,16 +1,19 @@
-package juridicalEntity;
+package entities.juridical;
 
 import document.Document;
 
-public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
+public abstract class AbstractJuridical implements IJuridical {
     private String cnpj;
     private String address;
     private String contact;
 
-    public AbstractJuridicalEntity(String cpnj, String address, String contact) {
-            this.cnpj = cpnj;
-            this.address = address;
-            this.contact = contact;
+    public AbstractJuridical() {
+    }
+
+    public AbstractJuridical(String cpnj, String address, String contact) {
+        this.cnpj = cpnj;
+        this.address = address;
+        this.contact = contact;
     }
 
     public String getCnpj() {
@@ -21,20 +24,20 @@ public abstract class AbstractJuridicalEntity implements IJuridicalEntity {
         this.cnpj = cnpj;
     }
 
-    public String getEndereco() {
+    public String getAddress() {
         return address;
     }
 
-    public void setEndereco(String endereco) {
-        this.address = endereco;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getContato() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContato(String contato) {
-        this.contact = contato;
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     @Override
