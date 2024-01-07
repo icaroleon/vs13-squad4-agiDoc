@@ -40,6 +40,11 @@ public class Competitor extends AbstractJuridical {
         return id;
     }
 
+    @Override
+    public String toString(){
+        return "id: " + this.id + " Nome da empresa: " + companyName + " Cnpj: " + this.cnpj + " Endereço: " + this.address;
+    }
+
     public String getCompanyName() {
         return companyName;
     }
