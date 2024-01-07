@@ -1,11 +1,13 @@
+import document.Document;
+
 import java.util.ArrayList;
 
 public class Competitor {
 
     private boolean competitor;
-    private ArrayList<Documents> documents;
+    private ArrayList<Document> documents;
 
-    public Competitor(boolean competitor, ArrayList documents) {
+    public Competitor(boolean competitor, ArrayList<Document> documents) {
         this.competitor = competitor;
         this.documents = documents;
     }
@@ -18,11 +20,11 @@ public class Competitor {
         this.competitor = competitor;
     }
 
-    public ArrayList getDocuments() {
+    public ArrayList<Document> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(ArrayList documents) {
+    public void setDocuments(ArrayList<Document> documents) {
         this.documents = documents;
     }
 }
