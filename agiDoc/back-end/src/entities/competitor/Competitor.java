@@ -17,19 +17,22 @@ public class Competitor extends AbstractJuridical {
     private ArrayList<Document> documents;
 
 
-    public Competitor(){
-    }
+    public Competitor(){}
 
     public Competitor(String cpnj, String address, String contact, String companyName) {
         super(cpnj, address, contact);
+
         UUID uuid = UUID.randomUUID();
+
         this.id = uuid.toString();
         this.companyName = companyName;
     }
 
     public Competitor(String cpnj, String address, String contact, ArrayList<Employee> employees, String companyName, Process process, ArrayList<Document> documents) {
         super(cpnj, address, contact, employees);
+
         UUID uuid = UUID.randomUUID();
+
         this.id = uuid.toString();
         this.companyName = companyName;
         this.process = process;
