@@ -1,11 +1,15 @@
 package entities.juridical;
 
 import entities.document.Document;
+import entities.employee.Employee;
+
+import java.util.ArrayList;
 
 public abstract class AbstractJuridical implements IJuridical {
-    private String cnpj;
-    private String address;
-    private String contact;
+    protected String cnpj;
+    protected String address;
+    protected String contact;
+    protected ArrayList<Employee> employees;
 
     public AbstractJuridical() {
     }
@@ -14,6 +18,13 @@ public abstract class AbstractJuridical implements IJuridical {
         this.cnpj = cpnj;
         this.address = address;
         this.contact = contact;
+    }
+
+    public AbstractJuridical(String cpnj, String address, String contact, ArrayList<Employee> employees) {
+        this.cnpj = cpnj;
+        this.address = address;
+        this.contact = contact;
+        this.employees = employees;
     }
 
     public String getCnpj() {
@@ -38,6 +49,14 @@ public abstract class AbstractJuridical implements IJuridical {
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(ArrayList<Employee> employees) {
+        this.employees = employees;
     }
 
     @Override

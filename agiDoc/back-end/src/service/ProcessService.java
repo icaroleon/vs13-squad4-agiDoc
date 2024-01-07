@@ -12,10 +12,12 @@ public class ProcessService {
     public ProcessService() {
     }
 
+    //TODO: Mudar o método, seguir o padrão do CompetitorService
     public Process create(String id, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
         return new Process(id, competitors, documents);
     }
 
+    //TODO: trocar nome do método para get
     public Process findOne(String id) throws Exception {
         for (Process process : processes) {
             String processId = process.getId();
@@ -27,6 +29,7 @@ public class ProcessService {
         throw new Exception("entities.process.Process not found!");
     }
 
+    //TODO: trocar nome do método para getAll
     public ArrayList<Process> findAll() {
         return processes;
     }

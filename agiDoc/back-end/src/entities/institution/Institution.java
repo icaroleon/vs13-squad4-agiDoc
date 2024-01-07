@@ -22,7 +22,7 @@ public class Institution extends AbstractJuridical {
     }
 
     public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
-        super(cnpj, address, contact);
+        super(cnpj, address, contact, employees);
         this.processes = new ArrayList<>();
         this.employees = new ArrayList<>();
     }

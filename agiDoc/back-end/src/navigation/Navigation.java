@@ -1,5 +1,7 @@
 package navigation;
 
+import controller.CompetitorController;
+
 import java.util.Scanner;
 
 public class Navigation {
@@ -10,7 +12,7 @@ public class Navigation {
         this.scanner = new Scanner(System.in);
     }
 
-    public String showMenu(String option) {
+    public String showMenu(String option) throws Exception {
         String chooseNavigation = "";
 
         switch (option) {
@@ -185,7 +187,7 @@ public class Navigation {
         return option;
     }
 
-    public String competitorsMenu() {
+    public String competitorsMenu() throws Exception {
         String option = "";
         boolean running = true;
 
@@ -206,10 +208,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Adicionar Concorrente");
-                case "2" -> System.out.println("Listar Concorrentes");
-                case "3" -> System.out.println("Editar Concorrente");
-                case "4" -> System.out.println("Excluir Concorrente");
+                case "1" -> CompetitorController.createCompetitor();
+                case "2" -> CompetitorController.getAll();
+                case "3" -> CompetitorController.update();
+                case "4" -> CompetitorController.delete();
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }

@@ -1,0 +1,13 @@
+package entities.document;
+
+public enum documentType {
+    OFFICIAL_ANNOUNCEMENT,
+    ORDINANCE,
+    CERTIFICATE,
+    TERMS_REFERENCE,
+    DELEGATION_AUTHORITY,
+    STATEMENT,
+    ATTACHMENTS,
+    JUSTIFICATION_NEED,
+    LEGAL_OPINION,
+}
