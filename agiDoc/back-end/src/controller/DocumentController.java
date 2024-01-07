@@ -128,7 +128,7 @@ public class DocumentController {
         String newOriginId = sc.nextLine();
         newOriginId = (newOriginId.isEmpty()) ? existingDocument.getOriginId() : newOriginId;
 
-        System.out.print("Digite o novo tipo do documento (deixe em branco para manter o valor atual): ");
+        System.out.print("Digite o novo tipo do documento (digite 0 para manter o valor atual): ");
         System.out.println("1 - Edital");
         System.out.println("2 - Portaria");
         System.out.println("3 - Certidao");
@@ -142,7 +142,11 @@ public class DocumentController {
         sc.nextLine();
 
         try {
-            type = DocumentType.values()[typeInput - 1];
+            if (typeInput == 0) {
+                type = existingDocument.getType();
+            } else {
+                type = DocumentType.values()[typeInput - 1];
+            }
         } catch (IllegalArgumentException e) {
             return "Error: Tipo de documento inválido.";
         }
