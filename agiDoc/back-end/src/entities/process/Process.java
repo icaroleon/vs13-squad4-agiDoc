@@ -22,6 +22,10 @@ public class Process implements IProcess {
     }
 
     public boolean subscribe(Competitor competitor) {
+        if(competitor == null)
+            return false;
+
+        this.competitors.add(competitor);
         return true;
     }
 
