@@ -3,16 +3,40 @@ package controller;
 import entities.document.Document;
 import service.DocumentService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class DocumentController {
-    private final DocumentService documentService;
+    static String protocol;
+    static  String expirationDate;
+    static  String origin = "Processo";
+    static  String originId;
+    static boolean signed = false;
+    static String content;
 
-    public DocumentController(DocumentService documentService) {
-        this.documentService = documentService;
-    }
+    private static final Scanner sc = new Scanner(System.in);
 
-    public String createDocument(Document document) {
+    private static final DocumentService documentService = new DocumentService();
+
+    public String createDocument() {
+        System.out.print("Digite o protocolo do documento: ");
+        protocol = sc.nextLine();
+
+        System.out.print("Digite a data de expiração do documento (formato(dd/mm/aaaa)): ");
+        expirationDate = sc.nextLine();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate localDate = LocalDate.parse(expirationDate, formatter);
+
+        System.out.print("Digite o índice de identificação da origem: ");
+        originId = sc.nextLine();
+
+        System.out.print("Digite o conteúdo do documento: ");
+        content = sc.nextLine();
+
+        Document document = new Document(protocol, localDate, origin, originId, signed, content);
+
         try {
             Document createdDocument = documentService.create(document);
             return "Document created successfully with protocol: " + createdDocument.getProtocol();
@@ -21,38 +45,114 @@ public class DocumentController {
         }
     }
 
-    public String getDocument(String protocol) {
+
+    public String getDocument() {
+        System.out.print("Digite o protocolo do documento que deseja pesquisar: ");
+        protocol = sc.nextLine();
+
         try {
             Document document = documentService.get(protocol);
-            return document.toString();
+            return "Documento encontrado com o protocolo " + protocol + ":\n" +
+                    "Protocolo: " + document.getProtocol() + "\n" +
+                    "Data de expiração: " + document.getExpirationDate() + "\n" +
+                    "Origem: " + document.getOrigin() + "\n" +
+                    "Índice da Origem: " + document.getOriginId() + "\n" +
+                    "Assinatura: " + document.getSigned() + "\n" +
+                    "Conteúdo: " + document.getContent();
         } catch (RuntimeException e) {
             return "Error: " + e.getMessage();
         }
     }
 
-    public ArrayList<Document> getAllDocuments() {
-        return documentService.getAll();
+    public String getAllDocuments() {
+        ArrayList<Document> allDocuments = documentService.getAll();
+
+        if (allDocuments.isEmpty()) {
+            return "Nenhum documento encontrado.";
+        }
+
+        StringBuilder result = new StringBuilder("Lista de documentos:\n");
+
+        for (Document document : allDocuments) {
+            result.append("Documento encontrado com o protocolo ").append(document.getProtocol()).append(":\n")
+                    .append("Protocolo: ").append(document.getProtocol()).append("\n")
+                    .append("Data de expiração: ").append(document.getExpirationDate()).append("\n")
+                    .append("Origem: ").append(document.getOrigin()).append("\n")
+                    .append("Índice da Origem: ").append(document.getOriginId()).append("\n")
+                    .append("Assinatura: ").append(document.getSigned()).append("\n")
+                    .append("Conteúdo: ").append(document.getContent()).append("\n\n");
+        }
+
+        return result.toString();
     }
 
-    public String updateDocument(String protocol, Document newDocument) {
+    public String updateDocument() {
+        System.out.print("Digite o protocolo do documento que você deseja atualizar: ");
+        protocol = sc.nextLine();
+
+        Document existingDocument = documentService.get(protocol);
+
+        System.out.print("Digite a nova data de expiração do documento (formato(dd/mm/aaaa), deixe em branco para manter o valor atual): ");
+        String expirationDateInput = sc.nextLine();
+        LocalDate newExpirationDate = expirationDateInput.isEmpty()
+                ? existingDocument.getExpirationDate()
+                : LocalDate.parse(expirationDateInput, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        System.out.print("Digite a nova origem do documento (deixe em branco para manter o valor atual): ");
+        String newOrigin = sc.nextLine();
+        newOrigin = (newOrigin.isEmpty()) ? existingDocument.getOrigin() : newOrigin;
+
+        System.out.print("Digite o novo índice de identificação da origem (deixe em branco para manter o valor atual): ");
+        String newOriginId = sc.nextLine();
+        newOriginId = (newOriginId.isEmpty()) ? existingDocument.getOriginId() : newOriginId;
+
+        System.out.print("Digite o novo conteúdo do documento (deixe em branco para manter o valor atual): ");
+        String newContent = sc.nextLine();
+        newContent = (newContent.isEmpty()) ? existingDocument.getContent() : newContent;
+
+        Document newDocument = new Document(protocol, newExpirationDate, newOrigin, newOriginId, false, newContent);
+
         try {
             Document updatedDocument = documentService.update(protocol, newDocument);
-            return "Document updated successfully with protocol: " + updatedDocument.getProtocol();
+            return "Documento atualizado com sucesso:\n" +
+                    "Protocolo: " + updatedDocument.getProtocol() + "\n" +
+                    "Data de expiração: " + updatedDocument.getExpirationDate() + "\n" +
+                    "Origem: " + updatedDocument.getOrigin() + "\n" +
+                    "Índice da Origem: " + updatedDocument.getOriginId() + "\n" +
+                    "Assinatura (true para assinado, false para não assinado): " + updatedDocument.getSigned() + "\n" +
+                    "Conteúdo: " + updatedDocument.getContent();
         } catch (RuntimeException e) {
-            return "Error: " + e.getMessage();
+            return "Erro: " + e.getMessage();
         }
     }
 
-    public String deleteDocument(String protocol) {
+    public String deleteDocument() {
+        System.out.print("Digite o protocolo do documento que deseja excluir: ");
+        protocol = sc.nextLine();
+
         try {
             documentService.delete(protocol);
-            return "Document with protocol: " + protocol + " deleted successfully";
+            return "Documento com o protocolo " + protocol + " foi excluído com sucesso";
         } catch (RuntimeException e) {
             return "Error: " + e.getMessage();
         }
     }
 
-    public ArrayList<Document> getAllDocumentsFromService() {
-        return documentService.getDocuments();
+    public String signDocument() {
+        System.out.print("Digite o protocolo do documento que você deseja assinar: ");
+        protocol = sc.nextLine();
+
+        try {
+            signed = documentService.signDocument(protocol);
+
+            if (signed) {
+               return "Documento com o protocolo: " + protocol + " assinado com sucesso";
+            } else {
+               return "Erro ao assinar o documento com o protocolo: " + protocol;
+            }
+
+        } catch (RuntimeException e) {
+           return "Error: " + e.getMessage();
+        }
     }
 }
