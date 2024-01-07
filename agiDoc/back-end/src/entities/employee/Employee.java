@@ -1,6 +1,7 @@
-package employee;
+package entities.employee;
 
-import juridicalEntity.AbstractJuridicalEntity;
+import entities.juridical.AbstractJuridical;
+import service.EmployeeService;
 
 import java.util.ArrayList;
 
@@ -12,11 +13,11 @@ public class Employee {
     private String password;
     private String address;
     private String contact;
-    private AbstractJuridicalEntity company;
+    private AbstractJuridical company;
 
     @Override
     public String toString() {
-        return "Employee {" +
+        return "entities.employee.Employee {" +
                 "\n\tRegistration: '" + registration + '\'' +
                 ",\n\tName: '" + name + '\'' +
                 ",\n\tUser: '" + user + '\'' +
@@ -28,7 +29,7 @@ public class Employee {
     }
 
 
-    public Employee(String registration, String name, String user, String password, String address, String contact, AbstractJuridicalEntity company) {
+    public Employee(String registration, String name, String user, String password, String address, String contact, AbstractJuridical company) {
         this.registration = registration;
         this.name = name;
         this.user = user;
@@ -89,11 +90,11 @@ public class Employee {
         this.contact = contact;
     }
 
-    public AbstractJuridicalEntity getCompany() {
+    public AbstractJuridical getCompany() {
         return company;
     }
 
-    public void setCompany(AbstractJuridicalEntity company) {
+    public void setCompany(AbstractJuridical company) {
         this.company = company;
     }
 

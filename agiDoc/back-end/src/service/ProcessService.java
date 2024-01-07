@@ -1,16 +1,19 @@
-package process;
+package service;
 
 import java.util.ArrayList;
+import entities.competitor.Competitor;
+import entities.document.Document;
+import entities.process.Process;
 
- public class ProcessController {
-    private static ArrayList<Process> processes = new ArrayList<>();
 
-    public ProcessController() {
+public class ProcessService {
+    private static final ArrayList<Process> processes = new ArrayList<>();
+
+    public ProcessService() {
     }
 
     public Process create(String id, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
-        Process createdProcess = new Process(id, competitors, documents);
-        return createdProcess;
+        return new Process(id, competitors, documents);
     }
 
     public Process findOne(String id) throws Exception {
@@ -21,14 +24,14 @@ import java.util.ArrayList;
                 return process;
         }
 
-        throw new Exception("Process not found!");
+        throw new Exception("entities.process.Process not found!");
     }
 
     public ArrayList<Process> findAll() {
         return processes;
     }
 
-    public Process update(String id, Process newProcess) {
+    public Process update(String id, Process newProcess) throws Exception {
         Process process = this.findOne(id);
 
         process.setCompetitors(newProcess.getCompetitors());
@@ -44,12 +47,12 @@ import java.util.ArrayList;
 
             processes.remove(process);
 
-            System.out.println("Process deleted successfully!");
+            System.out.println("entities.process.Process deleted successfully!");
 
             return;
         } catch (Exception e) {
             if (e.getMessage().contains("not found")) {
-                System.out.println("Process not found!");
+                System.out.println("entities.process.Process not found!");
             }
         }
     }

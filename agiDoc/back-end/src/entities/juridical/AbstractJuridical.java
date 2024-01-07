@@ -1,6 +1,6 @@
 package entities.juridical;
 
-import document.Document;
+import entities.document.Document;
 
 public abstract class AbstractJuridical implements IJuridical {
     private String cnpj;

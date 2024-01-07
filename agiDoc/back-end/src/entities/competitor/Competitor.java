@@ -1,4 +1,6 @@
-import document.Document;
+package entities.competitor;
+
+import entities.document.Document;
 
 import java.util.ArrayList;
 
