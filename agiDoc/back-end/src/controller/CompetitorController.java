@@ -6,7 +6,6 @@ import service.CompetitorService;
 import java.util.Scanner;
 
 public abstract class CompetitorController {
-
     static String id;
     static String cnpj;
     static String address;
@@ -14,6 +13,7 @@ public abstract class CompetitorController {
     static String companyName;
     private static final Scanner scanner = new Scanner(System.in);
     private static final CompetitorService competitor = new CompetitorService();
+
     public static  void createCompetitor() {
         System.out.println("Digite o CNPJ da empresa: ");
         cnpj = scanner.nextLine();

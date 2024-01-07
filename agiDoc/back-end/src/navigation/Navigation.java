@@ -2,12 +2,15 @@ package navigation;
 
 import controller.DocumentController;
 import controller.CompetitorController;
+import controller.ProcessController;
+import entities.process.Process;
 
 import java.util.Scanner;
 
 public class Navigation {
     private final Scanner scanner;
     private String inputProcessId;
+    private Process currentProcess;
 
     private static final DocumentController document = new DocumentController();
 
@@ -101,15 +104,18 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Lista de funcionários:");
-                case "3" -> System.out.println("Processo criado.");
+                case "1" -> ProcessController.getAll();
+                case "3" -> ProcessController.createProcess();
                 case "2" -> {
-                    // TODO: Adicionar verificação sobre a existência do processo | MIN/MAX: 6 dígitos
                     System.out.print("Digite o identificador do processo: ");
                     this.inputProcessId = scanner.nextLine();
 
-                    option = "3";
-                    running = false;
+                    Process currentProcess = ProcessController.get(inputProcessId);
+
+                    if (currentProcess != null) {
+                        option = "3";
+                        running = false;
+                    }
                 }
                 case "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
@@ -178,10 +184,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println(document.createDocument());
+//                case "1" -> System.out.println(document.createDocument());
                 case "2" -> System.out.println(document.getAllDocuments());
                 case "3" -> System.out.println(document.getDocument());
-                case "4" -> System.out.println(document.updateDocument());
+//                case "4" -> System.out.println(document.updateDocument());
                 case "5" -> System.out.println(document.deleteDocument());
                 case "6" -> System.out.println(document.signDocument());
                 case "0", "9" -> running = false;

@@ -1,46 +1,46 @@
 package controller;
 
+import data.Data;
 import entities.process.Process;
 import service.ProcessService;
 
 import java.util.Scanner;
 
 public class ProcessController {
-    Scanner scanner = new Scanner(System.in);
-    ProcessService service = new ProcessService();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final ProcessService service = new ProcessService(Data.institution.getProcesses());
 
-    public void createProcess() {
-        scanner.nextLine();
-
+    public static void createProcess() {
         System.out.println("Digite o titulo do processo: ");
         String title = scanner.nextLine();
 
-        System.out.println("Digite a descricao do processo: ");
+        System.out.println("Digite a descrição do processo: ");
         String description = scanner.nextLine();
 
         Process process = new Process(title, description);
 
         service.create(process);
+        Data.institution.setProcesses(service.getAll());
 
         System.out.println("Processo criado");
         System.out.println(process.toString());
     }
 
-    public void get() {
-        scanner.nextLine();
-        System.out.println("Insira o id do processo a ser buscado: ");
-        String id = scanner.nextLine();
-
+    public static Process get(String id) {
+        Process process = null;
         try {
-            Process process = this.service.get(id);
+            process = service.get(id);
             System.out.println(process.toString());
         } catch (Exception e) {
             System.out.println("Processo nao encontrado!");
         }
+        return process;
     }
 
-    public void getAll() {
-        System.out.println(service.getAll().toString());
+    public static void getAll() {
+        for (Process process : service.getAll()) {
+            System.out.println(process.toString());
+        }
     }
 
     public void update() {
@@ -52,7 +52,7 @@ public class ProcessController {
         System.out.println("Digite o novo titulo do processo: ");
         String title = scanner.nextLine();
 
-        System.out.println("Digite a nova descricao do processo: ");
+        System.out.println("Digite a nova descrição do processo: ");
         String description = scanner.nextLine();
 
         Process process = new Process(title, description);
