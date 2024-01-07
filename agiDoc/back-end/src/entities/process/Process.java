@@ -6,7 +6,6 @@ import java.util.UUID;
 import entities.competitor.Competitor;
 import entities.document.Document;
 
-// TODO: Adicionar atributos que faltam conforme diagrama.
 public class Process implements IProcess {
     private String id, title, status, description;
     private Competitor contracted;

@@ -8,17 +8,14 @@ import entities.process.Process;
 import java.util.Scanner;
 
 public class Navigation {
-    private final Scanner scanner;
+    private Scanner scanner;
     private String inputProcessId;
     private Process currentProcess;
 
-    private static final DocumentController document = new DocumentController();
-
-    public Navigation() {
-        this.scanner = new Scanner(System.in);
-    }
+    public Navigation() {}
 
     public String showMenu(String option) throws Exception {
+        this.scanner = new Scanner(System.in);
         String chooseNavigation = "";
 
         switch (option) {
@@ -30,6 +27,7 @@ public class Navigation {
             case "6" -> chooseNavigation = this.competitorsMenu();
         }
 
+        this.scanner.close();
         return chooseNavigation;
     }
 
@@ -110,7 +108,7 @@ public class Navigation {
                     System.out.print("Digite o identificador do processo: ");
                     this.inputProcessId = scanner.nextLine();
 
-                    Process currentProcess = ProcessController.get(inputProcessId);
+                    currentProcess = ProcessController.get(inputProcessId);
 
                     if (currentProcess != null) {
                         option = "3";
@@ -164,6 +162,7 @@ public class Navigation {
     public String documentsMenu() {
         String option = "";
         boolean running = true;
+        DocumentController document = new DocumentController(currentProcess.getDocuments());
 
         do {
             System.out.println("\n\n");
@@ -184,12 +183,12 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-//                case "1" -> System.out.println(document.createDocument());
+                case "1" -> System.out.println(document.createDocument(currentProcess));
                 case "2" -> System.out.println(document.getAllDocuments());
                 case "3" -> System.out.println(document.getDocument());
-//                case "4" -> System.out.println(document.updateDocument());
-                case "5" -> System.out.println(document.deleteDocument());
-                case "6" -> System.out.println(document.signDocument());
+                case "4" -> System.out.println(document.updateDocument(currentProcess));
+                case "5" -> System.out.println(document.deleteDocument(currentProcess));
+                case "6" -> System.out.println(document.signDocument(currentProcess));
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }

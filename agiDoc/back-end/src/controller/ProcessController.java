@@ -59,6 +59,7 @@ public class ProcessController {
 
         try {
             service.update(id, process);
+            Data.institution.setProcesses(service.getAll());
 
             System.out.println("Processo " + id + "atualizado com sucesso.");
         } catch (Exception e) {
