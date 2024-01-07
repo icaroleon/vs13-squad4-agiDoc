@@ -1,13 +1,9 @@
 package controller;
 
-import entities.competitor.Competitor;
-import entities.document.Document;
 import entities.process.Process;
 import service.ProcessService;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class ProcessController {
     Scanner scanner = new Scanner(System.in);
