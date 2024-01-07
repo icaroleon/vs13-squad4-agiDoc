@@ -47,6 +47,7 @@ public class DocumentController {
         System.out.println("8 - Justificativa de Necessidade");
         System.out.println("9 - Parecer Jurídico");
         int typeInput = sc.nextInt();
+        sc.nextLine();
 
         try {
             type = DocumentType.values()[typeInput - 1];
@@ -136,6 +137,7 @@ public class DocumentController {
         System.out.println("8 - Justificativa de Necessidade");
         System.out.println("9 - Parecer Jurídico");
         int typeInput = sc.nextInt();
+        sc.nextLine();
 
         try {
             type = DocumentType.values()[typeInput - 1];
