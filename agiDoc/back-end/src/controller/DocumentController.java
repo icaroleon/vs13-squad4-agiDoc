@@ -78,6 +78,7 @@ public class DocumentController {
                     "Origem: " + document.getOrigin() + "\n" +
                     "Índice da Origem: " + document.getOriginId() + "\n" +
                     "Assinatura: " + document.getSigned() + "\n" +
+                    "Tipo do documento: " + document.getTypeName() + "\n" +
                     "Conteúdo: " + document.getContent();
         } catch (RuntimeException e) {
             return "Error: " + e.getMessage();
@@ -100,6 +101,7 @@ public class DocumentController {
                     .append("Origem: ").append(document.getOrigin()).append("\n")
                     .append("Índice da Origem: ").append(document.getOriginId()).append("\n")
                     .append("Assinatura: ").append(document.getSigned()).append("\n")
+                    .append("Tipo do documento: ").append(document.getTypeName()).append("\n")
                     .append("Conteúdo: ").append(document.getContent()).append("\n\n");
         }
 
@@ -157,7 +159,8 @@ public class DocumentController {
                     "Protocolo: " + updatedDocument.getProtocol() + "\n" +
                     "Data de expiração: " + updatedDocument.getExpirationDate() + "\n" +
                     "Origem: " + updatedDocument.getOrigin() + "\n" +
-                    "Índice da Origem: " + updatedDocument.getOriginId() + "\n" +
+                    "Índice da origem: " + updatedDocument.getOriginId() + "\n" +
+                    "Tipo do documento " + updatedDocument.getTypeName() + "\n" +
                     "Assinatura (true para assinado, false para não assinado): " + updatedDocument.getSigned() + "\n" +
                     "Conteúdo: " + updatedDocument.getContent();
         } catch (RuntimeException e) {
