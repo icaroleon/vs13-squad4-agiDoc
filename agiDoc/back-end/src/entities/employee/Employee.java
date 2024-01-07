@@ -4,6 +4,7 @@ import entities.juridical.AbstractJuridical;
 import service.EmployeeService;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Employee {
 
@@ -28,18 +29,30 @@ public class Employee {
                 "\n}";
     }
 
+    public Employee(){}
 
-    public Employee(String registration, String name, String user, String password, String address, String contact, AbstractJuridical company) {
-        this.registration = registration;
+    public Employee(String name, String user, String password, String address, String contact) {
+        UUID uuid = UUID.randomUUID();
+
+        this.registration = uuid.toString();
+        this.name = name;
+        this.user = user;
+        this.password = password;
+        this.address = address;
+        this.contact = contact;
+    }
+
+//  TODO: Adicionar construtor sem company e gerar registration ou novo atributo id dinamicamente
+    public Employee(String name, String user, String password, String address, String contact, AbstractJuridical company) {
+        UUID uuid = UUID.randomUUID();
+
+        this.registration = uuid.toString();
         this.name = name;
         this.user = user;
         this.password = password;
         this.address = address;
         this.contact = contact;
         this.company = company;
-    }
-
-    public Employee(){
     }
 
     public String getRegistration(){
