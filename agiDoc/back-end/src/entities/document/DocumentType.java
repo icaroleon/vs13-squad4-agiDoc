@@ -1,6 +1,6 @@
 package entities.document;
 
-public enum documentType {
+public enum DocumentType {
     OFFICIAL_ANNOUNCEMENT,
     ORDINANCE,
     CERTIFICATE,

@@ -1,7 +1,6 @@
 package entities.document;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Document {
     private String protocol;
@@ -10,17 +9,38 @@ public class Document {
     private String originId;
     private boolean signed;
     private String content;
+    private DocumentType type;
 
-    public Document() {
-    }
+    public Document() {}
 
-    public Document(String protocol, LocalDate expirationDate, String origin, String originId, boolean signed, String content) {
+    public Document(String protocol, LocalDate expirationDate, String origin, String originId, DocumentType type, String content) {
         this.protocol = protocol;
         this.expirationDate = expirationDate;
         this.origin = origin;
         this.originId = originId;
-        this.signed = signed;
+        this.signed = false;
         this.content = content;
+        this.type = type;
+    }
+
+    public boolean isSigned() {
+        return signed;
+    }
+
+    public DocumentType getType() {
+        return type;
+    }
+
+    public void setType(DocumentType type) {
+        this.type = type;
+    }
+
+    public String getTypeName() {
+        return type.name();
+    }
+
+    public int getTypeInt() {
+        return type.ordinal();
     }
 
     public String getProtocol() {
@@ -70,4 +90,5 @@ public class Document {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

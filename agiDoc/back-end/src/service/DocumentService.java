@@ -33,7 +33,6 @@ public class DocumentService {
 
         if (document != null) {
             document.setOrigin(newDocument.getOrigin());
-            document.setSigned(newDocument.getSigned());
             document.setOriginId(newDocument.getOriginId());
             document.setExpirationDate(newDocument.getExpirationDate());
             document.setContent(newDocument.getContent());
@@ -48,12 +47,19 @@ public class DocumentService {
 
         if (document != null) {
             documents.remove(document);
-            System.out.println("Documento deletado com sucesso!");
+        } else {
+            throw new RuntimeException("Document with protocol " + protocol + " not found");
         }
-        throw new RuntimeException("Document with protocol " + protocol + " not found");
     }
 
-    public ArrayList<Document> getDocuments() {
-        return new ArrayList<>(documents);
+    public boolean signDocument(String protocol) {
+        Document document = this.get(protocol);
+
+        if (document != null) {
+            document.setSigned(true);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
