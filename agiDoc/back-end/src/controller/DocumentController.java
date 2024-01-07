@@ -1,6 +1,7 @@
 package controller;
 
 import entities.document.Document;
+import entities.document.DocumentType;
 import service.DocumentService;
 
 import java.time.LocalDate;
@@ -13,7 +14,8 @@ public class DocumentController {
     static  String expirationDate;
     static  String origin = "Processo";
     static  String originId;
-    static boolean signed = false;
+    static boolean signed;
+    static DocumentType type;
     static String content;
 
     private static final Scanner sc = new Scanner(System.in);
@@ -31,11 +33,28 @@ public class DocumentController {
 
         System.out.print("Digite o índice de identificação da origem: ");
         originId = sc.nextLine();
-
         System.out.print("Digite o conteúdo do documento: ");
         content = sc.nextLine();
 
-        Document document = new Document(protocol, localDate, origin, originId, signed, content);
+        System.out.println("Digite o tipo do documento: ");
+        System.out.println("1 - Edital");
+        System.out.println("2 - Portaria");
+        System.out.println("3 - Certidao");
+        System.out.println("4 - Termo de Referência");
+        System.out.println("5 - Delegação de Competência");
+        System.out.println("6 - Manifestação");
+        System.out.println("7 - Anexos");
+        System.out.println("8 - Justificativa de Necessidade");
+        System.out.println("9 - Parecer Jurídico");
+        int typeInput = sc.nextInt();
+
+        try {
+            type = DocumentType.values()[typeInput - 1];
+        } catch (IllegalArgumentException e) {
+            return "Error: Tipo de documento inválido.";
+        }
+
+        Document document = new Document(protocol, localDate, origin, originId, type, content);
 
         try {
             Document createdDocument = documentService.create(document);
@@ -106,11 +125,29 @@ public class DocumentController {
         String newOriginId = sc.nextLine();
         newOriginId = (newOriginId.isEmpty()) ? existingDocument.getOriginId() : newOriginId;
 
+        System.out.print("Digite o novo tipo do documento (deixe em branco para manter o valor atual): ");
+        System.out.println("1 - Edital");
+        System.out.println("2 - Portaria");
+        System.out.println("3 - Certidao");
+        System.out.println("4 - Termo de Referência");
+        System.out.println("5 - Delegação de Competência");
+        System.out.println("6 - Manifestação");
+        System.out.println("7 - Anexos");
+        System.out.println("8 - Justificativa de Necessidade");
+        System.out.println("9 - Parecer Jurídico");
+        int typeInput = sc.nextInt();
+
+        try {
+            type = DocumentType.values()[typeInput - 1];
+        } catch (IllegalArgumentException e) {
+            return "Error: Tipo de documento inválido.";
+        }
+
         System.out.print("Digite o novo conteúdo do documento (deixe em branco para manter o valor atual): ");
         String newContent = sc.nextLine();
         newContent = (newContent.isEmpty()) ? existingDocument.getContent() : newContent;
 
-        Document newDocument = new Document(protocol, newExpirationDate, newOrigin, newOriginId, false, newContent);
+        Document newDocument = new Document(protocol, newExpirationDate, newOrigin, newOriginId, type, newContent);
 
         try {
             Document updatedDocument = documentService.update(protocol, newDocument);
