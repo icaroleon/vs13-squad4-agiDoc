@@ -103,4 +103,10 @@ public class Process implements IProcess {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "id: " + this.id + " Titulo: " + this.title + " Status: " + this.status + " Descricao: "
+                + this.description;
+    }
 }
