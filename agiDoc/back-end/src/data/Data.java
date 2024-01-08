@@ -76,7 +76,7 @@ public abstract class Data {
                 "9 0000-0000",
                 "InnovateTech Solutions"
         );
-        competitorOneProcessOne.setDocuments(new ArrayList<Document>(Arrays.asList(
+        competitorOneProcessOne.setDocuments(new ArrayList<>(Arrays.asList(
                 documentOneCompetitorOne,
                 documentTwoCompetitorOne
         )));
@@ -90,7 +90,7 @@ public abstract class Data {
                 "9 0000-0000",
                 "Quantum Dynamics Innovations"
         );
-        competitorTwoProcessOne.setDocuments(new ArrayList<Document>(Arrays.asList(
+        competitorTwoProcessOne.setDocuments(new ArrayList<>(Arrays.asList(
                 documentOneCompetitorTwo,
                 documentTwoCompetitorTwo
         )));
@@ -104,7 +104,7 @@ public abstract class Data {
                 "9 0000-0000",
                 "Nexus Innovations Group"
         );
-        competitorOneProcessTwo.setDocuments(new ArrayList<Document>(Arrays.asList(
+        competitorOneProcessTwo.setDocuments(new ArrayList<>(Arrays.asList(
                 documentOneCompetitorThree,
                 documentTwoCompetitorThree
         )));
@@ -118,7 +118,7 @@ public abstract class Data {
                 "9 0000-0000",
                 "Stratosphere Solutions"
         );
-        competitorTwoProcessTwo.setDocuments(new ArrayList<Document>(Arrays.asList(
+        competitorTwoProcessTwo.setDocuments(new ArrayList<>(Arrays.asList(
                 documentOneCompetitorFour,
                 documentTwoCompetitorFour
         )));
@@ -132,7 +132,7 @@ public abstract class Data {
                 "9 0000-0000",
                 "Zenith Enterprises"
         );
-        competitorOneProcessThree.setDocuments(new ArrayList<Document>(Arrays.asList(
+        competitorOneProcessThree.setDocuments(new ArrayList<>(Arrays.asList(
                 documentOneCompetitorFive,
                 documentTwoCompetitorFive
         )));
@@ -146,7 +146,7 @@ public abstract class Data {
                 "9 0000-0000",
                 "Nebula Innovations Inc."
         );
-        competitorTwoProcessThree.setDocuments(new ArrayList<Document>(Arrays.asList(
+        competitorTwoProcessThree.setDocuments(new ArrayList<>(Arrays.asList(
                 documentOneCompetitorSix,
                 documentTwoCompetitorSix
         )));
@@ -158,8 +158,8 @@ public abstract class Data {
         Process processOne = new Process(
                 "Pregão Eletrônico",
                 "pregrão eletrônico descrição",
-                new ArrayList<Competitor>(Arrays.asList(competitorOneProcessOne, competitorTwoProcessOne)),
-                new ArrayList<Document>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(competitorOneProcessOne, competitorTwoProcessOne)),
+                new ArrayList<>(Arrays.asList(
                         documentOneProcessOne,
                         documentTwoProcessOne,
                         documentThreeProcessOne
@@ -169,8 +169,8 @@ public abstract class Data {
         Process processTwo = new Process(
                 "Tomada de Preços",
                 "tomada de preços descrição",
-                new ArrayList<Competitor>(Arrays.asList(competitorOneProcessTwo, competitorTwoProcessTwo)),
-                new ArrayList<Document>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(competitorOneProcessTwo, competitorTwoProcessTwo)),
+                new ArrayList<>(Arrays.asList(
                         documentOneProcessTwo,
                         documentTwoProcessTwo,
                         documentThreeProcessTwo
@@ -180,8 +180,8 @@ public abstract class Data {
         Process processThree = new Process(
                 "Licitação Pública para Contratação de Obra",
                 "licitação pública para contratação de obra descrição",
-                new ArrayList<Competitor>(Arrays.asList(competitorOneProcessThree, competitorTwoProcessThree)),
-                new ArrayList<Document>(Arrays.asList(
+                new ArrayList<>(Arrays.asList(competitorOneProcessThree, competitorTwoProcessThree)),
+                new ArrayList<>(Arrays.asList(
                         documentOneProcessThree,
                         documentTwoProcessThree,
                         documentThreeProcessThree

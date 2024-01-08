@@ -25,8 +25,8 @@ public class Process implements IProcess {
         this.title = title;
         this.description = description;
         this.status = "Aberto";
-        this.competitors = new ArrayList<Competitor>();
-        this.documents = new ArrayList<Document>();
+        this.competitors = new ArrayList<>();
+        this.documents = new ArrayList<>();
     }
 
     public Process(String title, String description, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
@@ -113,6 +113,7 @@ public class Process implements IProcess {
                 Titulo: %s
                 Status: %s
                 Descrição: %s
+                Contratado: %s
                 N° Documentos: %d
                 N° Concorrentes: %d
                 """.formatted(
@@ -120,6 +121,7 @@ public class Process implements IProcess {
                     this.title,
                     this.status,
                     this.description,
+                    this.contracted == null ? "" : this.contracted.getCompanyName(),
                     this.documents.size(),
                     this.competitors.size()
                 );

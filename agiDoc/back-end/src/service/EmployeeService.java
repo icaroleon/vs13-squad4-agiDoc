@@ -1,8 +1,6 @@
 package service;
 
 import java.util.ArrayList;
-
-import data.Data;
 import entities.employee.Employee;
 import navigation.Navigation;
 

@@ -1,8 +1,6 @@
 package service;
 
 import entities.document.Document;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DocumentService {
@@ -25,7 +23,7 @@ public class DocumentService {
                 return document;
             }
         }
-        throw new RuntimeException("Document with protocol " + protocol + " not found");
+        throw new RuntimeException("Documento de protocolo " + protocol + " não encontrado");
     }
 
     public ArrayList<Document> getAll() {

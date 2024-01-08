@@ -4,7 +4,6 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.EmployeeController;
 import controller.ProcessController;
-import entities.competitor.Competitor;
 import entities.process.Process;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class Navigation {
     }
 
     public String mainMenu() {
-        String option = "";
+        String option;
 
         System.out.println("\n\n");
         System.out.println("+-------------------------------------------+");
@@ -54,7 +53,7 @@ public class Navigation {
     }
 
     public String employeesMenu() throws Exception {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -87,7 +86,7 @@ public class Navigation {
     }
 
     public String processesMenu() {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -108,7 +107,6 @@ public class Navigation {
             switch (option) {
                 case "1" -> ProcessController.getAll();
                 case "2" -> {
-                    // TODO: Adicionar verificação sobre a existência do processo | MIN/MAX: 6 dígitos
                     System.out.print("Digite o identificador do processo: ");
                     this.inputProcessId = scanner.nextLine();
                     currentProcess = ProcessController.get(inputProcessId);
@@ -116,7 +114,6 @@ public class Navigation {
                         option = "3";
                         running = false;
                     }
-
                 }
                 case "3" -> ProcessController.createProcess();
 
@@ -129,7 +126,7 @@ public class Navigation {
     }
 
     public String oneProcessMenu() {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -152,10 +149,17 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> ProcessController.closeProcess(this.inputProcessId);
-                case "2" -> ProcessController.chooseCompetitor(this.inputProcessId);
-                case "3" -> ProcessController.update(this.inputProcessId);
-                case "4" -> ProcessController.delete(this.inputProcessId);
+                case "1" -> ProcessController.closeProcess(inputProcessId);
+                case "2" -> ProcessController.chooseCompetitor(inputProcessId);
+                case "3" -> ProcessController.update(inputProcessId);
+                case "4" -> {
+                    boolean isDeleted = ProcessController.delete(inputProcessId);
+
+                    if (isDeleted) {
+                        option = "9";
+                        running=false;
+                    }
+                }
                 case "5", "6", "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
@@ -166,7 +170,7 @@ public class Navigation {
 
     public String documentsMenu() {
         DocumentController document = new DocumentController(currentProcess.getDocuments());
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -188,10 +192,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> document.createDocument(currentProcess);
+                case "1" -> document.createDocument(currentProcess, inputProcessId);
                 case "2" -> document.getAllDocuments();
                 case "3" -> document.getDocument();
-                case "4" -> document.updateDocument(currentProcess);
+                case "4" -> document.updateDocument(currentProcess, inputProcessId);
                 case "5" -> document.deleteDocument(currentProcess);
                 case "6" -> document.signDocument(currentProcess);
                 case "0", "9" -> running = false;
@@ -202,9 +206,9 @@ public class Navigation {
         return option;
     }
 
-    public String competitorsMenu() throws Exception {
+    public String competitorsMenu() {
         CompetitorController competitor = new CompetitorController(currentProcess.getCompetitors());
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -224,10 +228,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> CompetitorController.createCompetitor(currentProcess);
-                case "2" -> CompetitorController.getAll();
-                case "3" -> CompetitorController.update(currentProcess);
-                case "4" -> CompetitorController.delete(currentProcess);
+                case "1" -> competitor.createCompetitor(currentProcess);
+                case "2" -> competitor.getAll();
+                case "3" -> competitor.update(currentProcess);
+                case "4" -> competitor.delete(currentProcess);
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
