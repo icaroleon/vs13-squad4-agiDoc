@@ -4,6 +4,7 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.EmployeeController;
 import controller.ProcessController;
+import entities.competitor.Competitor;
 import entities.process.Process;
 
 import java.util.Scanner;
@@ -104,16 +105,20 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Lista de funcionários:");
-                case "3" -> System.out.println("Processo criado.");
+                case "1" -> ProcessController.getAll();
                 case "2" -> {
                     // TODO: Adicionar verificação sobre a existência do processo | MIN/MAX: 6 dígitos
                     System.out.print("Digite o identificador do processo: ");
                     this.inputProcessId = scanner.nextLine();
+                    currentProcess = ProcessController.get(inputProcessId);
+                    if(currentProcess != null){
+                        option = "3";
+                        running = false;
+                    }
 
-                    option = "3";
-                    running = false;
                 }
+                case "3" -> ProcessController.createProcess();
+
                 case "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
@@ -197,6 +202,7 @@ public class Navigation {
     }
 
     public String competitorsMenu() throws Exception {
+        CompetitorController competitor = new CompetitorController(currentProcess.getCompetitors());
         String option = "";
         boolean running = true;
 
@@ -217,10 +223,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> CompetitorController.createCompetitor();
+                case "1" -> CompetitorController.createCompetitor(currentProcess);
                 case "2" -> CompetitorController.getAll();
-                case "3" -> CompetitorController.update();
-                case "4" -> CompetitorController.delete();
+                case "3" -> CompetitorController.update(currentProcess);
+                case "4" -> CompetitorController.delete(currentProcess);
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }

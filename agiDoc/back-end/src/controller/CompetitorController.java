@@ -1,20 +1,25 @@
 package controller;
 
+import data.Data;
 import entities.competitor.Competitor;
 import service.CompetitorService;
+import entities.process.Process;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public abstract class CompetitorController {
+public class CompetitorController {
     static String id;
     static String cnpj;
     static String address;
     static String contact;
     static String companyName;
     private static final Scanner scanner = new Scanner(System.in);
-    private static final CompetitorService competitor = new CompetitorService();
+    private static CompetitorService competitorService;
 
-    public static  void createCompetitor() {
+    public CompetitorController(ArrayList<Competitor> competitors) { competitorService = new CompetitorService(competitors); }
+
+    public static  void createCompetitor(Process process) {
         System.out.println("Digite o CNPJ da empresa: ");
         cnpj = scanner.nextLine();
 
@@ -30,23 +35,24 @@ public abstract class CompetitorController {
 
         Competitor newCompetitor = new Competitor(cnpj, address, contact, companyName);
 
-        competitor.create(newCompetitor);
+        competitorService.create(newCompetitor);
+        process.setCompetitors(competitorService.getAll());
 
         System.out.println(newCompetitor.toString());
     }
 
     public static void getAll(){
-        for (Competitor newCompetitor : competitor.getAll())
+        for (Competitor newCompetitor : competitorService.getAll())
             System.out.println(newCompetitor.toString());
     }
 
-    public static void update() {
+    public static void update(Process process) {
 
         System.out.println("Digite o id da empresa que quer fazer as alterações: ");
         id = scanner.nextLine();
 
         try {
-            Competitor existCompetitor = competitor.get(id);
+            Competitor existCompetitor = competitorService.get(id);
 
             System.out.println("Digite o novo CNPJ da empresa(deixe em branco para manter o valor atual): ");
             cnpj = scanner.nextLine();
@@ -66,17 +72,21 @@ public abstract class CompetitorController {
 
             Competitor newCompetitor = new Competitor(cnpj,address, contact, companyName);
 
-            competitor.update(id, newCompetitor);
+            competitorService.update(id, newCompetitor);
+            process.setCompetitors(competitorService.getAll());
+
         }catch (Exception e){
             System.err.println("Erro: " + e.getMessage());
         }
 
     }
 
-    public static void delete(){
+    public static void delete(Process process){
         System.out.println("Digite o id da empresa que quer deletar: ");
         id = scanner.nextLine();
 
-        competitor.delete(id);
+        competitorService.delete(id);
+        process.setCompetitors(competitorService.getAll());
+
     }
 }

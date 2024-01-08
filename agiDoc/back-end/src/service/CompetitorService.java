@@ -12,6 +12,10 @@ public class CompetitorService {
     public CompetitorService(){
     }
 
+    public CompetitorService(ArrayList<Competitor> competitors){
+        this.competitors = competitors;
+    }
+
     public Competitor create(Competitor competitor){
         competitors.add(competitor);
         return competitor;
