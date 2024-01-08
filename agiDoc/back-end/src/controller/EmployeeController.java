@@ -131,7 +131,7 @@ public class EmployeeController {
     }
 
     public static boolean login(String user, String password){
-        ArrayList<Employee> listaEmployees = EmployeeService.getAll();
+        ArrayList<Employee> listaEmployees = employeeService.getAll();
         for(Employee employee : listaEmployees){
             if(employee.getUser().equals(user) && employee.getPassword().equals(password)) {
                 System.out.println("Login efetuado!");
