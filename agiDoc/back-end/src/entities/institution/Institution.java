@@ -37,6 +37,10 @@ public class Institution extends AbstractJuridical {
         this.processes = processes;
     }
 
+    public Institution(String cnpj, String address, String contact) {
+        super(cnpj, address, contact);
+    }
+
     public ArrayList<Process> getProcesses() { return this.processes; }
 
     public void setProcesses(ArrayList<Process> processes) {
