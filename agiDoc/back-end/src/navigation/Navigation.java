@@ -191,10 +191,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> document.createDocument(currentProcess);
+                case "1" -> document.createDocument(currentProcess, inputProcessId);
                 case "2" -> document.getAllDocuments();
                 case "3" -> document.getDocument();
-                case "4" -> document.updateDocument(currentProcess);
+                case "4" -> document.updateDocument(currentProcess, inputProcessId);
                 case "5" -> document.deleteDocument(currentProcess);
                 case "6" -> document.signDocument(currentProcess);
                 case "0", "9" -> running = false;

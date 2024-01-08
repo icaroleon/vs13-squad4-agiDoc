@@ -7,14 +7,15 @@ import service.DocumentService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DocumentController {
     static String protocol;
     static  String expirationDate;
     static  String origin = "Processo";
-    static  String originId;
     static boolean signed;
     static DocumentType type;
     static String content;
@@ -25,22 +26,41 @@ public class DocumentController {
         documentService = new DocumentService(documents);
     }
 
-    public void createDocument(Process process) {
+    public void createDocument(Process process, String processId) {
         System.out.print("Digite o protocolo do documento: ");
         protocol = sc.nextLine();
 
-        System.out.print("Digite a data de expiração do documento (formato(dd/mm/aaaa)): ");
-        expirationDate = sc.nextLine();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate localDate = LocalDate.parse(expirationDate, formatter);
+        boolean isValidDate = false;
+        LocalDate localDate = null;
+        LocalDate today = LocalDate.now();
 
-        System.out.print("Digite o índice de identificação da origem: ");
-        originId = sc.nextLine();
+        do {
+            try {
+                System.out.print("Digite a data de expiração do documento (formato(dd/mm/aaaa)): ");
+                expirationDate = sc.nextLine();
+
+                localDate = LocalDate.parse(expirationDate, formatter);
+
+                if (localDate.isAfter(today)) {
+                    isValidDate = true;
+                } else {
+                    System.out.println("A data precisa ser no futuro!");
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("A data está em um formato inválido");
+            }
+        } while (!isValidDate);
+
         System.out.print("Digite o conteúdo do documento: ");
         content = sc.nextLine();
 
-        System.out.println("Digite o tipo do documento: ");
-        System.out.println("""
+        boolean isValidOption = false;
+        String typeInput;
+        int intTypeInput;
+
+        do {
+            System.out.println("""
                 1 - Edital
                 2 - Portaria
                 3 - Certidão
@@ -51,25 +71,32 @@ public class DocumentController {
                 8 - Justificativa de Necessidade
                 9 - Parecer Jurídico
                 """);
-        int typeInput = sc.nextInt();
-        sc.nextLine();
+            System.out.println("Digite o tipo do documento: ");
+            typeInput = sc.nextLine();
 
-        try {
-            type = DocumentType.values()[typeInput - 1];
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());
-        }
+            try {
+                intTypeInput = Integer.parseInt(typeInput);
 
-        Document document = new Document(protocol, localDate, origin, originId, type, content);
+                type = DocumentType.values()[intTypeInput - 1];
+
+                if (type != null) {
+                    isValidOption = true;
+                }
+            } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+                System.out.println("Opção inválida!");
+            }
+        } while (!isValidOption);
+
+        Document document = new Document(protocol, localDate, origin, processId, type, content);
 
         try {
             Document createdDocument = documentService.create(document);
             process.setDocuments(documentService.getAll());
 
-            System.out.println("Documento criado com o protocolo: " + createdDocument.getProtocol());
+            System.out.println("Documento criado com o protocolo: " + createdDocument.getProtocol() + "\n");
             System.out.println(createdDocument);
-        } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
@@ -99,28 +126,52 @@ public class DocumentController {
         }
     }
 
-    public void updateDocument(Process process) {
-        System.out.print("Digite o protocolo do documento que você deseja atualizar: ");
-        protocol = sc.nextLine();
+    public void updateDocument(Process process, String processId) {
+        Document existingDocument = null;
 
-        Document existingDocument = documentService.get(protocol);
+        try {
+            System.out.print("Digite o protocolo do documento que você deseja atualizar: ");
+            protocol = sc.nextLine();
 
-        System.out.print("Digite a nova data de expiração do documento (formato(dd/mm/aaaa), deixe em branco para manter o valor atual): ");
-        String expirationDateInput = sc.nextLine();
-        LocalDate newExpirationDate = expirationDateInput.isEmpty()
-                ? existingDocument.getExpirationDate()
-                : LocalDate.parse(expirationDateInput, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            existingDocument = documentService.get(protocol);
+        } catch (RuntimeException e) {
+            System.out.println("Error: " + e.getMessage());
+            return;
+        }
 
-        System.out.print("Digite a nova origem do documento (deixe em branco para manter o valor atual): ");
-        String newOrigin = sc.nextLine();
-        newOrigin = (newOrigin.isEmpty()) ? existingDocument.getOrigin() : newOrigin;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        boolean isValidDate = false;
+        LocalDate newExpirationDate = null;
+        LocalDate today = LocalDate.now();
 
-        System.out.print("Digite o novo índice de identificação da origem (deixe em branco para manter o valor atual): ");
-        String newOriginId = sc.nextLine();
-        newOriginId = (newOriginId.isEmpty()) ? existingDocument.getOriginId() : newOriginId;
+        do {
+            try {
+                System.out.print("Digite a nova data de expiração do documento (formato(dd/mm/aaaa), deixe em branco para manter o valor atual): ");
+                String expirationDateInput = sc.nextLine();
 
-        System.out.print("Digite o novo tipo do documento (digite 0 para manter o valor atual): ");
-        System.out.println("""
+                LocalDate localDate = LocalDate.parse(expirationDateInput, formatter);
+
+                newExpirationDate = expirationDateInput.isEmpty()
+                        ? existingDocument.getExpirationDate()
+                        : localDate;
+
+                if (newExpirationDate.isAfter(today)) {
+                    isValidDate = true;
+                } else {
+                    System.out.println("A data precisa ser no futuro!");
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("A data está em um formato inválido");
+            }
+        } while (!isValidDate);
+
+        boolean isValidOption = false;
+        String typeInput;
+        int intTypeInput;
+
+        do {
+            System.out.println("""
+                0 - Manter o tipo atual
                 1 - Edital
                 2 - Portaria
                 3 - Certidão
@@ -131,24 +182,29 @@ public class DocumentController {
                 8 - Justificativa de Necessidade
                 9 - Parecer Jurídico
                 """);
-        int typeInput = sc.nextInt();
-        sc.nextLine();
+            System.out.print("Digite o novo tipo do documento (digite 0 para manter o valor atual): ");
+            typeInput = sc.nextLine();
 
-        try {
-            if (typeInput == 0) {
-                type = existingDocument.getType();
-            } else {
-                type = DocumentType.values()[typeInput - 1];
+            try {
+                intTypeInput = Integer.parseInt(typeInput);
+
+                type = intTypeInput == 0
+                        ? type = existingDocument.getType()
+                        : DocumentType.values()[intTypeInput - 1];
+
+                if (type != null) {
+                    isValidOption = true;
+                }
+            } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+                System.out.println("Opção inválida!");
             }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());
-        }
+        } while (!isValidOption);
 
         System.out.print("Digite o novo conteúdo do documento (deixe em branco para manter o valor atual): ");
         String newContent = sc.nextLine();
         newContent = (newContent.isEmpty()) ? existingDocument.getContent() : newContent;
 
-        Document newDocument = new Document(protocol, newExpirationDate, newOrigin, newOriginId, type, newContent);
+        Document newDocument = new Document(protocol, newExpirationDate, origin, processId, type, newContent);
 
         try {
             documentService.update(protocol, newDocument);
@@ -161,6 +217,11 @@ public class DocumentController {
     }
 
     public void deleteDocument(Process process) {
+        System.out.println("Tem certeza que deseja excluir este documento? (S/N)");
+        boolean isNotSure = !sc.nextLine().equalsIgnoreCase("S");
+
+        if (isNotSure) return;
+
         System.out.print("Digite o protocolo do documento que deseja excluir: ");
         protocol = sc.nextLine();
 
