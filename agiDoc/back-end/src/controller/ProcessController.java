@@ -78,18 +78,17 @@ public abstract class ProcessController {
         }
     }
 
-    public static void closeProcess(String processId, Process process) {
+    public static void closeProcess(String processId) {
         try {
-            Process actualProcess = processService.get(processId);
+            Process process = processService.get(processId);
 
-            if (actualProcess.getContracted() == null) {
+            if (process.getContracted() == null) {
                 System.out.println("ERRO: Processo não tem concorrente contratado!");
                 return;
             }
 
             process.setStatus("Fechado");
 
-            processService.update(processId, process);
             Data.institution.setProcesses(processService.getAll());
 
             System.out.println("Processo n°: " + processId + " fechado.");
