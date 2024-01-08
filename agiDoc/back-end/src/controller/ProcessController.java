@@ -71,7 +71,7 @@ public abstract class ProcessController {
     }
 
     public static boolean delete(String processId) {
-        System.out.println("Tem certeza que deseja fechar este processo? (S/N)");
+        System.out.println("Tem certeza que deseja excluir este processo? (S/N)");
         boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
 
         if (isNotSure) return false;

@@ -19,16 +19,16 @@ public class CompetitorController {
     public CompetitorController(ArrayList<Competitor> competitors) { competitorService = new CompetitorService(competitors); }
 
     public  void createCompetitor(Process process) {
-        System.out.println("Digite o CNPJ da empresa: ");
+        System.out.print("Digite o CNPJ da empresa: ");
         cnpj = scanner.nextLine();
 
-        System.out.println("Digite o endereço da empresa: ");
+        System.out.print("Digite o endereço da empresa: ");
         address = scanner.nextLine();
 
-        System.out.println("Digite o contato da empresa: ");
+        System.out.print("Digite o contato da empresa: ");
         contact = scanner.nextLine();
 
-        System.out.println("Digite o nome da empresa: ");
+        System.out.print("Digite o nome da empresa: ");
         companyName = scanner.nextLine();
 
 
@@ -47,25 +47,25 @@ public class CompetitorController {
 
     public void update(Process process) {
 
-        System.out.println("Digite o id da empresa que quer fazer as alterações: ");
+        System.out.print("Digite o id da empresa que quer fazer as alterações: ");
         id = scanner.nextLine();
 
         try {
             Competitor existCompetitor = competitorService.get(id);
 
-            System.out.println("Digite o novo CNPJ da empresa(deixe em branco para manter o valor atual): ");
+            System.out.print("Digite o novo CNPJ da empresa(deixe em branco para manter o valor atual): ");
             cnpj = scanner.nextLine();
             cnpj = (cnpj.isEmpty()) ? existCompetitor.getCnpj() : cnpj;
 
-            System.out.println("Digite o novo endereço da empresa(deixe em branco para manter o valor atual): ");
+            System.out.print("Digite o novo endereço da empresa(deixe em branco para manter o valor atual): ");
             address = scanner.nextLine();
             address = (address.isEmpty()) ? existCompetitor.getAddress() : address;
 
-            System.out.println("Digite o novo contato da empresa(deixe em branco para manter o valor atual): ");
+            System.out.print("Digite o novo contato da empresa(deixe em branco para manter o valor atual): ");
             contact = scanner.nextLine();
             contact = (contact.isEmpty()) ? existCompetitor.getContact() : contact;
 
-            System.out.println("Digite o novo nome da empresa(deixe em branco para manter o valor atual): ");
+            System.out.print("Digite o novo nome da empresa(deixe em branco para manter o valor atual): ");
             companyName = scanner.nextLine();
             companyName = (companyName.isEmpty()) ? existCompetitor.getCompanyName() : companyName;
 
@@ -80,12 +80,21 @@ public class CompetitorController {
 
     }
 
-    public void delete(Process process){
-        System.out.println("Digite o id da empresa que quer deletar: ");
-        id = scanner.nextLine();
+    public void delete(Process process) {
+        System.out.println("Tem certeza que deseja excluir um concorrente? (S/N)");
+        boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
 
-        competitorService.delete(id);
-        process.setCompetitors(competitorService.getAll());
+        if (isNotSure) return;
+
+        try {
+            System.out.print("Digite o id da empresa que quer deletar: ");
+            id = scanner.nextLine();
+
+            competitorService.delete(id);
+            process.setCompetitors(competitorService.getAll());
+        } catch (Exception e) {
+            System.out.println("Competidor não encontrado!");
+        }
 
     }
 }

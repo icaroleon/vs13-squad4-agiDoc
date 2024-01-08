@@ -47,19 +47,12 @@ public class CompetitorService {
     }
 
     //TODO: verificar necessidade de uma refatoração no try catch
-    public void delete(String id){
-        try {
-            Competitor competitor = this.get(id);
+    public void delete(String id) throws Exception{
+        Competitor competitor = this.get(id);
 
-            competitors.remove(competitor);
+        competitors.remove(competitor);
 
-            System.out.println("Competidor deletado com sucesso");
-
-        } catch (Exception e) {
-            if (e.getMessage().contains("not found")) {
-                System.out.println("Competidor não encontrado!");
-            }
-        }
+        System.out.println("Competidor deletado com sucesso");
     }
 
     public void setCompetitors(ArrayList<Competitor> competitors) {

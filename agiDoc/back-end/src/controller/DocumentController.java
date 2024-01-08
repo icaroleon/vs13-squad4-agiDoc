@@ -217,7 +217,7 @@ public class DocumentController {
     }
 
     public void deleteDocument(Process process) {
-        System.out.println("Tem certeza que deseja excluir este documento? (S/N)");
+        System.out.println("Tem certeza que deseja excluir um documento? (S/N)");
         boolean isNotSure = !sc.nextLine().equalsIgnoreCase("S");
 
         if (isNotSure) return;
