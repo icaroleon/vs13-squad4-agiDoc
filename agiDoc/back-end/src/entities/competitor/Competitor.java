@@ -45,7 +45,21 @@ public class Competitor extends AbstractJuridical {
 
     @Override
     public String toString(){
-        return "id: " + this.id + " Nome da empresa: " + companyName + " Cnpj: " + this.cnpj + " Endereço: " + this.address;
+        return """
+                Id: %s
+                Nome da Empresa: %s
+                CNPJ: %s
+                Contratado: %s
+                Endereço: %s
+                Contato: %s
+                """.formatted(
+                this.id,
+                this.companyName,
+                this.cnpj,
+                this.isContracted,
+                this.address,
+                this.contact
+        );
     }
 
     public String getCompanyName() {

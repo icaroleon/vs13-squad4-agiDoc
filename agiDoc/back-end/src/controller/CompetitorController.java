@@ -32,33 +32,45 @@ public abstract class CompetitorController {
 
         competitor.create(newCompetitor);
 
-        System.out.println(competitor.getAll().toString());
+        System.out.println(newCompetitor.toString());
     }
 
     public static void getAll(){
-        System.out.println(competitor.getAll().toString());
+        for (Competitor newCompetitor : competitor.getAll())
+            System.out.println(newCompetitor.toString());
     }
 
-    public static void update() throws Exception {
+    public static void update() {
 
         System.out.println("Digite o id da empresa que quer fazer as alterações: ");
         id = scanner.nextLine();
 
-        System.out.println("Digite o novo CNPJ da empresa: ");
-        cnpj = scanner.nextLine();
+        try {
+            Competitor existCompetitor = competitor.get(id);
 
-        System.out.println("Digite o novo endereço da empresa: ");
-        address = scanner.nextLine();
+            System.out.println("Digite o novo CNPJ da empresa(deixe em branco para manter o valor atual): ");
+            cnpj = scanner.nextLine();
+            cnpj = (cnpj.isEmpty()) ? existCompetitor.getCnpj() : cnpj;
 
-        System.out.println("Digite o novo contato da empresa: ");
-        contact = scanner.nextLine();
+            System.out.println("Digite o novo endereço da empresa(deixe em branco para manter o valor atual): ");
+            address = scanner.nextLine();
+            address = (address.isEmpty()) ? existCompetitor.getAddress() : address;
 
-        System.out.println("Digite o novo nome da empresa: ");
-        companyName = scanner.nextLine();
+            System.out.println("Digite o novo contato da empresa(deixe em branco para manter o valor atual): ");
+            contact = scanner.nextLine();
+            contact = (contact.isEmpty()) ? existCompetitor.getContact() : contact;
 
-        Competitor newCompetitor = new Competitor(cnpj,address, contact, companyName);
+            System.out.println("Digite o novo nome da empresa(deixe em branco para manter o valor atual): ");
+            companyName = scanner.nextLine();
+            companyName = (companyName.isEmpty()) ? existCompetitor.getCompanyName() : companyName;
 
-        competitor.update(id, newCompetitor);
+            Competitor newCompetitor = new Competitor(cnpj,address, contact, companyName);
+
+            competitor.update(id, newCompetitor);
+        }catch (Exception e){
+            System.err.println("Erro: " + e.getMessage());
+        }
+
     }
 
     public static void delete(){
