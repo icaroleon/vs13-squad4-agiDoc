@@ -213,10 +213,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> CompetitorController.createCompetitor();
+                case "1" -> CompetitorController.createCompetitor(currentProcess);
                 case "2" -> CompetitorController.getAll();
-                case "3" -> CompetitorController.update();
-                case "4" -> CompetitorController.delete();
+                case "3" -> CompetitorController.update(currentProcess);
+                case "4" -> CompetitorController.delete(currentProcess);
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
