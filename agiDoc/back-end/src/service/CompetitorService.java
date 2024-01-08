@@ -1,8 +1,6 @@
 package service;
 
 import entities.competitor.Competitor;
-import entities.process.Process;
-
 import java.util.ArrayList;
 
 public class CompetitorService {

@@ -25,8 +25,8 @@ public class Process implements IProcess {
         this.title = title;
         this.description = description;
         this.status = "Aberto";
-        this.competitors = new ArrayList<Competitor>();
-        this.documents = new ArrayList<Document>();
+        this.competitors = new ArrayList<>();
+        this.documents = new ArrayList<>();
     }
 
     public Process(String title, String description, ArrayList<Competitor> competitors, ArrayList<Document> documents) {

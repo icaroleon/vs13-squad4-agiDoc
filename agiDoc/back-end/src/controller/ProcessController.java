@@ -12,7 +12,6 @@ import java.util.Scanner;
 public abstract class ProcessController {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProcessService processService = new ProcessService(Data.institution.getProcesses());
-    private static final CompetitorService competitorService = new CompetitorService();
 
     public static void createProcess() {
         System.out.println("Digite o titulo do processo: ");
@@ -107,14 +106,12 @@ public abstract class ProcessController {
             System.out.println("Selecione o id concorrente a ser escolhido: ");
             String competitorId = scanner.nextLine();
 
-            Competitor competitor = competitorService.get(competitorId);
-
-            process.chooseContractor(competitor);
+            CompetitorService competitorService = new CompetitorService(competitors);
+            process.chooseContractor(competitorService.get(competitorId));
 
             System.out.println("Concorrente escolhido com sucesso!");
         } catch (Exception e) {
             System.out.println("ERRO: " + e.getMessage());
         }
-
     }
 }

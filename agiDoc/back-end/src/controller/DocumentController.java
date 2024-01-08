@@ -57,7 +57,7 @@ public class DocumentController {
         try {
             type = DocumentType.values()[typeInput - 1];
         } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());;
+            System.out.println("Erro: " + e.getMessage());
         }
 
         Document document = new Document(protocol, localDate, origin, originId, type, content);
@@ -67,7 +67,7 @@ public class DocumentController {
             process.setDocuments(documentService.getAll());
 
             System.out.println("Documento criado com o protocolo: " + createdDocument.getProtocol());
-            System.out.println(createdDocument.toString());
+            System.out.println(createdDocument);
         } catch (RuntimeException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -141,7 +141,7 @@ public class DocumentController {
                 type = DocumentType.values()[typeInput - 1];
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("Erro: " + e.getMessage());;
+            System.out.println("Erro: " + e.getMessage());
         }
 
         System.out.print("Digite o novo conteúdo do documento (deixe em branco para manter o valor atual): ");
@@ -151,7 +151,7 @@ public class DocumentController {
         Document newDocument = new Document(protocol, newExpirationDate, newOrigin, newOriginId, type, newContent);
 
         try {
-            Document updatedDocument = documentService.update(protocol, newDocument);
+            documentService.update(protocol, newDocument);
             process.setDocuments(documentService.getAll());
 
             System.out.println("Documento com protocolo " + protocol + " atualizado com sucesso.");

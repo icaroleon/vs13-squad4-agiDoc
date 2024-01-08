@@ -1,6 +1,5 @@
 package controller;
 
-import data.Data;
 import entities.competitor.Competitor;
 import service.CompetitorService;
 import entities.process.Process;
@@ -14,12 +13,12 @@ public class CompetitorController {
     static String address;
     static String contact;
     static String companyName;
-    private static final Scanner scanner = new Scanner(System.in);
-    private static CompetitorService competitorService;
+    private final Scanner scanner = new Scanner(System.in);
+    private final CompetitorService competitorService;
 
     public CompetitorController(ArrayList<Competitor> competitors) { competitorService = new CompetitorService(competitors); }
 
-    public static  void createCompetitor(Process process) {
+    public  void createCompetitor(Process process) {
         System.out.println("Digite o CNPJ da empresa: ");
         cnpj = scanner.nextLine();
 
@@ -38,15 +37,15 @@ public class CompetitorController {
         competitorService.create(newCompetitor);
         process.setCompetitors(competitorService.getAll());
 
-        System.out.println(newCompetitor.toString());
+        System.out.println(newCompetitor);
     }
 
-    public static void getAll(){
+    public void getAll(){
         for (Competitor newCompetitor : competitorService.getAll())
             System.out.println(newCompetitor.toString());
     }
 
-    public static void update(Process process) {
+    public void update(Process process) {
 
         System.out.println("Digite o id da empresa que quer fazer as alterações: ");
         id = scanner.nextLine();
@@ -75,13 +74,13 @@ public class CompetitorController {
             competitorService.update(id, newCompetitor);
             process.setCompetitors(competitorService.getAll());
 
-        }catch (Exception e){
+        } catch (Exception e){
             System.err.println("Erro: " + e.getMessage());
         }
 
     }
 
-    public static void delete(Process process){
+    public void delete(Process process){
         System.out.println("Digite o id da empresa que quer deletar: ");
         id = scanner.nextLine();
 
