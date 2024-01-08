@@ -1,3 +1,4 @@
+import data.Data;
 import navigation.Navigation;
 
 import java.util.Scanner;
@@ -25,6 +26,7 @@ public class Main {
 
         boolean running = true;
         Navigation nav = new Navigation();
+        Data.seed();
 
         while (running) {
             if (history.isEmpty()) {

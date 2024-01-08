@@ -8,40 +8,38 @@ import java.util.ArrayList;
 
 public class Institution extends AbstractJuridical {
     private ArrayList<Process> processes;
-    private ArrayList<Employee> employees;
 
     @Override
     public String toString() {
-        return "entities.institution.Institution {" +
-                "\n\tCNPJ: '" + super.getCnpj() + '\'' +
-                ",\n\tAddress: '" + super.getAddress() + '\'' +
-                ",\n\tContact: '" + super.getContact() + '\'' +
-                ",\n\tProcesses: " + processes +
-                ",\n\tEmployees: " + employees +
-                "\n}";
-    }
-
-    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
-        super(cnpj, address, contact, employees);
-        this.processes = new ArrayList<>();
-        this.employees = new ArrayList<>();
+        return """ 
+                {
+                    CNPJ: %s
+                    Address: %s
+                    Contact: %s
+                    N° Processes: %d
+                    N° Employees: %d
+                }
+                """.formatted(
+                this.cnpj,
+                this.address,
+                this.contact,
+                this.processes.size(),
+                this.employees.size()
+        );
     }
 
     public Institution() {
         super();
     }
 
+    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
+        super(cnpj, address, contact, employees);
+        this.processes = processes;
+    }
+
     public ArrayList<Process> getProcesses() { return this.processes; }
 
     public void setProcesses(ArrayList<Process> processes) {
         this.processes = processes;
-    }
-
-    public ArrayList<Employee> getEmployees() {
-        return this.employees;
-    }
-
-    public void setEmployees(ArrayList<Employee> employees) {
-        this.employees = employees;
     }
 }

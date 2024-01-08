@@ -9,6 +9,10 @@ public class ProcessService {
     public ProcessService() {
     }
 
+    public ProcessService(ArrayList<Process> processes) {
+        this.processes = processes;
+    }
+
     public Process create(Process process) {
         processes.add(process);
         return process;

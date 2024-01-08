@@ -1,5 +1,6 @@
 package controller;
 
+import data.Data;
 import entities.competitor.Competitor;
 import service.CompetitorService;
 import entities.process.Process;
@@ -7,7 +8,7 @@ import entities.process.Process;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public abstract class CompetitorController {
+public class CompetitorController {
     static String id;
     static String cnpj;
     static String address;

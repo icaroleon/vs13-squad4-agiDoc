@@ -91,4 +91,15 @@ public class Document {
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return "Documento encontrado com o protocolo " + protocol + ":\n" +
+                "Protocolo: " + this.getProtocol() + "\n" +
+                "Data de expiração: " + this.getExpirationDate() + "\n" +
+                "Origem: " + this.getOrigin() + "\n" +
+                "Índice da Origem: " + this.getOriginId() + "\n" +
+                "Assinatura: " + this.getSigned() + "\n" +
+                "Tipo do documento: " + this.getTypeName() + "\n" +
+                "Conteúdo: " + this.getContent();
+    }
 }
