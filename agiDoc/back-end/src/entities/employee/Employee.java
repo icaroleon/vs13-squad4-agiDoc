@@ -22,10 +22,9 @@ public class Employee {
                 "\n\tRegistration: '" + registration + '\'' +
                 ",\n\tName: '" + name + '\'' +
                 ",\n\tUser: '" + user + '\'' +
-                ",\n\tPassword: '" + password + '\'' +
                 ",\n\tAddress: '" + address + '\'' +
                 ",\n\tContact: '" + contact + '\'' +
-                ",\n\tCompany: " + (company != null ? company.toString() : "null") +
+                ",\n\tCompany: " + (company != null ? company.getCnpj().toString() : "null") +
                 "\n}";
     }
 

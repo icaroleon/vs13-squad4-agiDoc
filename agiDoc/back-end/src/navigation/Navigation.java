@@ -7,6 +7,7 @@ import controller.ProcessController;
 import entities.competitor.Competitor;
 import entities.process.Process;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Navigation {
@@ -151,10 +152,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Processo encerrado.");
-                case "2" -> System.out.println("Concorrente eleito para contratação.");
-                case "3" -> System.out.println("Processo editado.");
-                case "4" -> System.out.println("Processo removido.");
+                case "1" -> ProcessController.closeProcess(this.inputProcessId);
+                case "2" -> ProcessController.chooseCompetitor(this.inputProcessId);
+                case "3" -> ProcessController.update(this.inputProcessId);
+                case "4" -> ProcessController.delete(this.inputProcessId);
                 case "5", "6", "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
