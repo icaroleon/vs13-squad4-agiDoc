@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CompetitorController {
-    static String id;
-    static String cnpj;
-    static String address;
-    static String contact;
-    static String companyName;
+    private static String id;
+    private static String cnpj;
+    private static String address;
+    private static String contact;
+    private static String companyName;
     private final Scanner scanner = new Scanner(System.in);
     private final CompetitorService competitorService;
 

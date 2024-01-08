@@ -13,12 +13,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DocumentController {
-    static String protocol;
-    static  String expirationDate;
-    static  String origin = "Processo";
-    static boolean signed;
-    static DocumentType type;
-    static String content;
+    private static String protocol;
+    private static  String expirationDate;
+    private static  String origin = "Processo";
+    private static boolean signed;
+    private static DocumentType type;
+    private static String content;
     private static final Scanner sc = new Scanner(System.in);
     private static DocumentService documentService;
 
