@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import entities.employee.Employee;
 import navigation.Navigation;
 
-public class EmployeeService {
+public class EmployeeService implements IService<Employee> {
 
     private static ArrayList<Employee> listEmployees = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class EmployeeService {
         EmployeeService.listEmployees = listaEmployees;
     }
 
-    public static ArrayList<Employee> getAll() {
+    public ArrayList<Employee> getAll() {
         return listEmployees;
     }
 
@@ -53,14 +53,14 @@ public class EmployeeService {
         return get(employeeToEdit.getRegistration());
     }
 
-    public String delete(String idEmployeeToDelete) throws Exception{
+    public void delete(String idEmployeeToDelete) throws Exception{
         try{
             Employee employeeToDelete = get(idEmployeeToDelete);
             listEmployees.remove(employeeToDelete);
             System.out.println(getAll());
-            return "Documento com o protocolo " + idEmployeeToDelete + " foi excluído com sucesso";
+            System.out.println("Documento com o protocolo " + idEmployeeToDelete + " foi excluído com sucesso");
         } catch (RuntimeException e) {
-            return "Error: Empregado não encontrado!";
+            System.out.println("Error: Empregado não encontrado!");
         }
     }
 }
