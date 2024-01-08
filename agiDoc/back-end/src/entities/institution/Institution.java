@@ -11,13 +11,21 @@ public class Institution extends AbstractJuridical {
 
     @Override
     public String toString() {
-        return "entities.institution.Institution {" +
-                "\n\tCNPJ: '" + super.getCnpj() + '\'' +
-                ",\n\tAddress: '" + super.getAddress() + '\'' +
-                ",\n\tContact: '" + super.getContact() + '\'' +
-                ",\n\tProcesses: " + processes +
-                ",\n\tEmployees: " + employees +
-                "\n}";
+        return """ 
+                {
+                    CNPJ: %s
+                    Address: %s
+                    Contact: %s
+                    N° Processes: %d
+                    N° Employees: %d
+                }
+                """.formatted(
+                this.cnpj,
+                this.address,
+                this.contact,
+                this.processes.size(),
+                this.employees.size()
+        );
     }
 
     public Institution() {
