@@ -3,7 +3,7 @@ package service;
 import entities.competitor.Competitor;
 import java.util.ArrayList;
 
-public class CompetitorService {
+public class CompetitorService implements IService<Competitor> {
 
     private ArrayList<Competitor> competitors = new ArrayList<>();
 

@@ -3,7 +3,7 @@ package service;
 import java.util.ArrayList;
 import entities.process.Process;
 
-public class ProcessService {
+public class ProcessService implements IService<Process> {
     private ArrayList<Process> processes = new ArrayList<>();
 
     public ProcessService() {

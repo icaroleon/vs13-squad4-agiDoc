@@ -67,7 +67,7 @@ public class EmployeeController {
 
         try {
             System.out.print("Os funcionários cadastrados na instituição são: ");
-            System.out.print(EmployeeService.getAll());
+            System.out.print(employeeService.getAll());
             System.out.println();
             System.out.println();
             System.out.print("Digite o nome da matrícula que quer fazer as alterações: ");
@@ -109,7 +109,7 @@ public class EmployeeController {
     public static void delete() {
         try {
             System.out.println("Os funcionários cadastrados na instituição são: ");
-            System.out.print(EmployeeService.getAll());
+            System.out.print(employeeService.getAll());
             System.out.println();
             System.out.println();
             System.out.print("Digite a matrícula do funcionário que quer deletar: ");
@@ -131,7 +131,7 @@ public class EmployeeController {
     }
 
     public static boolean login(String user, String password){
-        ArrayList<Employee> listaEmployees = EmployeeService.getAll();
+        ArrayList<Employee> listaEmployees = employeeService.getAll();
         for(Employee employee : listaEmployees){
             if(employee.getUser().equals(user) && employee.getPassword().equals(password)) {
                 System.out.println("Login efetuado!");
