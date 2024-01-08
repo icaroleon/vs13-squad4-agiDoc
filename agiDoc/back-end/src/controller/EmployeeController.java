@@ -129,4 +129,16 @@ public class EmployeeController {
             System.out.print("Colaborador não encontrado!");
         }
     }
+
+    public static boolean login(String user, String password){
+        ArrayList<Employee> listaEmployees = EmployeeService.getAll();
+        for(Employee employee : listaEmployees){
+            if(employee.getUser().equals(user) && employee.getPassword().equals(password)) {
+                System.out.println("Login efetuado!");
+                return true;
+            }
+        }
+        System.out.println("Usuário ou senha errados");
+        return false;
+    }
 }

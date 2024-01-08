@@ -41,7 +41,6 @@ public class Employee {
         this.contact = contact;
     }
 
-//  TODO: Adicionar construtor sem company e gerar registration ou novo atributo id dinamicamente
     public Employee(String name, String user, String password, String address, String contact, AbstractJuridical company) {
         UUID uuid = UUID.randomUUID();
 
@@ -108,17 +107,5 @@ public class Employee {
 
     public void setCompany(AbstractJuridical company) {
         this.company = company;
-    }
-
-    public boolean login(String user, String password){
-        ArrayList<Employee> listaEmployees = EmployeeService.getAll();
-        for(Employee employee : listaEmployees){
-           if(employee.getUser().equals(user) && employee.getPassword().equals(password)) {
-               System.out.println("Login efetuado!");
-               return true;
-           }
-        }
-        System.out.println("Usuário ou senha errados");
-        return false;
     }
 }
