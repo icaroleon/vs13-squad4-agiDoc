@@ -1,11 +1,15 @@
+import controller.EmployeeController;
 import data.Data;
+import entities.employee.Employee;
 import navigation.Navigation;
+import service.EmployeeService;
 
 import java.util.Scanner;
 import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        Data.seed();
         Scanner scanner = new Scanner(System.in);
         Stack<String> history = new Stack<>();
         boolean isNotValidLogin = true;
@@ -20,13 +24,11 @@ public class Main {
             System.out.print("Digite sua senha: ");
             String password = scanner.nextLine();
 
-            // TODO: Validar informações de login; Verificar se será usado método login do entities.employee.Employee
-            isNotValidLogin = false;
+            isNotValidLogin = !EmployeeController.login(user, password);
         }
 
         boolean running = true;
         Navigation nav = new Navigation();
-        Data.seed();
 
         while (running) {
             if (history.isEmpty()) {
