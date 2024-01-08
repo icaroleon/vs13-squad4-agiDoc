@@ -6,7 +6,6 @@ import java.util.UUID;
 import entities.competitor.Competitor;
 import entities.document.Document;
 
-// TODO: Adicionar atributos que faltam conforme diagrama.
 public class Process implements IProcess {
     private String id, title, status, description;
     private Competitor contracted;
@@ -14,12 +13,15 @@ public class Process implements IProcess {
     private ArrayList<Document> documents;
 
     public Process() {
+        UUID uuid = UUID.randomUUID();
+
+        this.id = uuid.toString().substring(0, 6);
     }
 
     public Process(String title, String description) {
         UUID uuid = UUID.randomUUID();
 
-        this.id = uuid.toString();
+        this.id = uuid.toString().substring(0, 6);
         this.title = title;
         this.description = description;
         this.status = "Aberto";
@@ -30,7 +32,7 @@ public class Process implements IProcess {
     public Process(String title, String description, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
         UUID uuid = UUID.randomUUID();
 
-        this.id = uuid.toString();
+        this.id = uuid.toString().substring(0, 6);
         this.title = title;
         this.description = description;
         this.status = "Aberto";
@@ -106,7 +108,20 @@ public class Process implements IProcess {
 
     @Override
     public String toString() {
-        return "id: " + this.id + " Titulo: " + this.title + " Status: " + this.status + " Descricao: "
-                + this.description;
+        return """
+                Id: %s
+                Titulo: %s
+                Status: %s
+                Descrição: %s
+                N° Documentos: %d
+                N° Concorrentes: %d
+                """.formatted(
+                    this.id,
+                    this.title,
+                    this.status,
+                    this.description,
+                    this.documents.size(),
+                    this.competitors.size()
+                );
     }
 }

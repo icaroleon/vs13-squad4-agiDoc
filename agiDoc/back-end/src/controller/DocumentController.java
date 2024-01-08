@@ -2,6 +2,7 @@ package controller;
 
 import entities.document.Document;
 import entities.document.DocumentType;
+import entities.process.Process;
 import service.DocumentService;
 
 import java.time.LocalDate;
@@ -17,12 +18,14 @@ public class DocumentController {
     static boolean signed;
     static DocumentType type;
     static String content;
-
     private static final Scanner sc = new Scanner(System.in);
+    private static DocumentService documentService;
 
-    private static final DocumentService documentService = new DocumentService();
+    public DocumentController(ArrayList<Document> documents) {
+        documentService = new DocumentService(documents);
+    }
 
-    public String createDocument() {
+    public void createDocument(Process process) {
         System.out.print("Digite o protocolo do documento: ");
         protocol = sc.nextLine();
 
@@ -37,78 +40,66 @@ public class DocumentController {
         content = sc.nextLine();
 
         System.out.println("Digite o tipo do documento: ");
-        System.out.println("1 - Edital");
-        System.out.println("2 - Portaria");
-        System.out.println("3 - Certidao");
-        System.out.println("4 - Termo de Referência");
-        System.out.println("5 - Delegação de Competência");
-        System.out.println("6 - Manifestação");
-        System.out.println("7 - Anexos");
-        System.out.println("8 - Justificativa de Necessidade");
-        System.out.println("9 - Parecer Jurídico");
+        System.out.println("""
+                1 - Edital
+                2 - Portaria
+                3 - Certidão
+                4 - Termo de Referência
+                5 - Delegação de Competência
+                6 - Manifestação
+                7 - Anexos
+                8 - Justificativa de Necessidade
+                9 - Parecer Jurídico
+                """);
         int typeInput = sc.nextInt();
         sc.nextLine();
 
         try {
             type = DocumentType.values()[typeInput - 1];
         } catch (IllegalArgumentException e) {
-            return "Error: Tipo de documento inválido.";
+            System.out.println("Erro: " + e.getMessage());;
         }
 
         Document document = new Document(protocol, localDate, origin, originId, type, content);
 
         try {
             Document createdDocument = documentService.create(document);
-            return "Document created successfully with protocol: " + createdDocument.getProtocol();
+            process.setDocuments(documentService.getAll());
+
+            System.out.println("Documento criado com o protocolo: " + createdDocument.getProtocol());
+            System.out.println(createdDocument.toString());
         } catch (RuntimeException e) {
-            return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
 
-    public String getDocument() {
+    public void getDocument() {
         System.out.print("Digite o protocolo do documento que deseja pesquisar: ");
         protocol = sc.nextLine();
 
         try {
             Document document = documentService.get(protocol);
-            return "Documento encontrado com o protocolo " + protocol + ":\n" +
-                    "Protocolo: " + document.getProtocol() + "\n" +
-                    "Data de expiração: " + document.getExpirationDate() + "\n" +
-                    "Origem: " + document.getOrigin() + "\n" +
-                    "Índice da Origem: " + document.getOriginId() + "\n" +
-                    "Assinatura: " + document.getSigned() + "\n" +
-                    "Tipo do documento: " + document.getTypeName() + "\n" +
-                    "Conteúdo: " + document.getContent();
+            System.out.println(document.toString());
         } catch (RuntimeException e) {
-            return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
-    public String getAllDocuments() {
+    public void getAllDocuments() {
         ArrayList<Document> allDocuments = documentService.getAll();
 
         if (allDocuments.isEmpty()) {
-            return "Nenhum documento encontrado.";
+            System.out.println("Nenhum documento encontrado.");
+            return;
         }
-
-        StringBuilder result = new StringBuilder("Lista de documentos:\n");
 
         for (Document document : allDocuments) {
-            result.append("Documento encontrado com o protocolo ").append(document.getProtocol()).append(":\n")
-                    .append("Protocolo: ").append(document.getProtocol()).append("\n")
-                    .append("Data de expiração: ").append(document.getExpirationDate()).append("\n")
-                    .append("Origem: ").append(document.getOrigin()).append("\n")
-                    .append("Índice da Origem: ").append(document.getOriginId()).append("\n")
-                    .append("Assinatura: ").append(document.getSigned()).append("\n")
-                    .append("Tipo do documento: ").append(document.getTypeName()).append("\n")
-                    .append("Conteúdo: ").append(document.getContent()).append("\n\n");
+            System.out.println(document.toString());
         }
-
-        return result.toString();
     }
 
-    public String updateDocument() {
+    public void updateDocument(Process process) {
         System.out.print("Digite o protocolo do documento que você deseja atualizar: ");
         protocol = sc.nextLine();
 
@@ -129,15 +120,17 @@ public class DocumentController {
         newOriginId = (newOriginId.isEmpty()) ? existingDocument.getOriginId() : newOriginId;
 
         System.out.print("Digite o novo tipo do documento (digite 0 para manter o valor atual): ");
-        System.out.println("1 - Edital");
-        System.out.println("2 - Portaria");
-        System.out.println("3 - Certidao");
-        System.out.println("4 - Termo de Referência");
-        System.out.println("5 - Delegação de Competência");
-        System.out.println("6 - Manifestação");
-        System.out.println("7 - Anexos");
-        System.out.println("8 - Justificativa de Necessidade");
-        System.out.println("9 - Parecer Jurídico");
+        System.out.println("""
+                1 - Edital
+                2 - Portaria
+                3 - Certidão
+                4 - Termo de Referência
+                5 - Delegação de Competência
+                6 - Manifestação
+                7 - Anexos
+                8 - Justificativa de Necessidade
+                9 - Parecer Jurídico
+                """);
         int typeInput = sc.nextInt();
         sc.nextLine();
 
@@ -148,7 +141,7 @@ public class DocumentController {
                 type = DocumentType.values()[typeInput - 1];
             }
         } catch (IllegalArgumentException e) {
-            return "Error: Tipo de documento inválido.";
+            System.out.println("Erro: " + e.getMessage());;
         }
 
         System.out.print("Digite o novo conteúdo do documento (deixe em branco para manter o valor atual): ");
@@ -159,32 +152,28 @@ public class DocumentController {
 
         try {
             Document updatedDocument = documentService.update(protocol, newDocument);
-            return "Documento atualizado com sucesso:\n" +
-                    "Protocolo: " + updatedDocument.getProtocol() + "\n" +
-                    "Data de expiração: " + updatedDocument.getExpirationDate() + "\n" +
-                    "Origem: " + updatedDocument.getOrigin() + "\n" +
-                    "Índice da origem: " + updatedDocument.getOriginId() + "\n" +
-                    "Tipo do documento " + updatedDocument.getTypeName() + "\n" +
-                    "Assinatura (true para assinado, false para não assinado): " + updatedDocument.getSigned() + "\n" +
-                    "Conteúdo: " + updatedDocument.getContent();
+            process.setDocuments(documentService.getAll());
+
+            System.out.println("Documento com protocolo " + protocol + " atualizado com sucesso.");
         } catch (RuntimeException e) {
-            return "Erro: " + e.getMessage();
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 
-    public String deleteDocument() {
+    public void deleteDocument(Process process) {
         System.out.print("Digite o protocolo do documento que deseja excluir: ");
         protocol = sc.nextLine();
 
         try {
             documentService.delete(protocol);
-            return "Documento com o protocolo " + protocol + " foi excluído com sucesso";
+            process.setDocuments(documentService.getAll());
+            System.out.println("Documento com o protocolo " + protocol + " foi excluído com sucesso");
         } catch (RuntimeException e) {
-            return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
-    public String signDocument() {
+    public void signDocument(Process process) {
         System.out.print("Digite o protocolo do documento que você deseja assinar: ");
         protocol = sc.nextLine();
 
@@ -192,13 +181,14 @@ public class DocumentController {
             signed = documentService.signDocument(protocol);
 
             if (signed) {
-               return "Documento com o protocolo: " + protocol + " assinado com sucesso";
+                process.setDocuments(documentService.getAll());
+                System.out.println("Documento com o protocolo: " + protocol + " assinado com sucesso");
             } else {
-               return "Erro ao assinar o documento com o protocolo: " + protocol;
+                System.out.println("Erro ao assinar o documento com o protocolo: " + protocol);
             }
 
         } catch (RuntimeException e) {
-           return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }

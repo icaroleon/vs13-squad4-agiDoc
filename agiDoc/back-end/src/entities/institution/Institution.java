@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class Institution extends AbstractJuridical {
     private ArrayList<Process> processes;
-    private ArrayList<Employee> employees;
 
     @Override
     public String toString() {
@@ -21,27 +20,18 @@ public class Institution extends AbstractJuridical {
                 "\n}";
     }
 
-    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
-        super(cnpj, address, contact, employees);
-        this.processes = new ArrayList<>();
-        this.employees = new ArrayList<>();
-    }
-
     public Institution() {
         super();
+    }
+
+    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
+        super(cnpj, address, contact, employees);
+        this.processes = processes;
     }
 
     public ArrayList<Process> getProcesses() { return this.processes; }
 
     public void setProcesses(ArrayList<Process> processes) {
         this.processes = processes;
-    }
-
-    public ArrayList<Employee> getEmployees() {
-        return this.employees;
-    }
-
-    public void setEmployees(ArrayList<Employee> employees) {
-        this.employees = employees;
     }
 }

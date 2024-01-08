@@ -6,9 +6,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DocumentService {
-    private final ArrayList<Document> documents = new ArrayList<>();
+    private ArrayList<Document> documents;
 
     public DocumentService() {}
+
+    public DocumentService(ArrayList<Document> documents) {
+        this.documents = documents;
+    }
 
     public Document create(Document document) {
         documents.add(document);
