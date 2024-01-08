@@ -113,6 +113,7 @@ public class Process implements IProcess {
                 Titulo: %s
                 Status: %s
                 Descrição: %s
+                Contratado: %s
                 N° Documentos: %d
                 N° Concorrentes: %d
                 """.formatted(
@@ -120,6 +121,7 @@ public class Process implements IProcess {
                     this.title,
                     this.status,
                     this.description,
+                    this.contracted == null ? "" : this.contracted.getCompanyName(),
                     this.documents.size(),
                     this.competitors.size()
                 );

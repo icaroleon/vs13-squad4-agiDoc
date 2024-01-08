@@ -37,6 +37,9 @@ public class ProcessService {
     public Process update(String id, Process newProcess) throws Exception {
         Process process = this.get(id);
 
+        process.setTitle(newProcess.getTitle());
+        process.setDescription(newProcess.getDescription());
+        process.setStatus(newProcess.getStatus());
         process.setCompetitors(newProcess.getCompetitors());
         process.setDocuments(newProcess.getDocuments());
         process.setStatus(newProcess.getStatus());
@@ -48,10 +51,6 @@ public class ProcessService {
         Process process = this.get(id);
 
         processes.remove(process);
-
-        System.out.println("entities.process.Process deleted successfully!");
-
-        return;
     }
 
     public void setProcesses(ArrayList<Process> processes) {

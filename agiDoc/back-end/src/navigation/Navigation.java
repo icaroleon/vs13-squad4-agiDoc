@@ -151,7 +151,14 @@ public class Navigation {
                 case "1" -> ProcessController.closeProcess(inputProcessId);
                 case "2" -> ProcessController.chooseCompetitor(inputProcessId);
                 case "3" -> ProcessController.update(inputProcessId);
-                case "4" -> ProcessController.delete(inputProcessId);
+                case "4" -> {
+                    boolean isDeleted = ProcessController.delete(inputProcessId);
+
+                    if (isDeleted) {
+                        option = "9";
+                        running=false;
+                    }
+                }
                 case "5", "6", "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }

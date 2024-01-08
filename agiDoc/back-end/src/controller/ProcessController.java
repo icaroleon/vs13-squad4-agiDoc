@@ -14,10 +14,10 @@ public abstract class ProcessController {
     private static final ProcessService processService = new ProcessService(Data.institution.getProcesses());
 
     public static void createProcess() {
-        System.out.println("Digite o titulo do processo: ");
+        System.out.print("Digite o titulo do processo: ");
         String title = scanner.nextLine();
 
-        System.out.println("Digite a descrição do processo: ");
+        System.out.print("Digite a descrição do processo: ");
         String description = scanner.nextLine();
 
         Process process = new Process(title, description);
@@ -25,7 +25,7 @@ public abstract class ProcessController {
         processService.create(process);
         Data.institution.setProcesses(processService.getAll());
 
-        System.out.println("Processo criado");
+        System.out.println("Processo criado!\n");
         System.out.println(process);
     }
 
@@ -47,37 +47,55 @@ public abstract class ProcessController {
     }
 
     public static void update(String processId) {
-        System.out.println("Digite o novo titulo do processo: ");
-        String title = scanner.nextLine();
-
-        System.out.println("Digite a nova descrição do processo: ");
-        String description = scanner.nextLine();
-
-        Process newProcess = new Process(title, description);
-
         try {
+            Process process = processService.get(processId);
+
+            System.out.print("Digite o novo titulo do processo (deixe em branco para manter o valor atual): ");
+            String title = scanner.nextLine();
+            title = (title.isEmpty()) ? process.getTitle() : title;
+
+            System.out.print("Digite a nova descrição do processo (deixe em branco para manter o valor atual): ");
+            String description = scanner.nextLine();
+            description = (description.isEmpty()) ? process.getTitle() : description;
+
+            Process newProcess = new Process(title, description);
+
             processService.update(processId, newProcess);
             Data.institution.setProcesses(processService.getAll());
 
-            System.out.println("Processo " + processId + "atualizado com sucesso.");
+            System.out.println("Processo n° " + processId + " atualizado com sucesso.");
             System.out.println(newProcess);
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
-    public static void delete(String processId) {
+    public static boolean delete(String processId) {
+        System.out.println("Tem certeza que deseja fechar este processo? (S/N)");
+        boolean isNotSure = !scanner.nextLine().equals("S");
+
+        if (isNotSure) return false;
+
         try {
             processService.delete(processId);
             Data.institution.setProcesses(processService.getAll());
 
             System.out.println("Processo n°: " + processId + " excluído com sucesso!");
+
+            return true;
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
+
+            return false;
         }
     }
 
     public static void closeProcess(String processId) {
+        System.out.println("Tem certeza que deseja fechar este processo? (S/N)");
+        boolean isNotSure = !scanner.nextLine().equals("S");
+
+        if (isNotSure) return;
+
         try {
             Process process = processService.get(processId);
 
@@ -103,7 +121,7 @@ public abstract class ProcessController {
 
             competitors.forEach(competitor -> System.out.println(competitor.toString()));
 
-            System.out.println("Selecione o id concorrente a ser escolhido: ");
+            System.out.print("Selecione o id concorrente a ser escolhido: ");
             String competitorId = scanner.nextLine();
 
             CompetitorService competitorService = new CompetitorService(competitors);
