@@ -6,7 +6,7 @@ import service.ProcessService;
 
 import java.util.Scanner;
 
-public class ProcessController {
+public abstract class ProcessController {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProcessService service = new ProcessService(Data.institution.getProcesses());
 
@@ -23,7 +23,7 @@ public class ProcessController {
         Data.institution.setProcesses(service.getAll());
 
         System.out.println("Processo criado");
-        System.out.println(process.toString());
+        System.out.println(process);
     }
 
     public static Process get(String id) {
@@ -43,41 +43,51 @@ public class ProcessController {
         }
     }
 
-    public void update() {
-        scanner.nextLine();
-
-        System.out.println("Insira o id do processo a ser buscado: ");
-        String id = scanner.nextLine();
-
+    public static void update(String processId) {
         System.out.println("Digite o novo titulo do processo: ");
         String title = scanner.nextLine();
 
         System.out.println("Digite a nova descrição do processo: ");
         String description = scanner.nextLine();
 
-        Process process = new Process(title, description);
+        Process newProcess = new Process(title, description);
 
         try {
-            service.update(id, process);
+            service.update(processId, newProcess);
             Data.institution.setProcesses(service.getAll());
 
-            System.out.println("Processo " + id + "atualizado com sucesso.");
+            System.out.println("Processo " + processId + "atualizado com sucesso.");
+            System.out.println(newProcess);
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
-
     }
 
-    public void delete() {
-        scanner.nextLine();
-
-        System.out.println("Insira o id do processo a ser deletado: ");
-        String id = scanner.nextLine();
-
+    public static void delete(String processId) {
         try {
-            this.service.delete(id);
+            service.delete(processId);
+            Data.institution.setProcesses(service.getAll());
+
+            System.out.println("Processo n°: " + processId + " excluído com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
+    }
+
+    public static void closeProcess(String processId, Process process) {
+        try {
+//          TODO: Validar se processo tem concorrente escolhido.
+            process.setStatus("Fechado");
+
+            service.update(processId, process);
+            Data.institution.setProcesses(service.getAll());
+
+            System.out.println("Processo n°: " + processId + " fechado.");
+        } catch (Exception e) {
+            System.err.println("Erro: " + e.getMessage());
+        }
+    }
+    // TODO: criar método para escolher concorrente no processo
+    public static void chooseCompetitor(String processId, Process process) {
     }
 }

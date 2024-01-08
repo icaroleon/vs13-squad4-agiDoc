@@ -27,12 +27,11 @@ public class Navigation {
             case "6" -> chooseNavigation = this.competitorsMenu();
         }
 
-        this.scanner.close();
         return chooseNavigation;
     }
 
     public String mainMenu() {
-        String option = "";
+        String option;
 
         System.out.println("\n\n");
         System.out.println("+-------------------------------------------+");
@@ -50,7 +49,7 @@ public class Navigation {
     }
 
     public String employeesMenu() {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -83,7 +82,7 @@ public class Navigation {
     }
 
     public String processesMenu() {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -124,7 +123,7 @@ public class Navigation {
     }
 
     public String oneProcessMenu() {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -147,10 +146,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Processo encerrado.");
+                case "1" -> ProcessController.closeProcess(inputProcessId, currentProcess);
                 case "2" -> System.out.println("Concorrente eleito para contratação.");
-                case "3" -> System.out.println("Processo editado.");
-                case "4" -> System.out.println("Processo removido.");
+                case "3" -> ProcessController.update(inputProcessId);
+                case "4" -> ProcessController.delete(inputProcessId);
                 case "5", "6", "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
@@ -160,7 +159,7 @@ public class Navigation {
     }
 
     public String documentsMenu() {
-        String option = "";
+        String option;
         boolean running = true;
         DocumentController document = new DocumentController(currentProcess.getDocuments());
 
@@ -198,7 +197,7 @@ public class Navigation {
     }
 
     public String competitorsMenu() throws Exception {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
