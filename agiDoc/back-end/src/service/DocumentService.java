@@ -3,7 +3,7 @@ package service;
 import entities.document.Document;
 import java.util.ArrayList;
 
-public class DocumentService {
+public class DocumentService implements IService<Document> {
     private ArrayList<Document> documents;
 
     public DocumentService() {}
