@@ -25,7 +25,7 @@ public class DocumentController {
         documentService = new DocumentService(documents);
     }
 
-    public String createDocument(Process process) {
+    public void createDocument(Process process) {
         System.out.print("Digite o protocolo do documento: ");
         protocol = sc.nextLine();
 
@@ -57,7 +57,7 @@ public class DocumentController {
         try {
             type = DocumentType.values()[typeInput - 1];
         } catch (IllegalArgumentException e) {
-            return "Error: Tipo de documento inválido.";
+            System.out.println("Erro: " + e.getMessage());;
         }
 
         Document document = new Document(protocol, localDate, origin, originId, type, content);
@@ -66,56 +66,40 @@ public class DocumentController {
             Document createdDocument = documentService.create(document);
             process.setDocuments(documentService.getAll());
 
-            return "Document created successfully with protocol: " + createdDocument.getProtocol();
+            System.out.println("Documento criado com o protocolo: " + createdDocument.getProtocol());
+            System.out.println(createdDocument.toString());
         } catch (RuntimeException e) {
-            return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
 
-    public String getDocument() {
+    public void getDocument() {
         System.out.print("Digite o protocolo do documento que deseja pesquisar: ");
         protocol = sc.nextLine();
 
         try {
             Document document = documentService.get(protocol);
-            return "Documento encontrado com o protocolo " + protocol + ":\n" +
-                    "Protocolo: " + document.getProtocol() + "\n" +
-                    "Data de expiração: " + document.getExpirationDate() + "\n" +
-                    "Origem: " + document.getOrigin() + "\n" +
-                    "Índice da Origem: " + document.getOriginId() + "\n" +
-                    "Assinatura: " + document.getSigned() + "\n" +
-                    "Tipo do documento: " + document.getTypeName() + "\n" +
-                    "Conteúdo: " + document.getContent();
+            System.out.println(document.toString());
         } catch (RuntimeException e) {
-            return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
-    public String getAllDocuments() {
+    public void getAllDocuments() {
         ArrayList<Document> allDocuments = documentService.getAll();
 
         if (allDocuments.isEmpty()) {
-            return "Nenhum documento encontrado.";
+            System.out.println("Nenhum documento encontrado.");
+            return;
         }
-
-        StringBuilder result = new StringBuilder("Lista de documentos:\n");
 
         for (Document document : allDocuments) {
-            result.append("Documento encontrado com o protocolo ").append(document.getProtocol()).append(":\n")
-                    .append("Protocolo: ").append(document.getProtocol()).append("\n")
-                    .append("Data de expiração: ").append(document.getExpirationDate()).append("\n")
-                    .append("Origem: ").append(document.getOrigin()).append("\n")
-                    .append("Índice da Origem: ").append(document.getOriginId()).append("\n")
-                    .append("Assinatura: ").append(document.getSigned()).append("\n")
-                    .append("Tipo do documento: ").append(document.getTypeName()).append("\n")
-                    .append("Conteúdo: ").append(document.getContent()).append("\n\n");
+            System.out.println(document.toString());
         }
-
-        return result.toString();
     }
 
-    public String updateDocument(Process process) {
+    public void updateDocument(Process process) {
         System.out.print("Digite o protocolo do documento que você deseja atualizar: ");
         protocol = sc.nextLine();
 
@@ -157,7 +141,7 @@ public class DocumentController {
                 type = DocumentType.values()[typeInput - 1];
             }
         } catch (IllegalArgumentException e) {
-            return "Error: Tipo de documento inválido.";
+            System.out.println("Erro: " + e.getMessage());;
         }
 
         System.out.print("Digite o novo conteúdo do documento (deixe em branco para manter o valor atual): ");
@@ -170,33 +154,26 @@ public class DocumentController {
             Document updatedDocument = documentService.update(protocol, newDocument);
             process.setDocuments(documentService.getAll());
 
-            return "Documento atualizado com sucesso:\n" +
-                    "Protocolo: " + updatedDocument.getProtocol() + "\n" +
-                    "Data de expiração: " + updatedDocument.getExpirationDate() + "\n" +
-                    "Origem: " + updatedDocument.getOrigin() + "\n" +
-                    "Índice da origem: " + updatedDocument.getOriginId() + "\n" +
-                    "Tipo do documento " + updatedDocument.getTypeName() + "\n" +
-                    "Assinatura (true para assinado, false para não assinado): " + updatedDocument.getSigned() + "\n" +
-                    "Conteúdo: " + updatedDocument.getContent();
+            System.out.println("Documento com protocolo " + protocol + " atualizado com sucesso.");
         } catch (RuntimeException e) {
-            return "Erro: " + e.getMessage();
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 
-    public String deleteDocument(Process process) {
+    public void deleteDocument(Process process) {
         System.out.print("Digite o protocolo do documento que deseja excluir: ");
         protocol = sc.nextLine();
 
         try {
             documentService.delete(protocol);
             process.setDocuments(documentService.getAll());
-            return "Documento com o protocolo " + protocol + " foi excluído com sucesso";
+            System.out.println("Documento com o protocolo " + protocol + " foi excluído com sucesso");
         } catch (RuntimeException e) {
-            return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
-    public String signDocument(Process process) {
+    public void signDocument(Process process) {
         System.out.print("Digite o protocolo do documento que você deseja assinar: ");
         protocol = sc.nextLine();
 
@@ -205,13 +182,13 @@ public class DocumentController {
 
             if (signed) {
                 process.setDocuments(documentService.getAll());
-                return "Documento com o protocolo: " + protocol + " assinado com sucesso";
+                System.out.println("Documento com o protocolo: " + protocol + " assinado com sucesso");
             } else {
-               return "Erro ao assinar o documento com o protocolo: " + protocol;
+                System.out.println("Erro ao assinar o documento com o protocolo: " + protocol);
             }
 
         } catch (RuntimeException e) {
-           return "Error: " + e.getMessage();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
