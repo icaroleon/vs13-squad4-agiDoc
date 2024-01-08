@@ -2,6 +2,7 @@ package service;
 
 import java.util.ArrayList;
 import entities.employee.Employee;
+import navigation.Navigation;
 
 public class EmployeeService {
 
@@ -40,15 +41,16 @@ public class EmployeeService {
 
         Employee employeeToEdit = get(registration);
 
-        if (employeeToEdit != null){
-            employeeToEdit.setName(newEmployeeDetails.getName());
-            employeeToEdit.setUser(newEmployeeDetails.getUser());
-            employeeToEdit.setPassword(newEmployeeDetails.getPassword());
-            employeeToEdit.setAddress(newEmployeeDetails.getAddress());
-            employeeToEdit.setContact(newEmployeeDetails.getContact());
-            return get(employeeToEdit.getRegistration());
+        if (employeeToEdit == null) {
+            throw new Exception("Colaborador não encontrado!");
         }
-        throw new Exception("Colaborador não encontrado!");
+
+        employeeToEdit.setName(newEmployeeDetails.getName());
+        employeeToEdit.setUser(newEmployeeDetails.getUser());
+        employeeToEdit.setPassword(newEmployeeDetails.getPassword());
+        employeeToEdit.setAddress(newEmployeeDetails.getAddress());
+        employeeToEdit.setContact(newEmployeeDetails.getContact());
+        return get(employeeToEdit.getRegistration());
     }
 
     public String delete(String idEmployeeToDelete) throws Exception{

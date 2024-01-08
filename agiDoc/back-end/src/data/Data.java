@@ -58,14 +58,15 @@ public abstract class Data {
 
 //      instâncias de Funcionários para Instituição
 //      TODO: Setar company
-        Employee employeeOneInstitution = new Employee("Aron", "aron_usuario", "aron_senha", "aron_endereco", "9 0000-0000");
-        Employee employeeTwoInstitution = new Employee("Gabriel", "gabriel_usuario", "gabriel_senha", "gabriel_endereco", "9 1111-1111");
-        Employee employeeThreeInstitution = new Employee("Mari", "mari_usuario", "mari_senha", "mari_endereco", "9 2222-2222");
-        Employee employeeFourInstitution = new Employee("Ícaro", "icaro_usuario", "icaro_senha", "icaro_endereco", "9 3333-3333");
-        Employee employeeFiveInstitution = new Employee("Rodrigo", "rodrigo_usuario", "rodrigo_senha", "rodrigo_endereco", "9 4444-4444");
-        Employee employeeSixInstitution = new Employee("Vinicius", "vinicius_usuario", "vinicius_senha", "vinicius_endereco", "9 5555-5555");
-        Employee employeeSevenInstitution = new Employee("Camila", "camila_usuario", "camila_senha", "camila_endereco", "9 6666-6666");
-        Employee employeeEightInstitution = new Employee("Clara", "clara_usuario", "clara_senha", "clara_endereco", "9 7777-7777");
+        institution = new Institution("55.5.555/5551-55","Rua do Prato Limpo","9 0000-0000");
+        Employee employeeOneInstitution = new Employee("Aron", "aron_usuario", "aron_senha", "aron_endereco", "9 0000-0000", institution);
+        Employee employeeTwoInstitution = new Employee("Gabriel", "gabriel_usuario", "gabriel_senha", "gabriel_endereco", "9 1111-1111", institution);
+        Employee employeeThreeInstitution = new Employee("Mari", "mari_usuario", "mari_senha", "mari_endereco", "9 2222-2222", institution);
+        Employee employeeFourInstitution = new Employee("Ícaro", "icaro_usuario", "icaro_senha", "icaro_endereco", "9 3333-3333", institution);
+        Employee employeeFiveInstitution = new Employee("Rodrigo", "rodrigo_usuario", "rodrigo_senha", "rodrigo_endereco", "9 4444-4444", institution);
+        Employee employeeSixInstitution = new Employee("Vinicius", "vinicius_usuario", "vinicius_senha", "vinicius_endereco", "9 5555-5555", institution);
+        Employee employeeSevenInstitution = new Employee("Camila", "camila_usuario", "camila_senha", "camila_endereco", "9 6666-6666", institution);
+        Employee employeeEightInstitution = new Employee("Clara", "clara_usuario", "clara_senha", "clara_endereco", "9 7777-7777", institution);
 
 //      instâncias de concorrentes para Processos
 //      Setar company em Funcionários

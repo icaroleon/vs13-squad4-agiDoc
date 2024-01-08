@@ -6,6 +6,7 @@ import controller.EmployeeController;
 import controller.ProcessController;
 import entities.process.Process;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Navigation {
