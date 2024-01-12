@@ -1,6 +1,6 @@
 package service;
 
-import entities.document.Document;
+import model.document.Document;
 import java.util.ArrayList;
 
 public class DocumentService implements IService<Document> {

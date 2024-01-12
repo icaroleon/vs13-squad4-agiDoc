@@ -1,15 +1,14 @@
 package controller;
 
-import entities.document.Document;
-import entities.document.DocumentType;
-import entities.process.Process;
+import model.document.Document;
+import model.document.DocumentType;
+import model.process.Process;
 import service.DocumentService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DocumentController {

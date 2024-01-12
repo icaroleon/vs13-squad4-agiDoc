@@ -1,10 +1,10 @@
-package entities.process;
+package model.process;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import entities.competitor.Competitor;
-import entities.document.Document;
+import model.competitor.Competitor;
+import model.document.Document;
 
 public class Process implements IProcess {
     private String id, title, status, description;

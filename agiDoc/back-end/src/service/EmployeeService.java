@@ -1,8 +1,7 @@
 package service;
 
 import java.util.ArrayList;
-import entities.employee.Employee;
-import navigation.Navigation;
+import model.employee.Employee;
 
 public class EmployeeService implements IService<Employee> {
 

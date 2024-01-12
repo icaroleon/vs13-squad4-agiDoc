@@ -1,8 +1,8 @@
-package entities.institution;
+package model.institution;
 
-import entities.employee.Employee;
-import entities.process.Process;
-import entities.juridical.AbstractJuridical;
+import model.employee.Employee;
+import model.process.Process;
+import model.juridical.AbstractJuridical;
 
 import java.util.ArrayList;
 

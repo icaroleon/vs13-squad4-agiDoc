@@ -1,9 +1,7 @@
-package entities.employee;
+package model.employee;
 
-import entities.juridical.AbstractJuridical;
-import service.EmployeeService;
+import model.juridical.AbstractJuridical;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class Employee {
