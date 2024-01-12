@@ -1,9 +1,9 @@
-package entities.competitor;
+package model.competitor;
 
-import entities.document.Document;
-import entities.employee.Employee;
-import entities.juridical.AbstractJuridical;
-import entities.process.Process;
+import model.document.Document;
+import model.employee.Employee;
+import model.juridical.AbstractJuridical;
+import model.process.Process;
 
 import java.util.ArrayList;
 import java.util.UUID;

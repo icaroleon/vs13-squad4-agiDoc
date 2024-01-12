@@ -4,9 +4,8 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.EmployeeController;
 import controller.ProcessController;
-import entities.process.Process;
+import model.process.Process;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Navigation {

@@ -1,8 +1,8 @@
 package controller;
 
-import data.Data;
-import entities.competitor.Competitor;
-import entities.process.Process;
+import database.Data;
+import model.competitor.Competitor;
+import model.process.Process;
 import service.CompetitorService;
 import service.ProcessService;
 

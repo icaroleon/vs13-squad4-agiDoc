@@ -1,11 +1,11 @@
-package data;
+package database;
 
-import entities.document.Document;
-import entities.document.DocumentType;
-import entities.employee.Employee;
-import entities.competitor.Competitor;
-import entities.institution.Institution;
-import entities.process.Process;
+import model.document.Document;
+import model.document.DocumentType;
+import model.employee.Employee;
+import model.competitor.Competitor;
+import model.institution.Institution;
+import model.process.Process;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

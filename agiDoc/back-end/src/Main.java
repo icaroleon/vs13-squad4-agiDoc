@@ -1,8 +1,6 @@
 import controller.EmployeeController;
-import data.Data;
-import entities.employee.Employee;
+import database.Data;
 import navigation.Navigation;
-import service.EmployeeService;
 
 import java.util.Scanner;
 import java.util.Stack;

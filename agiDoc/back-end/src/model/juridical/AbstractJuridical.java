@@ -1,7 +1,7 @@
-package entities.juridical;
+package model.juridical;
 
-import entities.document.Document;
-import entities.employee.Employee;
+import model.document.Document;
+import model.employee.Employee;
 
 import java.util.ArrayList;
 

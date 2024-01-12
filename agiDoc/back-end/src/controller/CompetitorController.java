@@ -1,8 +1,8 @@
 package controller;
 
-import entities.competitor.Competitor;
+import model.competitor.Competitor;
 import service.CompetitorService;
-import entities.process.Process;
+import model.process.Process;
 
 import java.util.ArrayList;
 import java.util.Scanner;

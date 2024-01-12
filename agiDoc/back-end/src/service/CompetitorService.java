@@ -1,6 +1,6 @@
 package service;
 
-import entities.competitor.Competitor;
+import model.competitor.Competitor;
 import java.util.ArrayList;
 
 public class CompetitorService implements IService<Competitor> {

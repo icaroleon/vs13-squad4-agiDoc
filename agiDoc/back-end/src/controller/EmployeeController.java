@@ -1,9 +1,8 @@
 package controller;
 
-import data.Data;
-import entities.competitor.Competitor;
-import entities.employee.Employee;
-import entities.institution.Institution;
+import database.Data;
+import model.employee.Employee;
+import model.institution.Institution;
 import service.EmployeeService;
 
 import java.util.ArrayList;
