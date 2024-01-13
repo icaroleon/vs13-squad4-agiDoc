@@ -5,6 +5,7 @@ import model.competitor.Competitor;
 import model.process.Process;
 import service.CompetitorService;
 import service.ProcessService;
+import service.exceptions.DatabaseException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,7 +14,7 @@ public abstract class ProcessController {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProcessService processService = new ProcessService(Data.institution.getProcesses());
 
-    public static void createProcess() {
+    public static void createProcess() throws DatabaseException {
         System.out.print("Digite o titulo do processo: ");
         String title = scanner.nextLine();
 
@@ -29,7 +30,7 @@ public abstract class ProcessController {
         System.out.println(process);
     }
 
-    public static Process get(String id) {
+    public static Process get(Integer id) {
         Process process = null;
         try {
             process = processService.get(id);
@@ -40,13 +41,13 @@ public abstract class ProcessController {
         return process;
     }
 
-    public static void getAll() {
+    public static void getAll() throws DatabaseException {
         for (Process process : processService.getAll()) {
             System.out.println(process.toString());
         }
     }
 
-    public static void update(String processId) {
+    public static void update(Integer processId) {
         try {
             Process process = processService.get(processId);
 
@@ -65,12 +66,12 @@ public abstract class ProcessController {
 
             System.out.println("Processo n° " + processId + " atualizado com sucesso.");
             System.out.println(newProcess);
-        } catch (Exception e) {
+        } catch (Exception | DatabaseException e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
-    public static boolean delete(String processId) {
+    public static boolean delete(Integer processId) {
         System.out.println("Tem certeza que deseja excluir este processo? (S/N)");
         boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
 
@@ -83,14 +84,14 @@ public abstract class ProcessController {
             System.out.println("Processo n°: " + processId + " excluído com sucesso!");
 
             return true;
-        } catch (Exception e) {
+        } catch (Exception | DatabaseException e) {
             System.out.println("Erro: " + e.getMessage());
 
             return false;
         }
     }
 
-    public static void closeProcess(String processId) {
+    public static void closeProcess(Integer processId) {
         System.out.println("Tem certeza que deseja fechar este processo? (S/N)");
         boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
 
@@ -109,12 +110,12 @@ public abstract class ProcessController {
             Data.institution.setProcesses(processService.getAll());
 
             System.out.println("Processo n°: " + processId + " fechado.");
-        } catch (Exception e) {
+        } catch (Exception | DatabaseException e) {
             System.err.println("Erro: " + e.getMessage());
         }
     }
 
-    public static void chooseCompetitor(String processId) {
+    public static void chooseCompetitor(Integer processId) {
         try {
             Process process = processService.get(processId);
             ArrayList<Competitor> competitors = process.getCompetitors();
