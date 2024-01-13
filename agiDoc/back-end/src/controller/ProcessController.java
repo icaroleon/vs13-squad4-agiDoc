@@ -14,6 +14,8 @@ public abstract class ProcessController {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProcessService processService = new ProcessService(Data.institution.getProcesses());
 
+    //Integer institutionId, Integer id, String processNumber, String title, String description, ArrayList<Competitor> competitors
+
     public static void createProcess() throws DatabaseException {
         System.out.print("Digite o titulo do processo: ");
         String title = scanner.nextLine();
@@ -24,7 +26,7 @@ public abstract class ProcessController {
         Process process = new Process(title, description);
 
         processService.create(process);
-        Data.institution.setProcesses(processService.getAll());
+        Data.institution.setProcesses(processService.list());
 
         System.out.println("Processo criado!\n");
         System.out.println(process);
@@ -33,7 +35,18 @@ public abstract class ProcessController {
     public static Process get(Integer id) {
         Process process = null;
         try {
-            process = processService.get(id);
+            process = (Process) processService.getProcessById(id);
+            System.out.println(process.toString());
+        } catch (Exception e) {
+            System.out.println("Processo nao encontrado!");
+        }
+        return process;
+    }
+
+    public static Process getProcessByNumber(String processNumber) {
+        Process process = null;
+        try {
+            process = (Process) processService.searchProcess(processNumber);
             System.out.println(process.toString());
         } catch (Exception e) {
             System.out.println("Processo nao encontrado!");
@@ -42,14 +55,14 @@ public abstract class ProcessController {
     }
 
     public static void getAll() throws DatabaseException {
-        for (Process process : processService.getAll()) {
+        for (Process process : processService.list()) {
             System.out.println(process.toString());
         }
     }
 
     public static void update(Integer processId) {
         try {
-            Process process = processService.get(processId);
+            Process process = (Process) processService.getProcessById(processId);
 
             System.out.print("Digite o novo titulo do processo (deixe em branco para manter o valor atual): ");
             String title = scanner.nextLine();
@@ -62,12 +75,14 @@ public abstract class ProcessController {
             Process newProcess = new Process(title, description);
 
             processService.update(processId, newProcess);
-            Data.institution.setProcesses(processService.getAll());
+            Data.institution.setProcesses(processService.list());
 
             System.out.println("Processo n° " + processId + " atualizado com sucesso.");
             System.out.println(newProcess);
-        } catch (Exception | DatabaseException e) {
+        } catch (DatabaseException e) {
             System.out.println("Erro: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -79,12 +94,12 @@ public abstract class ProcessController {
 
         try {
             processService.delete(processId);
-            Data.institution.setProcesses(processService.getAll());
+            Data.institution.setProcesses(processService.list());
 
             System.out.println("Processo n°: " + processId + " excluído com sucesso!");
 
             return true;
-        } catch (Exception | DatabaseException e) {
+        } catch (DatabaseException e) {
             System.out.println("Erro: " + e.getMessage());
 
             return false;
@@ -98,7 +113,7 @@ public abstract class ProcessController {
         if (isNotSure) return;
 
         try {
-            Process process = processService.get(processId);
+            Process process = (Process) processService.getProcessById(processId);
 
             if (process.getContracted() == null) {
                 System.out.println("ERRO: Processo não tem concorrente contratado!");
@@ -107,17 +122,17 @@ public abstract class ProcessController {
 
             process.setStatus("Fechado");
 
-            Data.institution.setProcesses(processService.getAll());
+            Data.institution.setProcesses(processService.list());
 
             System.out.println("Processo n°: " + processId + " fechado.");
-        } catch (Exception | DatabaseException e) {
+        } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());
         }
     }
 
     public static void chooseCompetitor(Integer processId) {
         try {
-            Process process = processService.get(processId);
+            Process process = (Process) processService.getProcessById(processId);
             ArrayList<Competitor> competitors = process.getCompetitors();
 
             competitors.forEach(competitor -> System.out.println(competitor.toString()));

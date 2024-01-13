@@ -5,6 +5,7 @@ import controller.CompetitorController;
 import controller.UserController;
 import controller.ProcessController;
 import model.department.Department;
+import exception.DatabaseException;
 import model.process.Process;
 import model.user.User;
 
@@ -136,7 +137,7 @@ public class Navigation {
         return option;
     }
 
-    public String processesMenu() {
+    public String processesMenu() throws DatabaseException {
         String option;
         boolean running = true;
 
@@ -158,9 +159,9 @@ public class Navigation {
             switch (option) {
                 case "1" -> ProcessController.getAll();
                 case "2" -> {
-                    System.out.print("Digite o identificador do processo: ");
-                    this.inputProcessId = scanner.nextLine();
-                    currentProcess = ProcessController.get(inputProcessId);
+                    System.out.print("Digite o número do processo: ");
+                    String inputProcessNumber = scanner.nextLine();
+                    currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
                     if(currentProcess != null){
                         option = "3";
                         running = false;
@@ -200,11 +201,11 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> ProcessController.closeProcess(inputProcessId);
-                case "2" -> ProcessController.chooseCompetitor(inputProcessId);
-                case "3" -> ProcessController.update(inputProcessId);
+                case "1" -> ProcessController.closeProcess(Integer.valueOf(inputProcessId));
+                case "2" -> ProcessController.chooseCompetitor(Integer.valueOf(inputProcessId));
+                case "3" -> ProcessController.update(Integer.valueOf(inputProcessId));
                 case "4" -> {
-                    boolean isDeleted = ProcessController.delete(inputProcessId);
+                    boolean isDeleted = ProcessController.delete(Integer.valueOf(inputProcessId));
 
                     if (isDeleted) {
                         option = "9";
