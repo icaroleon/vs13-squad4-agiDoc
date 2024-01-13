@@ -1,16 +1,15 @@
 package model.competitor;
 
+//import model.contact.Contact;
 import model.document.Document;
-import model.user.User;
 import model.juridical.AbstractJuridical;
 import model.process.Process;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Competitor extends AbstractJuridical {
 
-    private String id;
+    private int id;
     private String companyName;
     private boolean isContracted = false;
     private Process process;
@@ -19,30 +18,25 @@ public class Competitor extends AbstractJuridical {
 
     public Competitor(){}
 
-    public Competitor(String cpnj, String address, String contact, String companyName) {
-        super(cpnj, address, contact);
-
-        UUID uuid = UUID.randomUUID();
-
-        this.id = uuid.toString();
-        this.companyName = companyName;
+    public Competitor(String cpnj, String companyName) {
+        super(cpnj, companyName);
     }
 
-    public Competitor(String cpnj, String address, String contact, ArrayList<User> users, String companyName, Process process, ArrayList<Document> documents) {
-        super(cpnj, address, contact, users);
+//    TODO: Precisa contact
+//    public Competitor(String cpnj, Address address, Contact contact, String companyName) {
+//        super(cpnj, address, contact);
+//        this.companyName = companyName;
+//    }
 
-        UUID uuid = UUID.randomUUID();
+//    TODO: Precisa contact
+//    public Competitor(String cpnj, Address address, Contact contact, ArrayList<Employee> employees, String companyName, Process process, ArrayList<Document> documents) {
+//        super(cpnj, address, contact, employees);
+//        this.companyName = companyName;
+//        this.process = process;
+//        this.documents = documents;
+//    }
 
-        this.id = uuid.toString();
-        this.companyName = companyName;
-        this.process = process;
-        this.documents = documents;
-    }
-
-    public String getId() {
-        return id;
-    }
-
+//    TODO: Falta adicionar o contato
     @Override
     public String toString(){
         return """
@@ -50,16 +44,25 @@ public class Competitor extends AbstractJuridical {
                 Nome da Empresa: %s
                 CNPJ: %s
                 Contratado: %s
-                Endereço: %s
-                Contato: %s
+                Endereço: %s n° %d - %s. %s - %s / CEP %s
                 """.formatted(
                 this.id,
                 this.companyName,
                 this.cnpj,
                 this.isContracted,
-                this.address,
-                this.contact
+                this.address.getStreet(),
+                this.address.getNumber(),
+                this.address.getDistrict(),
+                this.address.getCity(),
+                this.address.getState(),
+                this.address.getZipCode()
         );
+    }
+
+    public int getId() { return id; };
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCompanyName() {
