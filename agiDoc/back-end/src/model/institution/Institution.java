@@ -4,41 +4,51 @@ import model.employee.Employee;
 import model.process.Process;
 import model.juridical.AbstractJuridical;
 
+
 import java.util.ArrayList;
 
 public class Institution extends AbstractJuridical {
+
+    private int id;
     private ArrayList<Process> processes;
+
+
+    public Institution() {
+        super();
+    }
+
+    public Institution(String companyName, String cnpj, Address address, Contact contact, ArrayList<Departament> departaments, ArrayList<Process> processes) {
+        super(companyName, cnpj, address, contact, departaments);
+        this.processes = processes;
+    }
 
     @Override
     public String toString() {
         return """ 
                 {
                     CNPJ: %s
+                    Company Name: %s
                     Address: %s
                     Contact: %s
                     N° Processes: %d
-                    N° Employees: %d
+                    N° Departaments: %d
                 }
                 """.formatted(
                 this.cnpj,
+                this.companyName,
                 this.address,
                 this.contact,
                 this.processes.size(),
-                this.employees.size()
+                this.departaments.size()
         );
     }
 
-    public Institution() {
-        super();
+    public int getId() {
+        return id;
     }
 
-    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
-        super(cnpj, address, contact, employees);
-        this.processes = processes;
-    }
-
-    public Institution(String cnpj, String address, String contact) {
-        super(cnpj, address, contact);
+    public void setId(int id) {
+        this.id = id;
     }
 
     public ArrayList<Process> getProcesses() { return this.processes; }
