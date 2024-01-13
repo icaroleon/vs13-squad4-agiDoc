@@ -7,21 +7,18 @@ import model.competitor.Competitor;
 import model.document.Document;
 
 public class Process implements IProcess {
-    private String id, title, status, description;
+    private Integer id;
+    private String title, status, description;
     private Competitor contracted;
     private ArrayList<Competitor> competitors;
     private ArrayList<Document> documents;
+    private Integer institutionId;
 
-    public Process() {
-        UUID uuid = UUID.randomUUID();
-
-        this.id = uuid.toString().substring(0, 6);
+    public Process(Integer id) {
+        this.id = id;
     }
 
     public Process(String title, String description) {
-        UUID uuid = UUID.randomUUID();
-
-        this.id = uuid.toString().substring(0, 6);
         this.title = title;
         this.description = description;
         this.status = "Aberto";
@@ -30,14 +27,27 @@ public class Process implements IProcess {
     }
 
     public Process(String title, String description, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
-        UUID uuid = UUID.randomUUID();
-
-        this.id = uuid.toString().substring(0, 6);
         this.title = title;
         this.description = description;
         this.status = "Aberto";
         this.competitors = competitors;
         this.documents = documents;
+    }
+
+    public Process() {
+
+    }
+
+    public void setContracted(Competitor contracted) {
+        this.contracted = contracted;
+    }
+
+    public Integer getInstitutionId() {
+        return institutionId;
+    }
+
+    public void setInstitutionId(Integer institutionId) {
+        this.institutionId = institutionId;
     }
 
     public boolean chooseContractor(Competitor competitor) {
@@ -54,7 +64,7 @@ public class Process implements IProcess {
         return true;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -90,7 +100,7 @@ public class Process implements IProcess {
         this.documents = documents;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
