@@ -1,4 +1,4 @@
-import controller.EmployeeController;
+import controller.UserController;
 import database.Data;
 import navigation.Navigation;
 
@@ -22,7 +22,7 @@ public class Main {
             System.out.print("Digite sua senha: ");
             String password = scanner.nextLine();
 
-            isNotValidLogin = !EmployeeController.login(user, password);
+            isNotValidLogin = !UserController.login(user, password);
         }
 
         boolean running = true;

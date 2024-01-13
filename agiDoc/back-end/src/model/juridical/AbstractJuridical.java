@@ -1,7 +1,7 @@
 package model.juridical;
 
 import model.document.Document;
-import model.employee.Employee;
+import model.user.User;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ public abstract class AbstractJuridical implements IJuridical {
     protected String cnpj;
     protected String address;
     protected String contact;
-    protected ArrayList<Employee> employees;
+    protected ArrayList<User> users;
 
     public AbstractJuridical() {
     }
@@ -20,11 +20,11 @@ public abstract class AbstractJuridical implements IJuridical {
         this.contact = contact;
     }
 
-    public AbstractJuridical(String cpnj, String address, String contact, ArrayList<Employee> employees) {
+    public AbstractJuridical(String cpnj, String address, String contact, ArrayList<User> users) {
         this.cnpj = cpnj;
         this.address = address;
         this.contact = contact;
-        this.employees = employees;
+        this.users = users;
     }
 
     public String getCnpj() {
@@ -51,12 +51,12 @@ public abstract class AbstractJuridical implements IJuridical {
         this.contact = contact;
     }
 
-    public ArrayList<Employee> getEmployees() {
-        return employees;
+    public ArrayList<User> getEmployees() {
+        return users;
     }
 
-    public void setEmployees(ArrayList<Employee> employees) {
-        this.employees = employees;
+    public void setEmployees(ArrayList<User> users) {
+        this.users = users;
     }
 
     @Override
