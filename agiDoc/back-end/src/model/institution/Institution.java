@@ -1,6 +1,6 @@
 package model.institution;
 
-import model.employee.Employee;
+import model.user.User;
 import model.process.Process;
 import model.juridical.AbstractJuridical;
 
@@ -24,7 +24,7 @@ public class Institution extends AbstractJuridical {
                 this.address,
                 this.contact,
                 this.processes.size(),
-                this.employees.size()
+                this.users.size()
         );
     }
 
@@ -32,8 +32,8 @@ public class Institution extends AbstractJuridical {
         super();
     }
 
-    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<Employee> employees) {
-        super(cnpj, address, contact, employees);
+    public Institution(String cnpj, String address, String contact, ArrayList<Process> processes, ArrayList<User> users) {
+        super(cnpj, address, contact, users);
         this.processes = processes;
     }
 

@@ -1,7 +1,7 @@
 package model.competitor;
 
 import model.document.Document;
-import model.employee.Employee;
+import model.user.User;
 import model.juridical.AbstractJuridical;
 import model.process.Process;
 
@@ -28,8 +28,8 @@ public class Competitor extends AbstractJuridical {
         this.companyName = companyName;
     }
 
-    public Competitor(String cpnj, String address, String contact, ArrayList<Employee> employees, String companyName, Process process, ArrayList<Document> documents) {
-        super(cpnj, address, contact, employees);
+    public Competitor(String cpnj, String address, String contact, ArrayList<User> users, String companyName, Process process, ArrayList<Document> documents) {
+        super(cpnj, address, contact, users);
 
         UUID uuid = UUID.randomUUID();
 

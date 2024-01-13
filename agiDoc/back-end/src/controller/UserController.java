@@ -1,14 +1,14 @@
 package controller;
 
 import database.Data;
-import model.employee.Employee;
+import model.user.User;
 import model.institution.Institution;
-import service.EmployeeService;
+import service.UserService;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class EmployeeController {
+public class UserController {
 
     private static String registration;
     private static String name;
@@ -19,7 +19,7 @@ public class EmployeeController {
 
     private static final Institution institutionData = Data.institution;
     private static final Scanner scanner = new Scanner(System.in);
-    private static final EmployeeService employeeService = new EmployeeService(Data.institution.getEmployees());
+    private static final UserService USER_SERVICE = new UserService(Data.institution.getEmployees());
 
     public static void createEmployee(){
 
@@ -38,27 +38,27 @@ public class EmployeeController {
         System.out.print("Digite o contato: ");
         contact = scanner.nextLine();
 
-        Employee newEmployee = new Employee(name, user, password, address, contact, institutionData);
-        employeeService.create(newEmployee);
+        User newUser = new User(name, user, password, address, contact, institutionData);
+        USER_SERVICE.create(newUser);
 
-        Data.institution.setEmployees(employeeService.getAll());
+        Data.institution.setEmployees(USER_SERVICE.getAll());
 
-        System.out.print(newEmployee.toString());
+        System.out.print(newUser.toString());
     }
 
     public static void get() {
         try {
             System.out.print("Digite a matrícula do colaborador que deseja pesquisar: ");
             registration = scanner.nextLine();
-            employeeService.get(registration);
+            USER_SERVICE.get(registration);
         } catch (Exception e) {
             System.out.print("Colaborador não encontrado");
         }
     }
 
     public static void getAll(){
-        for (Employee employee : employeeService.getAll()) {
-            System.out.print(employee.toString());
+        for (User user : USER_SERVICE.getAll()) {
+            System.out.print(user.toString());
         }
     }
 
@@ -66,40 +66,40 @@ public class EmployeeController {
 
         try {
             System.out.print("Os funcionários cadastrados na instituição são: ");
-            System.out.print(employeeService.getAll());
+            System.out.print(USER_SERVICE.getAll());
             System.out.println();
             System.out.println();
             System.out.print("Digite o nome da matrícula que quer fazer as alterações: ");
             registration = scanner.nextLine();
-            Employee existingEmployee = employeeService.get(registration);
+            User existingUser = USER_SERVICE.get(registration);
 
             System.out.print("Digite o novo nome. Caso queira que permaneça a " +
                     "mesma informação, apenas deixe em branco: ");
             name = scanner.nextLine();
-            name = (name.isEmpty()) ? existingEmployee.getName() : name;
+            name = (name.isEmpty()) ? existingUser.getName() : name;
 
             System.out.print("Digite o novo user. Caso queira que permaneça a " +
                     "mesma informação, apenas deixe em branco: ");
             user = scanner.nextLine();
-            user = (user.isEmpty()) ? existingEmployee.getUser() : user;
+            user = (user.isEmpty()) ? existingUser.getUser() : user;
 
             System.out.print("Digite a nova senha. Caso queira que permaneça a " +
                     "mesma informação, apenas deixe em branco: ");
             password = scanner.nextLine();
-            password = (password.isEmpty()) ? existingEmployee.getPassword() : password;
+            password = (password.isEmpty()) ? existingUser.getPassword() : password;
 
             System.out.print("Digite o endereço. Caso queira que permaneça a " +
                     "mesma informação, apenas deixe em branco: ");
             address = scanner.nextLine();
-            address = (address.isEmpty()) ? existingEmployee.getPassword() : address;
+            address = (address.isEmpty()) ? existingUser.getPassword() : address;
 
             System.out.print("Digite o contato: Caso queira que permaneça as " +
                     "mesmas informações, apenas deixe em branco: ");
             contact = scanner.nextLine();
-            contact = (contact.isEmpty()) ? existingEmployee.getContact() : contact;
+            contact = (contact.isEmpty()) ? existingUser.getContact() : contact;
 
-            Employee employeeToUpdate = new Employee(name, user, password, address, contact);
-            employeeService.update(registration, employeeToUpdate).toString();
+            User userToUpdate = new User(name, user, password, address, contact);
+            USER_SERVICE.update(registration, userToUpdate).toString();
         } catch (Exception e) {
             System.out.print("Erro: " + e.getMessage());
         }
@@ -108,7 +108,7 @@ public class EmployeeController {
     public static void delete() {
         try {
             System.out.println("Os funcionários cadastrados na instituição são: ");
-            System.out.print(employeeService.getAll());
+            System.out.print(USER_SERVICE.getAll());
             System.out.println();
             System.out.println();
             System.out.print("Digite a matrícula do funcionário que quer deletar: ");
@@ -116,7 +116,7 @@ public class EmployeeController {
             System.out.print("Tem certeza que quer deletar? (Y/N) ");
             String confirmation = scanner.nextLine().toLowerCase();
             if (confirmation.equals("y")){
-                employeeService.delete(registration);
+                USER_SERVICE.delete(registration);
                 System.out.println("Deletando...");
                 System.out.print("Colaborador excluído!");
             } else if (confirmation.equals("n")) {
@@ -130,8 +130,8 @@ public class EmployeeController {
     }
 
     public static boolean login(String user, String password){
-        ArrayList<Employee> listaEmployees = employeeService.getAll();
-        for(Employee employee : listaEmployees){
+        ArrayList<User> listaUsers = USER_SERVICE.getAll();
+        for(User employee : listaUsers){
             if(employee.getUser().equals(user) && employee.getPassword().equals(password)) {
                 System.out.println("Login efetuado!");
                 return true;

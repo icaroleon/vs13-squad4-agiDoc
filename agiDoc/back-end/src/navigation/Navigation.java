@@ -2,7 +2,7 @@ package navigation;
 
 import controller.DocumentController;
 import controller.CompetitorController;
-import controller.EmployeeController;
+import controller.UserController;
 import controller.ProcessController;
 import model.process.Process;
 
@@ -72,10 +72,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> EmployeeController.createEmployee();
-                case "2" -> EmployeeController.getAll();
-                case "3" -> EmployeeController.update();
-                case "4" -> EmployeeController.delete();
+                case "1" -> UserController.createEmployee();
+                case "2" -> UserController.getAll();
+                case "3" -> UserController.update();
+                case "4" -> UserController.delete();
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
