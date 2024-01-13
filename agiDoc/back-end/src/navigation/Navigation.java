@@ -4,7 +4,9 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.UserController;
 import controller.ProcessController;
+import model.department.Department;
 import model.process.Process;
+import model.user.User;
 
 import java.util.Scanner;
 
@@ -58,12 +60,13 @@ public class Navigation {
         do {
             System.out.println("\n\n");
             System.out.println("+-------------------------------------------+");
-            System.out.println("|           agiDoc | Funcionários           |");
+            System.out.println("|           agiDoc | Usuários               |");
             System.out.println("+-------------------------------------------+");
-            System.out.println("| 1 - Cadastrar funcionário                 |");
-            System.out.println("| 2 - Listar funcionários                   |");
-            System.out.println("| 3 - Editar funcionário                    |");
-            System.out.println("| 4 - Remover funcionário                   |");
+            System.out.println("| 1 - Cadastrar usuário                     |");
+            System.out.println("| 2 - Listar usuários                       |");
+            System.out.println("| 2 - Listar um usuário específico          |");
+            System.out.println("| 3 - Editar usuário                        |");
+            System.out.println("| 4 - Remover usuário                       |");
             System.out.println("|                                           |");
             System.out.println("| 0 - Sair                                  |");
             System.out.println("| 9 - Voltar                                |");
@@ -71,11 +74,60 @@ public class Navigation {
             System.out.print("Digite uma opção: ");
             option = scanner.nextLine();
 
+            User user = new User();
             switch (option) {
-                case "1" -> UserController.createEmployee();
-                case "2" -> UserController.getAll();
-                case "3" -> UserController.update();
-                case "4" -> UserController.delete();
+                case "1" -> {
+                    System.out.print("Digite a matrícula: ");
+                    user.setRegistration(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome: ");
+                    user.setName(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome de usuário: ");
+                    user.setUser(scanner.nextLine().trim());
+
+                    System.out.print("Digite a senha: ");
+                    user.setPassword(scanner.nextLine().trim());
+
+                    System.out.print("Digite o cargo: ");
+                    user.setPosition(scanner.nextLine().trim());
+
+                    UserController.addUser(user);
+                }
+                case "2" -> UserController.getUsers();
+                case "3" -> {
+                    System.out.print("Digite o ID do usuário para obter: ");
+                    int idUser = scanner.nextInt();
+                    UserController.getUserById(idUser);
+                }
+                case "4" -> {
+                    System.out.print("Digite o ID do usuário para editar: ");
+                    int userId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.print("Digite a matrícula: ");
+                    user.setRegistration(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome: ");
+                    user.setName(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome de usuário: ");
+                    user.setUser(scanner.nextLine().trim());
+
+                    System.out.print("Digite a senha: ");
+                    user.setPassword(scanner.nextLine());
+
+                    System.out.print("Digite o cargo: ");
+                    user.setPosition(scanner.nextLine());
+
+                    UserController.editUser(userId, user);
+                }
+                case "5" -> {
+                    System.out.print("Digite o ID do usuário para remover: ");
+                    int userId = scanner.nextInt();
+                    UserController.removeUser(userId);
+                }
+
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }

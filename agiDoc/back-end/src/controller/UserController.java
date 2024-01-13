@@ -10,12 +10,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserController {
-    private UserService userService;
-    private UserController() {
-        userService = new UserService();
+
+    private static UserService userService = new UserService();
+
+    public static boolean login(String userName, String password) {
+        try {
+           return userService.list().stream().anyMatch(user -> user.getUser().equals(userName) && user.getPassword().equals(password));
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public void addUser(User user) {
+    public static void addUser(User user) {
         try {
             User addedUser = userService.create(user);
             System.out.println("User add successfully! " + addedUser);
@@ -24,7 +31,7 @@ public class UserController {
         }
     }
 
-    public void removeUser(Integer id) {
+    public static void removeUser(Integer id) {
         try {
             boolean removedUser = userService.delete(id);
             System.out.println("Removed? " + removedUser + "| com id= " + id);
@@ -33,7 +40,7 @@ public class UserController {
         }
     }
 
-    public void editUser(Integer id, User user) {
+    public static void editUser(Integer id, User user) {
         try {
             boolean editedUser = userService.update(id, user);
             System.out.println("Edited? " + editedUser + "| com id= " + id);
@@ -42,7 +49,7 @@ public class UserController {
         }
     }
 
-    public void getUSers() {
+    public static void getUsers() {
         try {
             userService.list().forEach(System.out::println);
         } catch (DatabaseException e) {
@@ -50,7 +57,7 @@ public class UserController {
         }
     }
 
-    public void getUserById(Integer id) {
+    public static void getUserById(Integer id) {
         try {
             userService.ListUser(id).forEach(System.out::println);
         } catch (DatabaseException e) {

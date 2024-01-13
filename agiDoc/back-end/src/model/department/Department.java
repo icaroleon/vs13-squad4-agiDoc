@@ -5,7 +5,7 @@ import model.user.User;
 import java.util.ArrayList;
 
 public class Department {
-    private int idDepartment;
+    private int idDepartment = 1;
     private String name;
     private User user;
 

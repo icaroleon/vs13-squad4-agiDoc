@@ -8,26 +8,15 @@ public class User {
     private String name;
     private String user;
     private String password;
-    private String role;
+    private String role = "admin";
     private String position;
     private Department department;
 
     public User(){}
 
-    public User(int idUser, String registration, String name, String user, String password, String role, String position, Department department) {
-        this.idUser = idUser;
-        this.registration = registration;
-        this.name = name;
-        this.user = user;
-        this.password = password;
-        this.role = role;
-        this.position = position;
-        this.department = department;
-    }
-
     @Override
     public String toString() {
-        return "entities.employee.Employee {" +
+        return " Users {" +
                 "\n\tRegistration: '" + registration + '\'' +
                 ",\n\tName: '" + name + '\'' +
                 ",\n\tUser: '" + user + '\'' +
