@@ -220,5 +220,3 @@ public class UserService implements IService<Integer, User> {
         return user;
     }
 }
-
-}
