@@ -1,5 +1,4 @@
 import controller.UserController;
-import database.Data;
 import navigation.Navigation;
 
 import java.util.Scanner;
@@ -7,7 +6,6 @@ import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Data.seed();
         Scanner scanner = new Scanner(System.in);
         Stack<String> history = new Stack<>();
         boolean isNotValidLogin = true;
