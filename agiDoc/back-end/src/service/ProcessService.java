@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import database.DBConnection;
 import model.process.Process;
-import service.exceptions.DatabaseException;
+import exception.DatabaseException;
 
 public class ProcessService implements IService<Integer, Process> {
     private ArrayList<Process> processes = new ArrayList<>();
