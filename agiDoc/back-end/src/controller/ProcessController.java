@@ -5,7 +5,7 @@ import model.competitor.Competitor;
 import model.process.Process;
 import service.CompetitorService;
 import service.ProcessService;
-import service.exceptions.DatabaseException;
+import exception.DatabaseException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
