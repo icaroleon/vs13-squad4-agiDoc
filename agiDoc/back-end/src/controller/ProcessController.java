@@ -41,7 +41,7 @@ public abstract class ProcessController {
         return process;
     }
 
-    public static void getAll() {
+    public static void getAll() throws DatabaseException {
         for (Process process : processService.getAll()) {
             System.out.println(process.toString());
         }
@@ -110,7 +110,7 @@ public abstract class ProcessController {
             Data.institution.setProcesses(processService.getAll());
 
             System.out.println("Processo n°: " + processId + " fechado.");
-        } catch (Exception e) {
+        } catch (Exception | DatabaseException e) {
             System.err.println("Erro: " + e.getMessage());
         }
     }
