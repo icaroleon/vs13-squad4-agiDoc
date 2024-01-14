@@ -171,7 +171,29 @@ public class DocumentService implements IService<Integer, Document> {
 
     @Override
     public boolean delete(Integer id) throws DatabaseException {
-        return true;
+        Connection con = null;
+        try {
+            con = DBConnection.getConnection();
+
+            String sql = "DELETE FROM DOCUMENTS WHERE ID_COMPETITOR = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            int res = stmt.executeUpdate();
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Document get(Integer id) {
