@@ -1,46 +1,36 @@
 package model.competitor;
 
+import model.address.Address;
+import model.contact.Contact;
 import model.document.Document;
-import model.user.User;
 import model.juridical.AbstractJuridical;
 import model.process.Process;
+import model.user.User;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Competitor extends AbstractJuridical {
-
-    private String id;
-    private String companyName;
-    private boolean isContracted = false;
-    private Process process;
+    private int id;
+    private int isContracted;
+    private ArrayList<Process> processes;
     private ArrayList<Document> documents;
+    private int processId;
 
 
     public Competitor(){}
 
-    public Competitor(String cpnj, String address, String contact, String companyName) {
-        super(cpnj, address, contact);
-
-        UUID uuid = UUID.randomUUID();
-
-        this.id = uuid.toString();
-        this.companyName = companyName;
+    public Competitor(String cpnj, String companyName) {
+        super(cpnj, companyName);
     }
 
-    public Competitor(String cpnj, String address, String contact, ArrayList<User> users, String companyName, Process process, ArrayList<Document> documents) {
-        super(cpnj, address, contact, users);
+    public Competitor(String cpnj, Address address, Contact contact, String companyName) {
+        super(cpnj, companyName, address, contact);
+    }
 
-        UUID uuid = UUID.randomUUID();
-
-        this.id = uuid.toString();
-        this.companyName = companyName;
-        this.process = process;
+    public Competitor(String cpnj, Address address, Contact contact, ArrayList<User> employees, String companyName, ArrayList<Process> processes, ArrayList<Document> documents) {
+        super(cpnj, companyName, address, contact, employees);
+        this.processes = processes;
         this.documents = documents;
-    }
-
-    public String getId() {
-        return id;
     }
 
     @Override
@@ -50,16 +40,31 @@ public class Competitor extends AbstractJuridical {
                 Nome da Empresa: %s
                 CNPJ: %s
                 Contratado: %s
-                Endereço: %s
-                Contato: %s
+                Endereço: %s n° %d - %s. %s - %s / CEP %s
+                Contato: %s - %s / %s
+                email: %s
                 """.formatted(
                 this.id,
                 this.companyName,
                 this.cnpj,
                 this.isContracted,
-                this.address,
-                this.contact
+                this.address.getStreet(),
+                this.address.getNumber(),
+                this.address.getDistrict(),
+                this.address.getCity(),
+                this.address.getState(),
+                this.address.getZipCode(),
+                this.contact.getName(),
+                this.contact.getPhone(),
+                this.contact.getPhoneType(),
+                this.contact.getEmail()
         );
+    }
+
+    public int getId() { return id; };
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCompanyName() {
@@ -70,20 +75,20 @@ public class Competitor extends AbstractJuridical {
         this.companyName = companyName;
     }
 
-    public boolean isContracted() {
+    public int getIsContracted() {
         return isContracted;
     }
 
-    public void setContracted(boolean contracted) {
-        isContracted = contracted;
+    public void setIsContracted(int isContracted) {
+        this.isContracted = isContracted;
     }
 
-    public Process getProcess() {
-        return process;
+    public ArrayList<Process> getProcess() {
+        return processes;
     }
 
-    public void setProcess(Process process) {
-        this.process = process;
+    public void setProcess(ArrayList<Process> processes) {
+        this.processes = processes;
     }
 
     public ArrayList<Document> getDocuments() {
@@ -92,5 +97,13 @@ public class Competitor extends AbstractJuridical {
 
     public void setDocuments(ArrayList<Document> documents) {
         this.documents = documents;
+    }
+
+    public int getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(int processId) {
+        this.processId = processId;
     }
 }

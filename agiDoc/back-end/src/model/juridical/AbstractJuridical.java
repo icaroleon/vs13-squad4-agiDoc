@@ -1,5 +1,7 @@
 package model.juridical;
 
+import model.address.Address;
+import model.contact.Contact;
 import model.document.Document;
 import model.user.User;
 
@@ -7,21 +9,29 @@ import java.util.ArrayList;
 
 public abstract class AbstractJuridical implements IJuridical {
     protected String cnpj;
-    protected String address;
-    protected String contact;
+    protected String companyName;
+    protected Address address;
+    protected Contact contact;
     protected ArrayList<User> users;
 
     public AbstractJuridical() {
     }
 
-    public AbstractJuridical(String cpnj, String address, String contact) {
+    public AbstractJuridical(String cpnj, String companyName) {
         this.cnpj = cpnj;
+        this.companyName = companyName;
+    }
+
+    public AbstractJuridical(String cpnj, String companyName, Address address, Contact contact) {
+        this.cnpj = cpnj;
+        this.companyName = companyName;
         this.address = address;
         this.contact = contact;
     }
 
-    public AbstractJuridical(String cpnj, String address, String contact, ArrayList<User> users) {
+    public AbstractJuridical(String cpnj, String companyName, Address address, Contact contact, ArrayList<User> users) {
         this.cnpj = cpnj;
+        this.companyName = companyName;
         this.address = address;
         this.contact = contact;
         this.users = users;
@@ -35,27 +45,27 @@ public abstract class AbstractJuridical implements IJuridical {
         this.cnpj = cnpj;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
-    public String getContact() {
+    public Contact getContact() {
         return contact;
     }
 
-    public void setContact(String contact) {
+    public void setContact(Contact contact) {
         this.contact = contact;
     }
 
-    public ArrayList<User> getEmployees() {
+    public ArrayList<User> getUsers() {
         return users;
     }
 
-    public void setEmployees(ArrayList<User> users) {
+    public void setUsers(ArrayList<User> users) {
         this.users = users;
     }
 
