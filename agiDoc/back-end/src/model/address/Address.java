@@ -1,5 +1,7 @@
 package model.address;
 
+import model.Associated;
+
 public class Address {
     private Integer id;
     private String street;
@@ -9,7 +11,7 @@ public class Address {
     private String zipCode;
     private String city;
     private String state;
-    private AddressAssociated associated;
+    private Associated associated;
     private Integer associatedId;
 
     public Integer getId() {
@@ -76,11 +78,11 @@ public class Address {
         this.state = state;
     }
 
-    public AddressAssociated getAssociated() {
+    public Associated getAssociated() {
         return associated;
     }
 
-    public void setAssociated(AddressAssociated associated) {
+    public void setAssociated(Associated associated) {
         this.associated = associated;
     }
 

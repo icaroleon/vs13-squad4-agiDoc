@@ -2,17 +2,18 @@ package service;
 
 import database.DBConnection;
 import exception.DatabaseException;
-import model.address.Address;
 import model.Associated;
+import model.contact.Contact;
+import model.contact.ContactPhoneType;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class AddressService implements IService<Integer, Address> {
+public class ContactService implements IService<Integer, Contact> {
     @Override
     public Integer getNextId(Connection connection) throws DatabaseException {
         try {
-            String sql = "SELECT SEQ_ADDRESSES.NEXTVAL MY_SEQUENCE FROM DUAL";
+            String sql = "SELECT SEQ_CONTACTS.NEXTVAL MY_SEQUENCE FROM DUAL";
             Statement stmt = connection.createStatement();
             ResultSet res = stmt.executeQuery(sql);
 
@@ -26,7 +27,7 @@ public class AddressService implements IService<Integer, Address> {
 
     public Integer getAssociationNextId(Connection con) throws DatabaseException {
         try {
-            String sql = "SELECT SEQ_ADDRESSES_ASSOCIATIONS.NEXTVAL MY_SEQUENCE FROM DUAL";
+            String sql = "SELECT SEQ_CONTACTS_ASSOCIATIONS.NEXTVAL MY_SEQUENCE FROM DUAL";
 
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(sql);
@@ -40,56 +41,54 @@ public class AddressService implements IService<Integer, Address> {
     }
 
     @Override
-    public Address create(Address address) throws DatabaseException {
+    public Contact create(Contact contact) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
             Integer associationNextId = this.getAssociationNextId(con);
-            address.setId(nextId);
+            contact.setId(nextId);
 
             String sql1 = """
-                    INSERT INTO ADDRESSES (ID_ADDRESS, STREET, DISTRICT, "NUMBER", COMPLEMENT, CITY, STATE, ZIP_CODE)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO CONTACTS (ID_CONTACT, NAME, EMAIL, PHONE, PHONE_TYPE)
+                    VALUES (?, ?, ?, ?, ?)
                     """;
 
             PreparedStatement stmt1 = con.prepareStatement(sql1);
 
-            stmt1.setInt(1, address.getId());
-            stmt1.setString(2, address.getStreet());
-            stmt1.setString(3, address.getDistrict());
-            stmt1.setInt(4, address.getNumber());
-            stmt1.setString(5, address.getComplement());
-            stmt1.setString(6, address.getCity());
-            stmt1.setString(7, address.getState());
-            stmt1.setString(8, address.getZipCode());
+            stmt1.setInt(1, contact.getId());
+            stmt1.setString(2, contact.getName());
+            if (contact.getEmail() != null) stmt1.setString(3, contact.getEmail());
+            else stmt1.setNull(3, Types.VARCHAR);
+            stmt1.setString(4, contact.getPhone());
+            stmt1.setInt(5, contact.getPhoneType().getType());
 
             int res1 = stmt1.executeUpdate();
-            System.out.println("createAddress.res=" + res1);
+            System.out.println("createContact.res=" + res1);
 
             String sql2 = """
-                    INSERT INTO ADDRESSES_ASSOCIATIONS (ID_ADDRESS_ASSOCIATION, ID_ADDRESS, ID_COMPETITOR, ID_INSTITUTION)
+                    INSERT INTO CONTACTS_ASSOCIATIONS (ID_CONTACT_ASSOCIATION, ID_CONTACT, ID_COMPETITOR, ID_INSTITUTION)
                     VALUES (?, ?, ?, ?)
                     """;
 
             PreparedStatement stmt2 = con.prepareStatement(sql2);
 
             stmt2.setInt(1, associationNextId);
-            stmt2.setInt(2, address.getId());
-            if (address.getAssociated().getType().equals(1)) {
-                stmt2.setInt(3, address.getAssociatedId());
+            stmt2.setInt(2, contact.getId());
+            if (contact.getAssociated().getType().equals(1)) {
+                stmt2.setInt(3, contact.getAssociatedId());
                 stmt2.setNull(4, Types.INTEGER);
             }
-            if (address.getAssociated().getType().equals(2)) {
+            if (contact.getAssociated().getType().equals(2)) {
                 stmt2.setNull(3, Types.INTEGER);
-                stmt2.setInt(4, address.getAssociatedId());
+                stmt2.setInt(4, contact.getAssociatedId());
             }
 
             int res2 = stmt2.executeUpdate();
-            System.out.println("createAddressAssociation.res=" + res2);
+            System.out.println("createContactAssociation.res=" + res2);
 
-            return address;
+            return contact;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -104,41 +103,35 @@ public class AddressService implements IService<Integer, Address> {
     }
 
     @Override
-    public boolean update(Integer id, Address address) throws DatabaseException {
+    public boolean update(Integer id, Contact contact) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE ADDRESSES SET");
+            sql.append("UPDATE CONTACTS SET");
 
-            if (address.getStreet() != null) sql.append(" STREET = ?,");
-            if (address.getDistrict() != null) sql.append(" DISTRICT = ?,");
-            if (address.getNumber() != null) sql.append(" \"NUMBER\" = ?,");
-            if (address.getComplement() != null) sql.append(" COMPLEMENT = ?,");
-            if (address.getCity() != null) sql.append(" CITY = ?,");
-            if (address.getState() != null) sql.append(" STATE = ?,");
-            if (address.getZipCode() != null) sql.append(" ZIP_CODE = ?,");
+            if (contact.getName() != null) sql.append(" NAME = ?,");
+            if (contact.getEmail() != null) sql.append(" EMAIL = ?,");
+            if (contact.getPhone() != null) sql.append(" PHONE = ?,");
+            if (contact.getPhoneType() != null) sql.append(" PHONE_TYPE = ?,");
 
             sql.deleteCharAt(sql.length() - 1);
-            sql.append(" WHERE ID_ADDRESS = ?");
+            sql.append(" WHERE ID_CONTACT = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
             int index = 1;
 
-            if (address.getStreet() != null) stmt.setString(index++, address.getStreet());
-            if (address.getDistrict() != null) stmt.setString(index++, address.getDistrict());
-            if (address.getNumber() != null) stmt.setInt(index++, address.getNumber());
-            if (address.getComplement() != null) stmt.setString(index++, address.getComplement());
-            if (address.getCity() != null) stmt.setString(index++, address.getCity());
-            if (address.getState() != null) stmt.setString(index++, address.getState());
-            if (address.getZipCode() != null) stmt.setString(index++, address.getZipCode());
+            if (contact.getName() != null) stmt.setString(index++, contact.getName());
+            if (contact.getEmail() != null) stmt.setString(index++, contact.getEmail());
+            if (contact.getPhone() != null) stmt.setString(index++, contact.getPhone());
+            if (contact.getPhoneType() != null) stmt.setInt(index++, contact.getPhoneType().getType());
 
             stmt.setInt(index++, id);
 
             int res = stmt.executeUpdate();
-            System.out.println("updateAddress.res=" + res);
+            System.out.println("updateContact.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -160,23 +153,23 @@ public class AddressService implements IService<Integer, Address> {
         try {
             con = DBConnection.getConnection();
 
-            String sql1 = "DELETE FROM ADDRESSES_ASSOCIATIONS WHERE ID_ADDRESS = ?";
+            String sql1 = "DELETE FROM CONTACTS_ASSOCIATIONS WHERE ID_CONTACT = ?";
 
             PreparedStatement stmt1 = con.prepareStatement(sql1);
 
             stmt1.setInt(1, id);
 
             int res1 = stmt1.executeUpdate();
-            System.out.println("deleteAddressAssociation.res=" + res1);
+            System.out.println("deleteContactAssociation.res=" + res1);
 
-            String sql2 = "DELETE FROM ADDRESSES WHERE ID_ADDRESS = ?";
+            String sql2 = "DELETE FROM CONTACTS WHERE ID_CONTACT = ?";
 
             PreparedStatement stmt2 = con.prepareStatement(sql2);
 
             stmt2.setInt(1, id);
 
             int res2 = stmt2.executeUpdate();
-            System.out.println("deleteAddress.res=" + res2);
+            System.out.println("deleteContact.res=" + res2);
 
             return res2 > 0;
         } catch (SQLException e) {
@@ -193,51 +186,48 @@ public class AddressService implements IService<Integer, Address> {
     }
 
     @Override
-    public ArrayList<Address> list() throws DatabaseException {
-        ArrayList<Address> addresses = new ArrayList<>();
+    public ArrayList<Contact> list() throws DatabaseException {
+        ArrayList<Contact> contacts = new ArrayList<>();
         Connection con = null;
         try {
             con = DBConnection.getConnection();
 
-            String sql1 = "SELECT * FROM ADDRESSES";
+            String sql1 = "SELECT * FROM CONTACTS";
 
             Statement stmt1 = con.createStatement();
             ResultSet res1 = stmt1.executeQuery(sql1);
 
             while (res1.next()) {
-                Address address = new Address();
-                address.setId(res1.getInt("ID_ADDRESS"));
-                address.setStreet(res1.getString("STREET"));
-                address.setDistrict(res1.getString("DISTRICT"));
-                address.setNumber(res1.getInt("NUMBER"));
-                address.setComplement(res1.getString("COMPLEMENT"));
-                address.setCity(res1.getString("CITY"));
-                address.setState(res1.getString("STATE"));
-                address.setZipCode(res1.getString("ZIP_CODE"));
+                Contact contact = new Contact();
+                contact.setId(res1.getInt("ID_CONTACT"));
+                contact.setName(res1.getString("NAME"));
+                contact.setEmail(res1.getString("EMAIL"));
+                contact.setPhone(res1.getString("PHONE"));
+                contact.setPhoneType(ContactPhoneType.ofType(res1.getInt("PHONE_TYPE")));
 
-                String sql2 = "SELECT * FROM ADDRESSES_ASSOCIATIONS WHERE ID_ADDRESS = ?";
+                String sql2 = "SELECT * FROM CONTACTS_ASSOCIATIONS WHERE ID_CONTACT = ?";
 
                 PreparedStatement stmt2 = con.prepareStatement(sql2);
 
-                stmt2.setInt(1, address.getId());
+                stmt2.setInt(1, contact.getId());
 
                 ResultSet res2 = stmt2.executeQuery();
 
                 if (res2.next()) {
                     if (res2.getInt("ID_COMPETITOR") != 0) {
-                        address.setAssociated(Associated.ofType(1));
-                        address.setAssociatedId(res2.getInt("ID_COMPETITOR"));
+                        contact.setAssociated(Associated.ofType(1));
+                        contact.setAssociatedId(res2.getInt("ID_COMPETITOR"));
                     }
                     if (res2.getInt("ID_INSTITUTION") != 0) {
-                        address.setAssociated(Associated.ofType(2));
-                        address.setAssociatedId(res2.getInt("ID_INSTITUTION"));
+                        contact.setAssociated(Associated.ofType(2));
+                        contact.setAssociatedId(res2.getInt("ID_INSTITUTION"));
                     }
                 }
 
-                addresses.add(address);
+                contacts.add(contact);
             }
 
-            return addresses;
+            return contacts;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
