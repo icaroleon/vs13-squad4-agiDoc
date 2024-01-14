@@ -8,12 +8,11 @@ import model.process.Process;
 import java.util.ArrayList;
 
 public class Competitor extends AbstractJuridical {
-
     private int id;
-    private String companyName;
-    private boolean isContracted = false;
-    private Process process;
+    private int isContracted;
+    private ArrayList<Process> processes;
     private ArrayList<Document> documents;
+    private int processId;
 
 
     public Competitor(){}
@@ -73,20 +72,20 @@ public class Competitor extends AbstractJuridical {
         this.companyName = companyName;
     }
 
-    public boolean isContracted() {
+    public int getIsContracted() {
         return isContracted;
     }
 
-    public void setContracted(boolean contracted) {
-        isContracted = contracted;
+    public void setIsContracted(int isContracted) {
+        this.isContracted = isContracted;
     }
 
-    public Process getProcess() {
-        return process;
+    public ArrayList<Process> getProcess() {
+        return processes;
     }
 
-    public void setProcess(Process process) {
-        this.process = process;
+    public void setProcess(ArrayList<Process> processes) {
+        this.processes = processes;
     }
 
     public ArrayList<Document> getDocuments() {
@@ -95,5 +94,13 @@ public class Competitor extends AbstractJuridical {
 
     public void setDocuments(ArrayList<Document> documents) {
         this.documents = documents;
+    }
+
+    public int getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(int processId) {
+        this.processId = processId;
     }
 }

@@ -4,7 +4,6 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.UserController;
 import controller.ProcessController;
-import model.department.Department;
 import model.process.Process;
 import model.user.User;
 
@@ -19,7 +18,7 @@ public class Navigation {
         this.scanner = new Scanner(System.in);
     }
 
-    public String showMenu(String option) throws Exception {
+    public String showMenu(String option) {
         this.scanner = new Scanner(System.in);
         String chooseNavigation = "";
 
@@ -53,7 +52,7 @@ public class Navigation {
         return option;
     }
 
-    public String employeesMenu() throws Exception {
+    public String employeesMenu() {
         String option;
         boolean running = true;
 

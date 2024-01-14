@@ -37,48 +37,32 @@ public class CompetitorController {
         }
 
         Address createdAddress = addressController.create(AddressAssociated.COMPETITOR, newCompetitor.getId());
-
         newCompetitor.setAddress(createdAddress);
 
-        // TODO: Aguardando model Contact
-//        System.out.print("[Contato] Nome do contato: ");
-//        contact.setName(scanner.nextLine());
-//
-//        System.out.print("[Contato] Email (opcional): ");
-//        contact.setEmail(scanner.nextLine());
-//
-//        System.out.print("[Contato] Telefone: ");
-//        contact.setPhone(scanner.nextLine());
+        // TODO: Aguardando controller Contact
+//        Contact createdContact = contactController.create(AddressAssociated.COMPETITOR, newCompetitor.getId());
+//        newCompetitor.setContact(createdContact);
 
-        // TODO: Implementar seleção de enum
-//        System.out.println("""
-//                0 - Fixo
-//                1 - Móvel
-//                """);
-//        System.out.print("[Contato] Tipo de telefone: ");
-//        contact.setPhoneType(scanner.nextLine());
+        try {
+            competitorService.addCompetitorToProcess(newCompetitor.getId(), processId);
+        } catch (DatabaseException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
 
-        // TODO : Aguardando service de contact
-//        try {
-//            contactService.create(contact);
-//        } catch (DatabaseException e) {
-//            System.out.println("ERRO:" + e.getMessage());
-//            return;
-//        }
         System.out.println(newCompetitor);
     }
 
     public void listAll(int processId) {
-        ArrayList<Competitor> completitorList = new ArrayList<>();
+        ArrayList<Competitor> competitorList = new ArrayList<>();
 
         try {
-            completitorList = competitorService.list();
+            competitorList = competitorService.list();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("ERRO: " + e.getMessage());
         }
 
-        for (Competitor competitor : completitorList) {
-            System.out.println(competitor.toString());
+        for (Competitor competitor : competitorList) {
+            if (processId == competitor.getProcessId()) System.out.println(competitor);
         }
     }
 
@@ -122,7 +106,7 @@ public class CompetitorController {
 //            }
 
         } catch (DatabaseException e) {
-            e.printStackTrace();
+            System.out.println("ERRO: " + e.getMessage());
         }
     }
 
@@ -139,7 +123,7 @@ public class CompetitorController {
 
             competitorService.delete(validId);
         } catch (DatabaseException e) {
-            e.printStackTrace();
+            System.out.println("ERRO: " + e.getMessage());
         }
 
     }
