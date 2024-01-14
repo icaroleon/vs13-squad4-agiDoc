@@ -1,5 +1,6 @@
 package controller;
 
+import model.Associated;
 import model.document.Document;
 import model.document.DocumentType;
 import model.process.Process;
@@ -61,82 +62,6 @@ public class DocumentController {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void createDocument(int processId) {
-        System.out.print("Digite o protocolo do documento: ");
-        protocol = sc.nextLine();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        boolean isValidDate = false;
-        LocalDate localDate = null;
-        LocalDate today = LocalDate.now();
-
-        do {
-            try {
-                System.out.print("Digite a data de expiração do documento (formato(dd/mm/aaaa)): ");
-                expirationDate = sc.nextLine();
-
-                localDate = LocalDate.parse(expirationDate, formatter);
-
-                if (localDate.isAfter(today)) {
-                    isValidDate = true;
-                } else {
-                    System.out.println("A data precisa ser no futuro!");
-                }
-            } catch (DateTimeParseException e) {
-                System.out.println("A data está em um formato inválido");
-            }
-        } while (!isValidDate);
-
-        System.out.print("Digite o conteúdo do documento: ");
-        content = sc.nextLine();
-
-        boolean isValidOption = false;
-        String typeInput;
-        int intTypeInput;
-
-        do {
-            System.out.println("""
-                    1 - Edital
-                    2 - Portaria
-                    3 - Certidão
-                    4 - Termo de Referência
-                    5 - Delegação de Competência
-                    6 - Manifestação
-                    7 - Anexos
-                    8 - Justificativa de Necessidade
-                    9 - Parecer Jurídico
-                    """);
-            System.out.println("Digite o tipo do documento: ");
-            typeInput = sc.nextLine();
-
-            try {
-                intTypeInput = Integer.parseInt(typeInput);
-
-                type = DocumentType.values()[intTypeInput - 1];
-
-                if (type != null) {
-                    isValidOption = true;
-                }
-            } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-                System.out.println("Opção inválida!");
-            }
-        } while (!isValidOption);
-
-        Document document = new Document(protocol, localDate, content);
-
-        try {
-            Process process = processService.get(processId);
-
-            Document createdDocument = documentService.create(document);
-            process.setDocuments(documentService.list());
-
-            System.out.println("Documento criado com o protocolo: " + createdDocument.getProtocol() + "\n");
-            System.out.println(createdDocument);
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-        }
     }
 
     public void listAll(int processId) {
