@@ -15,17 +15,52 @@ import java.util.Scanner;
 import exception.DatabaseException;
 
 public class DocumentController {
-    private static String protocol;
-    private static String expirationDate;
-    private static String origin = "Processo";
-    private static Integer id;
-    private static DocumentType type;
-    private static String content;
-    private static final Scanner sc = new Scanner(System.in);
-    private static DocumentService documentService;
-    private static ProcessService processService;
+    private final DocumentService documentService = new DocumentService();
+    private final Scanner scanner = new Scanner(System.in);
 
-    public DocumentController() {
+    public Document create(Associated associated, Integer associatedId) {
+        try {
+            Document document = new Document();
+
+            System.out.print("Digite o protocolo: ");
+            document.setProtocol(scanner.nextLine().trim());
+
+            boolean isValidDate = false;
+            LocalDate today = LocalDate.now();
+
+            do {
+                try {
+                    System.out.print("Digite a data de expiração do documento (formato(dd/mm/aaaa)): ");
+                    String expirationDateStr = scanner.nextLine();
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    LocalDate localDate = LocalDate.parse(expirationDateStr, formatter);
+
+                    if (localDate.isAfter(today)) {
+                        isValidDate = true;
+                        document.setExpirationDate(localDate);
+                    } else {
+                        System.out.println("A data precisa ser no futuro!");
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println("A data está em um formato inválido");
+                }
+            } while (!isValidDate);
+
+            System.out.print("Digite o conteúdo do documento: ");
+            String content = scanner.nextLine();
+            document.setFile(content);
+
+            document.setSigned(false);
+
+            document.setAssociated(associated);
+            document.setAssociatedId(associatedId);
+
+            return documentService.create(document);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void createDocument(int processId) {
