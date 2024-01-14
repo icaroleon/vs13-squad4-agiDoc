@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CompetitorService implements IService<Integer, Competitor> {
+    public CompetitorService(ArrayList<Competitor> competitors) {
+    }
+
     @Override
     public Integer getNextId(Connection con) throws SQLException {
         String sql = "SELECT SEQ_COMPETITORS.nextval mysequence from DUAL";

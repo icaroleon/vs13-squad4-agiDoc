@@ -4,11 +4,8 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.UserController;
 import controller.ProcessController;
-<<<<<<< HEAD
 import model.department.Department;
 import exception.DatabaseException;
-=======
->>>>>>> 28f98016b5105acb085df8f5e00be864a9c8722f
 import model.process.Process;
 import model.user.User;
 
@@ -23,7 +20,7 @@ public class Navigation {
         this.scanner = new Scanner(System.in);
     }
 
-    public String showMenu(String option) {
+    public String showMenu(String option) throws DatabaseException {
         this.scanner = new Scanner(System.in);
         String chooseNavigation = "";
 
@@ -162,16 +159,9 @@ public class Navigation {
             switch (option) {
                 case "1" -> ProcessController.getAll();
                 case "2" -> {
-<<<<<<< HEAD
                     System.out.print("Digite o número do processo: ");
                     String inputProcessNumber = scanner.nextLine();
                     currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
-=======
-                    System.out.print("Digite o identificador do processo: ");
-                    String id = scanner.nextLine();
-                    this.inputProcessId = Integer.parseInt(id);
-                    currentProcess = ProcessController.get(inputProcessId);
->>>>>>> 28f98016b5105acb085df8f5e00be864a9c8722f
                     if(currentProcess != null){
                         option = "3";
                         running = false;
@@ -254,10 +244,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> document.createDocument(currentProcess, inputProcessId);
+                case "1" -> document.createDocument(currentProcess, String.valueOf(inputProcessId));
                 case "2" -> document.getAllDocuments();
                 case "3" -> document.getDocument();
-                case "4" -> document.updateDocument(currentProcess, inputProcessId);
+                case "4" -> document.updateDocument(currentProcess, String.valueOf(inputProcessId));
                 case "5" -> document.deleteDocument(currentProcess);
                 case "6" -> document.signDocument(currentProcess);
                 case "0", "9" -> running = false;

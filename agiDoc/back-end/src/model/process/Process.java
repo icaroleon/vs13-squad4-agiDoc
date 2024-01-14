@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import model.competitor.Competitor;
 import model.document.Document;
+import model.document.DocumentType;
 
 public class Process implements IProcess {
     UUID uuid = UUID.randomUUID();
