@@ -10,7 +10,7 @@ public class User {
     private String password;
     private String role = "admin";
     private String position;
-    private Department department;
+    private Department department = new Department();
 
     public User(){}
 

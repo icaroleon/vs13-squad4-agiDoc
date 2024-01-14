@@ -38,7 +38,7 @@ public class UserService implements IService<Integer, User> {
 
             String sql = """
                     INSERT INTO USERS
-                    (ID_USER, REGISTRATION, NAME, USER, PASSWORD, ROLE, POSITION, ID_DEPARTMENT)
+                    (ID_USER, REGISTRATION, NAME, "USER", PASSWORD, "ROLE", "POSITION", ID_DEPARTAMENT)
                     VALUES(?,?,?,?,?,?,?,?)
                     """;
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -49,7 +49,7 @@ public class UserService implements IService<Integer, User> {
             stmt.setString(4, user.getUser());
             stmt.setString(5, user.getPassword());
             stmt.setString(6, user.getRole());
-            stmt.setString(7, user.getPosition());;
+            stmt.setString(7, user.getPosition());
             stmt.setInt(8, user.getDepartment().getIdDepartment());
 
             int res = stmt.executeUpdate();
@@ -179,9 +179,9 @@ public class UserService implements IService<Integer, User> {
         try {
             con = DBConnection.getConnection();
 
-            String sql = "SELECT U.*, D.NAME AS DEPARTAMENT_NAME " +
+            String sql =  "SELECT U.*, D.NAME AS NAME_DEPARTAMENT " +
                     "FROM USERS U " +
-                    "INNER JOIN DEPARTAMENTS D ON (U.ID_DEPARTAMENT = D.ID_DEPARTAMENT) " +
+                    "INNER JOIN DEPARTAMENTS D ON (D.ID_DEPARTAMENT = U.ID_DEPARTAMENT) " +
                     "WHERE U.ID_USER = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -210,11 +210,13 @@ public class UserService implements IService<Integer, User> {
         User user = new User();
         user.setIdUser(res.getInt("ID_USER"));
         user.setName(res.getString("NAME"));
+        user.setUser(res.getString("USER"));
+        user.setPassword(res.getString("PASSWORD"));
         user.setRegistration(res.getString("ROLE"));
         user.setPosition(res.getString("POSITION"));
 
         Department department = new Department();
-        department.setName(res.getString("NAME"));
+        department.setName(res.getString("NAME_DEPARTAMENT"));
         department.setIdDepartment(res.getInt("ID_DEPARTAMENT"));
         user.setDepartment(department);
         return user;

@@ -1,6 +1,6 @@
 package navigation;
 
-import controller.DocumentController;
+//import controller.DocumentController;
 import controller.CompetitorController;
 import controller.UserController;
 import controller.ProcessController;
@@ -27,9 +27,9 @@ public class Navigation {
         switch (option) {
             case "0" -> chooseNavigation = this.mainMenu();
             case "1" -> chooseNavigation = this.processesMenu();
-            case "2" -> chooseNavigation = this.employeesMenu();
+            case "2" -> chooseNavigation = this.userMenu();
             case "3" -> chooseNavigation = this.oneProcessMenu();
-            case "5" -> chooseNavigation = this.documentsMenu();
+        //    case "5" -> chooseNavigation = this.documentsMenu();
             case "6" -> chooseNavigation = this.competitorsMenu();
         }
 
@@ -44,7 +44,7 @@ public class Navigation {
         System.out.println("|                  agiDoc                   |");
         System.out.println("+-------------------------------------------+");
         System.out.println("| 1 - Processos                             |");
-        System.out.println("| 2 - Funcionários                          |");
+        System.out.println("| 2 - Usuários                              |");
         System.out.println("|                                           |");
         System.out.println("| 0 - Sair                                  |");
         System.out.println("+-------------------------------------------+");
@@ -54,7 +54,7 @@ public class Navigation {
         return option;
     }
 
-    public String employeesMenu() {
+    public String userMenu() {
         String option;
         boolean running = true;
 
@@ -65,9 +65,9 @@ public class Navigation {
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1 - Cadastrar usuário                     |");
             System.out.println("| 2 - Listar usuários                       |");
-            System.out.println("| 2 - Listar um usuário específico          |");
-            System.out.println("| 3 - Editar usuário                        |");
-            System.out.println("| 4 - Remover usuário                       |");
+            System.out.println("| 3 - Listar um usuário específico          |");
+            System.out.println("| 4 - Editar usuário                        |");
+            System.out.println("| 5 - Remover usuário                       |");
             System.out.println("|                                           |");
             System.out.println("| 0 - Sair                                  |");
             System.out.println("| 9 - Voltar                                |");
@@ -220,43 +220,43 @@ public class Navigation {
         return option;
     }
 
-    public String documentsMenu() {
-        DocumentController document = new DocumentController(currentProcess.getDocuments());
-        String option;
-        boolean running = true;
-
-        do {
-            System.out.println("\n\n");
-            System.out.println("+-------------------------------------------+");
-            System.out.println("|            agiDoc | Documentos            |");
-            System.out.println("+-------------------------------------------+");
-            System.out.println("| 1 - Adicionar Documento                   |");
-            System.out.println("| 2 - Listar Documentos                     |");
-            System.out.println("| 3 - Pesquisar um documento                |");
-            System.out.println("| 4 - Editar Documento                      |");
-            System.out.println("| 5 - Excluir Documento                     |");
-            System.out.println("| 6 - Assinar Documento                     |");
-            System.out.println("|                                           |");
-            System.out.println("| 0 - Sair                                  |");
-            System.out.println("| 9 - Voltar                                |");
-            System.out.println("+-------------------------------------------+");
-            System.out.print("Digite uma opção: ");
-            option = scanner.nextLine();
-
-            switch (option) {
-                case "1" -> document.createDocument(currentProcess, String.valueOf(inputProcessId));
-                case "2" -> document.getAllDocuments();
-                case "3" -> document.getDocument();
-                case "4" -> document.updateDocument(currentProcess, String.valueOf(inputProcessId));
-                case "5" -> document.deleteDocument(currentProcess);
-                case "6" -> document.signDocument(currentProcess);
-                case "0", "9" -> running = false;
-                default -> System.out.println("Opção inválida. Tente novamente.");
-            }
-        } while (running);
-
-        return option;
-    }
+//    public String documentsMenu() {
+//        DocumentController document = new DocumentController(currentProcess.getDocuments());
+//        String option;
+//        boolean running = true;
+//
+//        do {
+//            System.out.println("\n\n");
+//            System.out.println("+-------------------------------------------+");
+//            System.out.println("|            agiDoc | Documentos            |");
+//            System.out.println("+-------------------------------------------+");
+//            System.out.println("| 1 - Adicionar Documento                   |");
+//            System.out.println("| 2 - Listar Documentos                     |");
+//            System.out.println("| 3 - Pesquisar um documento                |");
+//            System.out.println("| 4 - Editar Documento                      |");
+//            System.out.println("| 5 - Excluir Documento                     |");
+//            System.out.println("| 6 - Assinar Documento                     |");
+//            System.out.println("|                                           |");
+//            System.out.println("| 0 - Sair                                  |");
+//            System.out.println("| 9 - Voltar                                |");
+//            System.out.println("+-------------------------------------------+");
+//            System.out.print("Digite uma opção: ");
+//            option = scanner.nextLine();
+//
+//            switch (option) {
+//                case "1" -> document.createDocument(currentProcess, String.valueOf(inputProcessId));
+//                case "2" -> document.getAllDocuments();
+//                case "3" -> document.getDocument();
+//                case "4" -> document.updateDocument(currentProcess, String.valueOf(inputProcessId));
+//                case "5" -> document.deleteDocument(currentProcess);
+//                case "6" -> document.signDocument(currentProcess);
+//                case "0", "9" -> running = false;
+//                default -> System.out.println("Opção inválida. Tente novamente.");
+//            }
+//        } while (running);
+//
+//        return option;
+//    }
 
     public String competitorsMenu() {
         CompetitorController competitor = new CompetitorController();

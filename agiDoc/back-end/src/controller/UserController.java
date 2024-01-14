@@ -10,7 +10,7 @@ public class UserController {
 
     public static boolean login(String userName, String password) {
         try {
-           return userService.list().stream().anyMatch(user -> user.getUser().equals(userName) && user.getPassword().equals(password));
+            return userService.list().stream().anyMatch(user -> user.getUser().equals(userName) && user.getPassword().equals(password));
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
