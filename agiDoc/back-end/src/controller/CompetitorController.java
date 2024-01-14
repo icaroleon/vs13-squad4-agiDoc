@@ -1,99 +1,126 @@
 package controller;
 
+import exception.DatabaseException;
+import model.address.Address;
+import model.Associated;
 import model.competitor.Competitor;
+import model.contact.Contact;
 import service.CompetitorService;
-import model.process.Process;
 
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CompetitorController {
-    private static String id;
-    private static String cnpj;
-    private static String address;
-    private static String contact;
-    private static String companyName;
     private final Scanner scanner = new Scanner(System.in);
-    private final CompetitorService competitorService;
+    private final CompetitorService competitorService = new CompetitorService();
+    private final AddressController addressController = new AddressController();
+    private final ContactController contactController = new ContactController();
 
-    public CompetitorController(ArrayList<Competitor> competitors) { competitorService = new CompetitorService(competitors); }
+    public CompetitorController() {}
 
-    public  void createCompetitor(Process process) {
+    public  void createCompetitor(int processId) {
+        Competitor newCompetitor = new Competitor();
+
         System.out.print("Digite o CNPJ da empresa: ");
-        cnpj = scanner.nextLine();
-
-        System.out.print("Digite o endereço da empresa: ");
-        address = scanner.nextLine();
-
-        System.out.print("Digite o contato da empresa: ");
-        contact = scanner.nextLine();
+        newCompetitor.setCnpj(scanner.nextLine());
 
         System.out.print("Digite o nome da empresa: ");
-        companyName = scanner.nextLine();
-
-
-        Competitor newCompetitor = new Competitor(cnpj, address, contact, companyName);
-
-        competitorService.create(newCompetitor);
-        process.setCompetitors(competitorService.getAll());
-
-        System.out.println(newCompetitor);
-    }
-
-    public void getAll(){
-        for (Competitor newCompetitor : competitorService.getAll())
-            System.out.println(newCompetitor.toString());
-    }
-
-    public void update(Process process) {
-
-        System.out.print("Digite o id da empresa que quer fazer as alterações: ");
-        id = scanner.nextLine();
+        newCompetitor.setCompanyName(scanner.nextLine());
 
         try {
-            Competitor existCompetitor = competitorService.get(id);
-
-            System.out.print("Digite o novo CNPJ da empresa(deixe em branco para manter o valor atual): ");
-            cnpj = scanner.nextLine();
-            cnpj = (cnpj.isEmpty()) ? existCompetitor.getCnpj() : cnpj;
-
-            System.out.print("Digite o novo endereço da empresa(deixe em branco para manter o valor atual): ");
-            address = scanner.nextLine();
-            address = (address.isEmpty()) ? existCompetitor.getAddress() : address;
-
-            System.out.print("Digite o novo contato da empresa(deixe em branco para manter o valor atual): ");
-            contact = scanner.nextLine();
-            contact = (contact.isEmpty()) ? existCompetitor.getContact() : contact;
-
-            System.out.print("Digite o novo nome da empresa(deixe em branco para manter o valor atual): ");
-            companyName = scanner.nextLine();
-            companyName = (companyName.isEmpty()) ? existCompetitor.getCompanyName() : companyName;
-
-            Competitor newCompetitor = new Competitor(cnpj,address, contact, companyName);
-
-            competitorService.update(id, newCompetitor);
-            process.setCompetitors(competitorService.getAll());
-
-        } catch (Exception e){
-            System.err.println("Erro: " + e.getMessage());
+            newCompetitor = competitorService.create(newCompetitor);
+        } catch (DatabaseException e) {
+            System.out.println("ERRO:" + e.getMessage());
+            return;
         }
 
-    }
+        Address createdAddress = addressController.create(Associated.COMPETITOR, newCompetitor.getId());
+        newCompetitor.setAddress(createdAddress);
 
-    public void delete(Process process) {
-        System.out.println("Tem certeza que deseja excluir um concorrente? (S/N)");
-        boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
-
-        if (isNotSure) return;
+        Contact createdContact = contactController.create(Associated.COMPETITOR, newCompetitor.getId());
+        newCompetitor.setContact(createdContact);
 
         try {
-            System.out.print("Digite o id da empresa que quer deletar: ");
-            id = scanner.nextLine();
+            competitorService.addCompetitorToProcess(newCompetitor.getId(), processId);
+            System.out.println(newCompetitor);
+        } catch (DatabaseException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
 
-            competitorService.delete(id);
-            process.setCompetitors(competitorService.getAll());
-        } catch (Exception e) {
-            System.out.println("Competidor não encontrado!");
+    public void listAll(int processId) {
+        ArrayList<Competitor> competitorList = new ArrayList<>();
+
+        try {
+            competitorList = competitorService.list();
+        } catch (SQLException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+
+        for (Competitor competitor : competitorList) {
+            if (processId == competitor.getProcessId()) System.out.println(competitor);
+        }
+    }
+
+    public void update() {
+
+        System.out.print("Digite o id da empresa que quer fazer as alterações: ");
+        String id = scanner.nextLine();
+
+        try {
+            int validId = Integer.parseInt(id);
+            Competitor existCompetitor = competitorService.get(validId);
+
+            System.out.print("Digite o novo CNPJ da empresa(deixe em branco para manter o valor atual): ");
+            String cnpj = scanner.nextLine();
+            existCompetitor.setCnpj((cnpj.isEmpty()) ? existCompetitor.getCnpj() : cnpj);
+
+            System.out.print("Digite o novo nome da empresa(deixe em branco para manter o valor atual): ");
+            String companyName = scanner.nextLine();
+            existCompetitor.setCompanyName((companyName.isEmpty()) ? existCompetitor.getCompanyName() : companyName);
+
+
+            boolean isCompetitorUpdated = competitorService.update(validId, existCompetitor);
+
+            if (!isCompetitorUpdated) {
+                System.out.println("Erro ao atualizar dados do concorrente de id: " + validId);
+                return;
+            }
+
+            boolean isAddressUpdated = addressController.update(existCompetitor.getAddress().getId());
+
+            if (!isAddressUpdated) {
+                System.out.println("Erro ao atualizar dados do endereço do concorrente de id: " + validId);
+                return;
+            }
+
+            boolean isContactUpdated = contactController.update(existCompetitor.getContact().getId());
+
+            if (!isContactUpdated) {
+                System.out.println("Erro ao atualizar dados do contato do concorrente de id: " + validId);
+            }
+
+        } catch (DatabaseException e) {
+            System.out.println("ERRO: " + e.getMessage());
+        }
+    }
+
+    public void delete() {
+        try {
+            System.out.print("Digite o id do concorrente que deseja remover: ");
+            String id = scanner.nextLine();
+            int validId = Integer.parseInt(id);
+
+            System.out.println("Tem certeza que deseja excluir um concorrente? (S/N)");
+            boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
+
+            if (isNotSure) return;
+
+            competitorService.delete(validId);
+        } catch (DatabaseException e) {
+            System.out.println("ERRO: " + e.getMessage());
         }
 
     }

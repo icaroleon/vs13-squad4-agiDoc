@@ -4,7 +4,6 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.UserController;
 import controller.ProcessController;
-import model.department.Department;
 import model.process.Process;
 import model.user.User;
 
@@ -12,14 +11,14 @@ import java.util.Scanner;
 
 public class Navigation {
     private Scanner scanner;
-    private String inputProcessId;
+    private int inputProcessId;
     private Process currentProcess;
 
     public Navigation() {
         this.scanner = new Scanner(System.in);
     }
 
-    public String showMenu(String option) throws Exception {
+    public String showMenu(String option) {
         this.scanner = new Scanner(System.in);
         String chooseNavigation = "";
 
@@ -53,7 +52,7 @@ public class Navigation {
         return option;
     }
 
-    public String employeesMenu() throws Exception {
+    public String employeesMenu() {
         String option;
         boolean running = true;
 
@@ -159,7 +158,8 @@ public class Navigation {
                 case "1" -> ProcessController.getAll();
                 case "2" -> {
                     System.out.print("Digite o identificador do processo: ");
-                    this.inputProcessId = scanner.nextLine();
+                    String id = scanner.nextLine();
+                    this.inputProcessId = Integer.parseInt(id);
                     currentProcess = ProcessController.get(inputProcessId);
                     if(currentProcess != null){
                         option = "3";
@@ -258,7 +258,7 @@ public class Navigation {
     }
 
     public String competitorsMenu() {
-        CompetitorController competitor = new CompetitorController(currentProcess.getCompetitors());
+        CompetitorController competitor = new CompetitorController();
         String option;
         boolean running = true;
 
@@ -279,10 +279,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> competitor.createCompetitor(currentProcess);
-                case "2" -> competitor.getAll();
-                case "3" -> competitor.update(currentProcess);
-                case "4" -> competitor.delete(currentProcess);
+                case "1" -> competitor.createCompetitor(inputProcessId);
+                case "2" -> competitor.listAll(inputProcessId);
+                case "3" -> competitor.update();
+                case "4" -> competitor.delete();
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
