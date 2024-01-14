@@ -3,8 +3,11 @@ package service;
 import model.document.Document;
 
 import java.sql.*;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import javax.swing.plaf.nimbus.State;
 
 import database.DBConnection;
 import exception.DatabaseException;
@@ -74,6 +77,54 @@ public class DocumentService implements IService<Integer, Document> {
     }
 
     @Override
+    public ArrayList<Document> list() throws DatabaseException {
+        ArrayList<Document> docs = new ArrayList<>();
+        Connection con = null;
+
+        try {
+            con = DBConnection.getConnection();
+            Statement stmt = con.createStatement();
+
+            String sqlSelect = """
+                    SELECT * FROM VS_13_EQUIPE_4.DOCUMENTS C
+                    JOIN VS_13_EQUIPE_4.DOCUMENTS_ASSOCIATIONS DA ON DA.ID_DOCUMENT = C.ID_DOCUMENT
+                    """;
+
+            ResultSet res = stmt.executeQuery(sqlSelect);
+
+            while (res.next()) {
+                Document document = new Document();
+
+                document.setId(res.getInt("ID_DOCUMENT"));
+                document.setProtocol(res.getString("PROTOCOL"));
+                document.setExpirationDate(
+                        res.getDate("EXPIRATION_DATE").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+                boolean isSigned = false;
+
+                if (res.getInt("IS_SIGNED") == 1)
+                    isSigned = true;
+
+                document.setSigned(isSigned);
+
+                docs.add(document);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return docs;
+    }
+
+    @Override
     public boolean update(Integer id, Document object) throws DatabaseException {
         return true;
     }
@@ -85,12 +136,6 @@ public class DocumentService implements IService<Integer, Document> {
 
     public Document get(Integer id) {
         return new Document();
-    }
-
-    @Override
-    public ArrayList<Document> list() throws DatabaseException {
-        ArrayList<Document> docs = new ArrayList<>();
-        return docs;
     }
 
 }
