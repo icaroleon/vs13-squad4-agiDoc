@@ -35,11 +35,14 @@ public class DocumentService implements IService<Integer, Document> {
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(sql);
 
-            if (res.next()) return res.getInt("MY_SEQUENCE");
+            if (res.next())
+                return res.getInt("MY_SEQUENCE");
 
             return null;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
+        }
+    }
 
     @Override
     public Document create(Document document) throws DatabaseException {
