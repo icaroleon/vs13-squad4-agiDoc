@@ -111,15 +111,15 @@ public class CompetitorController {
     }
 
     public void delete() {
-        System.out.println("Tem certeza que deseja excluir um concorrente? (S/N)");
-        boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
-
-        if (isNotSure) return;
-
         try {
             System.out.print("Digite o id do concorrente que deseja remover: ");
             String id = scanner.nextLine();
             int validId = Integer.parseInt(id);
+
+            System.out.println("Tem certeza que deseja excluir um concorrente? (S/N)");
+            boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
+
+            if (isNotSure) return;
 
             competitorService.delete(validId);
         } catch (DatabaseException e) {
