@@ -1,39 +1,30 @@
 package model.juridical;
 
 import model.document.Document;
-import model.employee.Employee;
-import model.address.Address;
-import model.contact.Contact;
+import model.user.User;
 
 import java.util.ArrayList;
 
 public abstract class AbstractJuridical implements IJuridical {
-    protected  String companyName;
     protected String cnpj;
-    protected Address address;
-    protected Contact contact;
-    protected ArrayList<Departament> departaments;
+    protected String address;
+    protected String contact;
+    protected ArrayList<User> users;
 
     public AbstractJuridical() {
     }
 
-    public AbstractJuridical(String cpnj, String companyName) {
-        this.cnpj = cpnj;
-        this.companyName = companyName;
-    }
-
-    public AbstractJuridical(String cpnj, Address address, Contact contact) {
+    public AbstractJuridical(String cpnj, String address, String contact) {
         this.cnpj = cpnj;
         this.address = address;
         this.contact = contact;
     }
 
-    public AbstractJuridical(String companyName, String cnpj, Address address, Contact contact, ArrayList<Departament> departaments) {
-        this.companyName = companyName;
-        this.cnpj = cnpj;
+    public AbstractJuridical(String cpnj, String address, String contact, ArrayList<User> users) {
+        this.cnpj = cpnj;
         this.address = address;
         this.contact = contact;
-        this.departaments = departaments;
+        this.users = users;
     }
 
     public String getCnpj() {
@@ -44,36 +35,28 @@ public abstract class AbstractJuridical implements IJuridical {
         this.cnpj = cnpj;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public Address getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public Contact getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 
-    public ArrayList<Departament> getDepartaments() {
-        return departaments;
+    public ArrayList<User> getEmployees() {
+        return users;
     }
 
-    public void setDepartaments(ArrayList<Departament> departaments) {
-        this.departaments = departaments;
+    public void setEmployees(ArrayList<User> users) {
+        this.users = users;
     }
 
     @Override

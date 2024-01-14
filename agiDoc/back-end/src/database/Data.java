@@ -2,7 +2,7 @@ package database;
 
 import model.document.Document;
 import model.document.DocumentType;
-import model.employee.Employee;
+import model.user.User;
 import model.competitor.Competitor;
 import model.institution.Institution;
 import model.process.Process;
@@ -49,24 +49,24 @@ public abstract class Data {
         Document documentTwoCompetitorSix = new Document("21", LocalDate.of(2024, 1, 22), "Concorrente", "id:22", DocumentType.ATTACHMENTS, "documento: Portaria");
 
 //      instâncias de Funcionários para Concorrentes
-        Employee employeeCompetitorOne = new Employee("João", "joao_girassol", "4321", "Rua dos Girassóis", "9 0000-0000");
-        Employee employeeCompetitorTwo = new Employee("Maria", "maria_rosa", "1234", "Rua das rosa", "9 0000-0000");
-        Employee employeeCompetitorThree = new Employee("Everton", "everton_bromelia", "1234", "Rua das Bromélias", "9 0000-0000");
-        Employee employeeCompetitorFour = new Employee("Laura", "laurinha_da_balada", "1234", "Rua das festa", "9 0000-0000");
-        Employee employeeCompetitorFive = new Employee("Glória", "gloria_hibisco", "4321", "Rua dos Hibiscos", "9 0000-0000");
-        Employee employeeCompetitorSix = new Employee("Robson", "Robson_dos_anjos", "1234", "Rua celeste", "9 0000-0000");
+        User userCompetitorOne = new User("João", "joao_girassol", "4321", "Rua dos Girassóis", "9 0000-0000");
+        User userCompetitorTwo = new User("Maria", "maria_rosa", "1234", "Rua das rosa", "9 0000-0000");
+        User userCompetitorThree = new User("Everton", "everton_bromelia", "1234", "Rua das Bromélias", "9 0000-0000");
+        User userCompetitorFour = new User("Laura", "laurinha_da_balada", "1234", "Rua das festa", "9 0000-0000");
+        User userCompetitorFive = new User("Glória", "gloria_hibisco", "4321", "Rua dos Hibiscos", "9 0000-0000");
+        User userCompetitorSix = new User("Robson", "Robson_dos_anjos", "1234", "Rua celeste", "9 0000-0000");
 
 //      instâncias de Funcionários para Instituição
 //      TODO: Setar company
         institution = new Institution("55.5.555/5551-55","Rua do Prato Limpo","9 0000-0000");
-        Employee employeeOneInstitution = new Employee("Aron", "aron_usuario", "aron_senha", "aron_endereco", "9 0000-0000", institution);
-        Employee employeeTwoInstitution = new Employee("Gabriel", "gabriel_usuario", "gabriel_senha", "gabriel_endereco", "9 1111-1111", institution);
-        Employee employeeThreeInstitution = new Employee("Mari", "mari_usuario", "mari_senha", "mari_endereco", "9 2222-2222", institution);
-        Employee employeeFourInstitution = new Employee("Ícaro", "icaro_usuario", "icaro_senha", "icaro_endereco", "9 3333-3333", institution);
-        Employee employeeFiveInstitution = new Employee("Rodrigo", "rodrigo_usuario", "rodrigo_senha", "rodrigo_endereco", "9 4444-4444", institution);
-        Employee employeeSixInstitution = new Employee("Vinicius", "vinicius_usuario", "vinicius_senha", "vinicius_endereco", "9 5555-5555", institution);
-        Employee employeeSevenInstitution = new Employee("Camila", "camila_usuario", "camila_senha", "camila_endereco", "9 6666-6666", institution);
-        Employee employeeEightInstitution = new Employee("Clara", "clara_usuario", "clara_senha", "clara_endereco", "9 7777-7777", institution);
+        User userOneInstitution = new User("Aron", "aron_usuario", "aron_senha", "aron_endereco", "9 0000-0000", institution);
+        User userTwoInstitution = new User("Gabriel", "gabriel_usuario", "gabriel_senha", "gabriel_endereco", "9 1111-1111", institution);
+        User userThreeInstitution = new User("Mari", "mari_usuario", "mari_senha", "mari_endereco", "9 2222-2222", institution);
+        User userFourInstitution = new User("Ícaro", "icaro_usuario", "icaro_senha", "icaro_endereco", "9 3333-3333", institution);
+        User userFiveInstitution = new User("Rodrigo", "rodrigo_usuario", "rodrigo_senha", "rodrigo_endereco", "9 4444-4444", institution);
+        User userSixInstitution = new User("Vinicius", "vinicius_usuario", "vinicius_senha", "vinicius_endereco", "9 5555-5555", institution);
+        User userSevenInstitution = new User("Camila", "camila_usuario", "camila_senha", "camila_endereco", "9 6666-6666", institution);
+        User userEightInstitution = new User("Clara", "clara_usuario", "clara_senha", "clara_endereco", "9 7777-7777", institution);
 
 //      instâncias de concorrentes para Processos
 //      Setar company em Funcionários
@@ -80,9 +80,9 @@ public abstract class Data {
                 documentOneCompetitorOne,
                 documentTwoCompetitorOne
         )));
-        competitorOneProcessOne.setEmployees(new ArrayList<>(List.of(employeeCompetitorOne)));
+        competitorOneProcessOne.setEmployees(new ArrayList<>(List.of(userCompetitorOne)));
 
-        employeeCompetitorOne.setCompany(competitorOneProcessOne);
+        userCompetitorOne.setCompany(competitorOneProcessOne);
 
         Competitor competitorTwoProcessOne = new Competitor(
                 "11.1.111/1111-11",
@@ -94,9 +94,9 @@ public abstract class Data {
                 documentOneCompetitorTwo,
                 documentTwoCompetitorTwo
         )));
-        competitorTwoProcessOne.setEmployees(new ArrayList<>(List.of(employeeCompetitorTwo)));
+        competitorTwoProcessOne.setEmployees(new ArrayList<>(List.of(userCompetitorTwo)));
 
-        employeeCompetitorTwo.setCompany(competitorTwoProcessOne);
+        userCompetitorTwo.setCompany(competitorTwoProcessOne);
 
         Competitor competitorOneProcessTwo = new Competitor(
                 "22.2.222/2221-22",
@@ -108,9 +108,9 @@ public abstract class Data {
                 documentOneCompetitorThree,
                 documentTwoCompetitorThree
         )));
-        competitorOneProcessTwo.setEmployees(new ArrayList<>(List.of(employeeCompetitorThree)));
+        competitorOneProcessTwo.setEmployees(new ArrayList<>(List.of(userCompetitorThree)));
 
-        employeeCompetitorThree.setCompany(competitorOneProcessTwo);
+        userCompetitorThree.setCompany(competitorOneProcessTwo);
 
         Competitor competitorTwoProcessTwo = new Competitor(
                 "33.3.333/3331-33",
@@ -122,9 +122,9 @@ public abstract class Data {
                 documentOneCompetitorFour,
                 documentTwoCompetitorFour
         )));
-        competitorTwoProcessTwo.setEmployees(new ArrayList<>(List.of(employeeCompetitorFour)));
+        competitorTwoProcessTwo.setEmployees(new ArrayList<>(List.of(userCompetitorFour)));
 
-        employeeCompetitorFour.setCompany(competitorTwoProcessTwo);
+        userCompetitorFour.setCompany(competitorTwoProcessTwo);
 
         Competitor competitorOneProcessThree = new Competitor(
                 "44.4.444/4441-44",
@@ -136,9 +136,9 @@ public abstract class Data {
                 documentOneCompetitorFive,
                 documentTwoCompetitorFive
         )));
-        competitorOneProcessThree.setEmployees(new ArrayList<>(List.of(employeeCompetitorFive)));
+        competitorOneProcessThree.setEmployees(new ArrayList<>(List.of(userCompetitorFive)));
 
-        employeeCompetitorFive.setCompany(competitorOneProcessThree);
+        userCompetitorFive.setCompany(competitorOneProcessThree);
 
         Competitor competitorTwoProcessThree = new Competitor(
                 "55.5.555/5551-55",
@@ -150,9 +150,9 @@ public abstract class Data {
                 documentOneCompetitorSix,
                 documentTwoCompetitorSix
         )));
-        competitorTwoProcessThree.setEmployees(new ArrayList<>(List.of(employeeCompetitorSix)));
+        competitorTwoProcessThree.setEmployees(new ArrayList<>(List.of(userCompetitorSix)));
 
-        employeeCompetitorSix.setCompany(competitorTwoProcessThree);
+        userCompetitorSix.setCompany(competitorTwoProcessThree);
 
 //      instâncias de Processos
         Process processOne = new Process(
@@ -205,14 +205,14 @@ public abstract class Data {
                 "9 0000-0000",
                 new ArrayList<>(Arrays.asList(processOne, processTwo, processThree)),
                 new ArrayList<>(Arrays.asList(
-                        employeeOneInstitution,
-                        employeeTwoInstitution,
-                        employeeThreeInstitution,
-                        employeeFourInstitution,
-                        employeeFiveInstitution,
-                        employeeSixInstitution,
-                        employeeSevenInstitution,
-                        employeeEightInstitution
+                        userOneInstitution,
+                        userTwoInstitution,
+                        userThreeInstitution,
+                        userFourInstitution,
+                        userFiveInstitution,
+                        userSixInstitution,
+                        userSevenInstitution,
+                        userEightInstitution
                 ))
         );
     }
