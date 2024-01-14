@@ -2,15 +2,11 @@ package controller;
 
 import model.Associated;
 import model.document.Document;
-import model.document.DocumentType;
-import model.process.Process;
 import service.DocumentService;
-import service.ProcessService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import exception.DatabaseException;
