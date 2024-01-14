@@ -28,6 +28,19 @@ public class DocumentService implements IService<Integer, Document> {
         return null;
     }
 
+    public Integer getAssociationNextId(Connection con) throws DatabaseException {
+        try {
+            String sql = "SELECT SEQ_DOCUMENTS_ASSOCIATIONS.NEXTVAL MY_SEQUENCE FROM DUAL";
+
+            Statement stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery(sql);
+
+            if (res.next()) return res.getInt("MY_SEQUENCE");
+
+            return null;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+
     @Override
     public Document create(Document document) throws DatabaseException {
         Connection con = null;
@@ -36,6 +49,7 @@ public class DocumentService implements IService<Integer, Document> {
             con = DBConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
+            Integer associationNextId = this.getAssociationNextId(con);
             document.setId(nextId);
 
             String sqlInsert = """
@@ -57,9 +71,24 @@ public class DocumentService implements IService<Integer, Document> {
             // TODO: Deve ser implementado ID_SIGNATURE OU NAO?
             stmt.setString(6, "IMPLEMENTAR?");
 
-            int res = stmt.executeUpdate();
+            int res1 = stmt.executeUpdate();
 
-            System.out.println(res + "documento adicionado");
+            System.out.println("createDocument.res=" + res1);
+
+            String sql2 = """
+                    INSERT INTO DOCUMENTS_ASSOCIATIONS (ID_DOCUMENT_ASSOCIATION, ID_DOCUMENT, ID_PROCESS)
+                    VALUES (?, ?, ?)
+                    """;
+
+            PreparedStatement stmt2 = con.prepareStatement(sql2);
+
+            stmt2.setInt(1, associationNextId);
+            stmt2.setInt(2, document.getId());
+            stmt2.setInt(3, document.getAssociatedId());
+
+            int res2 = stmt2.executeUpdate();
+            System.out.println("createAddressAssociation.res=" + res2);
+
             return document;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
