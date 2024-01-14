@@ -1,8 +1,9 @@
 package model.institution;
 
-import model.employee.Employee;
 import model.process.Process;
 import model.juridical.AbstractJuridical;
+import model.address.Address;
+import model.contact.Contact;
 
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class Institution extends AbstractJuridical {
         super();
     }
 
-    public Institution(String companyName, String cnpj, Address address, Contact contact, ArrayList<Departament> departaments, ArrayList<Process> processes) {
-        super(companyName, cnpj, address, contact, departaments);
+    public Institution(String companyName, String cnpj, Address address, Contact contact, ArrayList<Process> processes) {
+        super(companyName, cnpj, address, contact);
         this.processes = processes;
     }
 
@@ -31,15 +32,13 @@ public class Institution extends AbstractJuridical {
                     Address: %s
                     Contact: %s
                     N° Processes: %d
-                    N° Departaments: %d
                 }
                 """.formatted(
                 this.cnpj,
                 this.companyName,
                 this.address,
                 this.contact,
-                this.processes.size(),
-                this.departaments.size()
+                this.processes.size()
         );
     }
 

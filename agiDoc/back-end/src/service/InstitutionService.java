@@ -1,6 +1,7 @@
 package service;
 
 import exception.DatabaseException;
+import model.contact.ContactPhoneType;
 import model.institution.Institution;
 import model.address.Address;
 import model.contact.Contact;
@@ -139,9 +140,9 @@ public class InstitutionService implements IService<Integer, Institution> {
 
             String sql = """
                     SELECT * FROM INSTITUTIONS I
-                    JOIN CONTACTS_ASSOCIATIONS CA ON C.ID_INSTITUTION = CA.ID_INSTITUTION
+                    JOIN CONTACTS_ASSOCIATIONS CA ON I.ID_INSTITUTION  = CA.ID_INSTITUTION
                     JOIN CONTACTS CO ON CA.ID_CONTACT = CO.ID_CONTACT
-                    JOIN ADDRESSES_ASSOCIATIONS AA ON C,ID_COMPETITOR = AA.ID_COMPETITOR
+                    JOIN ADDRESSES_ASSOCIATIONS AA ON I.ID_INSTITUTION  = AA.ID_INSTITUTION
                     JOIN ADDRESSES A ON AA.ID_ADDRESS = A.ID_ADDRESS
                     """;
 
@@ -150,9 +151,8 @@ public class InstitutionService implements IService<Integer, Institution> {
             while (res.next()) {
                 Institution institution = new Institution();
 
-//                Address address = new Address();
-
-//                Contact contact = new Contact();
+                Address address = new Address();
+                Contact contact = new Contact();
 
                 institution.setId(res.getInt("id_institution"));
                 institution.setCnpj(res.getString("cnpj"));
@@ -161,26 +161,24 @@ public class InstitutionService implements IService<Integer, Institution> {
 
                 //TODO: implementar a classe address
 
-//                address.setId(res.getInt("ID_ADDRESS"));
-//                address.setStreet(res.getString("STREET"));
-//                address.setDistrict(res.getString("DISTRICT"));
-//                address.setNumber(res.getInt("NUMBER"));
-//                address.setComplement(res.getString("COMPLEMENT"));
-//                address.setCity(res.getString("CITY"));
-//                address.setState(res.getString("STATE"));
-//                address.setZipCode(res.getString("ZIP_CODE"));
-//
-//                institution.setAddress(address);
+                address.setId(res.getInt("ID_ADDRESS"));
+                address.setStreet(res.getString("STREET"));
+                address.setDistrict(res.getString("DISTRICT"));
+                address.setNumber(res.getInt("NUMBER"));
+                address.setComplement(res.getString("COMPLEMENT"));
+                address.setCity(res.getString("CITY"));
+                address.setState(res.getString("STATE"));
+                address.setZipCode(res.getString("ZIP_CODE"));
 
-                //TODO: implementar a classe contact
+                institution.setAddress(address);
 
-//                contact.setContact(res.getInt("ID_CONTACT"));
-//                contact.setName(res.getString("NAME"));
-//                contact.setEmail(res.getString("EMAIL"));
-//                contact.setPhone(res.getString("PHONE"));
-//                contact.setType(res.getInt("TYPE"));
-//
-//                institution.setContact(contact);
+                contact.setId(res.getInt("ID_CONTACT"));
+                contact.setName(res.getString("NAME"));
+                contact.setEmail(res.getString("EMAIL"));
+                contact.setPhone(res.getString("PHONE"));
+                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
+
+                institution.setContact(contact);
 
                 institutions.add(institution);
             }
@@ -204,19 +202,47 @@ public class InstitutionService implements IService<Integer, Institution> {
             con = DBConnection.getConnection();
 
             String sql = """
-                    SELECT * FROM INSTITUTIONS
+                    SELECT * FROM INSTITUTIONS I
+                    JOIN CONTACTS_ASSOCIATIONS CA ON I.ID_INSTITUTION  = CA.ID_INSTITUTION
+                    JOIN CONTACTS CO ON CA.ID_CONTACT = CO.ID_CONTACT
+                    JOIN ADDRESSES_ASSOCIATIONS AA ON I.ID_INSTITUTION  = AA.ID_INSTITUTION
+                    JOIN ADDRESSES A ON AA.ID_ADDRESS = A.ID_ADDRESS
                     WHERE ID_INSTITUTION = ?
                     """;
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
-            ResultSet res = stmt.executeQuery(sql);
+
+            ResultSet res = stmt.executeQuery();
 
             Institution institution = new Institution();
+
+            Address address = new Address();
+
+            Contact contact = new Contact();
 
             institution.setId(res.getInt("id_institution"));
             institution.setCnpj(res.getString("cnpj"));
             institution.setCompanyName(res.getString("company_name"));
+
+            address.setId(res.getInt("ID_ADDRESS"));
+            address.setStreet(res.getString("STREET"));
+            address.setDistrict(res.getString("DISTRICT"));
+            address.setNumber(res.getInt("NUMBER"));
+            address.setComplement(res.getString("COMPLEMENT"));
+            address.setCity(res.getString("CITY"));
+            address.setState(res.getString("STATE"));
+            address.setZipCode(res.getString("ZIP_CODE"));
+
+            institution.setAddress(address);
+
+            contact.setId(res.getInt("ID_CONTACT"));
+            contact.setName(res.getString("NAME"));
+            contact.setEmail(res.getString("EMAIL"));
+            contact.setPhone(res.getString("PHONE"));
+            contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
+
+            institution.setContact(contact);
 
             return institution;
 
