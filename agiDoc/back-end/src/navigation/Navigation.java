@@ -1,24 +1,35 @@
 package navigation;
 
+//import controller.DocumentController;
+import controller.CompetitorController;
+import controller.UserController;
+import controller.ProcessController;
+import model.department.Department;
+import exception.DatabaseException;
+import model.process.Process;
+import model.user.User;
+
 import java.util.Scanner;
 
 public class Navigation {
-    private final Scanner scanner;
-    private String inputProcessId;
+    private Scanner scanner;
+    private int inputProcessId;
+    private Process currentProcess;
 
     public Navigation() {
         this.scanner = new Scanner(System.in);
     }
 
-    public String showMenu(String option) {
+    public String showMenu(String option) throws DatabaseException {
+        this.scanner = new Scanner(System.in);
         String chooseNavigation = "";
 
         switch (option) {
             case "0" -> chooseNavigation = this.mainMenu();
             case "1" -> chooseNavigation = this.processesMenu();
-            case "2" -> chooseNavigation = this.employeesMenu();
+            case "2" -> chooseNavigation = this.userMenu();
             case "3" -> chooseNavigation = this.oneProcessMenu();
-            case "5" -> chooseNavigation = this.documentsMenu();
+        //    case "5" -> chooseNavigation = this.documentsMenu();
             case "6" -> chooseNavigation = this.competitorsMenu();
         }
 
@@ -26,14 +37,14 @@ public class Navigation {
     }
 
     public String mainMenu() {
-        String option = "";
+        String option;
 
         System.out.println("\n\n");
         System.out.println("+-------------------------------------------+");
         System.out.println("|                  agiDoc                   |");
         System.out.println("+-------------------------------------------+");
         System.out.println("| 1 - Processos                             |");
-        System.out.println("| 2 - Funcionários                          |");
+        System.out.println("| 2 - Usuários                              |");
         System.out.println("|                                           |");
         System.out.println("| 0 - Sair                                  |");
         System.out.println("+-------------------------------------------+");
@@ -43,19 +54,20 @@ public class Navigation {
         return option;
     }
 
-    public String employeesMenu() {
-        String option = "";
+    public String userMenu() {
+        String option;
         boolean running = true;
 
         do {
             System.out.println("\n\n");
             System.out.println("+-------------------------------------------+");
-            System.out.println("|           agiDoc | Funcionários           |");
+            System.out.println("|           agiDoc | Usuários               |");
             System.out.println("+-------------------------------------------+");
-            System.out.println("| 1 - Cadastrar funcionário                 |");
-            System.out.println("| 2 - Listar funcionários                   |");
-            System.out.println("| 3 - Editar funcionário                    |");
-            System.out.println("| 4 - Remover funcionário                   |");
+            System.out.println("| 1 - Cadastrar usuário                     |");
+            System.out.println("| 2 - Listar usuários                       |");
+            System.out.println("| 3 - Listar um usuário específico          |");
+            System.out.println("| 4 - Editar usuário                        |");
+            System.out.println("| 5 - Remover usuário                       |");
             System.out.println("|                                           |");
             System.out.println("| 0 - Sair                                  |");
             System.out.println("| 9 - Voltar                                |");
@@ -63,11 +75,60 @@ public class Navigation {
             System.out.print("Digite uma opção: ");
             option = scanner.nextLine();
 
+            User user = new User();
             switch (option) {
-                case "1" -> System.out.println("Funcionário cadastrado");
-                case "2" -> System.out.println("Lista de funcionários:");
-                case "3" -> System.out.println("Funcionário editado ");
-                case "4" -> System.out.println("Funcionário removido");
+                case "1" -> {
+                    System.out.print("Digite a matrícula: ");
+                    user.setRegistration(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome: ");
+                    user.setName(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome de usuário: ");
+                    user.setUser(scanner.nextLine().trim());
+
+                    System.out.print("Digite a senha: ");
+                    user.setPassword(scanner.nextLine().trim());
+
+                    System.out.print("Digite o cargo: ");
+                    user.setPosition(scanner.nextLine().trim());
+
+                    UserController.addUser(user);
+                }
+                case "2" -> UserController.getUsers();
+                case "3" -> {
+                    System.out.print("Digite o ID do usuário para obter: ");
+                    int idUser = scanner.nextInt();
+                    UserController.getUserById(idUser);
+                }
+                case "4" -> {
+                    System.out.print("Digite o ID do usuário para editar: ");
+                    int userId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.print("Digite a matrícula: ");
+                    user.setRegistration(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome: ");
+                    user.setName(scanner.nextLine().trim());
+
+                    System.out.print("Digite o nome de usuário: ");
+                    user.setUser(scanner.nextLine().trim());
+
+                    System.out.print("Digite a senha: ");
+                    user.setPassword(scanner.nextLine());
+
+                    System.out.print("Digite o cargo: ");
+                    user.setPosition(scanner.nextLine());
+
+                    UserController.editUser(userId, user);
+                }
+                case "5" -> {
+                    System.out.print("Digite o ID do usuário para remover: ");
+                    int userId = scanner.nextInt();
+                    UserController.removeUser(userId);
+                }
+
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
@@ -76,8 +137,8 @@ public class Navigation {
         return option;
     }
 
-    public String processesMenu() {
-        String option = "";
+    public String processesMenu() throws DatabaseException {
+        String option;
         boolean running = true;
 
         do {
@@ -96,16 +157,18 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Lista de funcionários:");
-                case "3" -> System.out.println("Processo criado.");
+                case "1" -> ProcessController.getAll();
                 case "2" -> {
-                    // TODO: Adicionar verificação sobre a existência do processo | MIN/MAX: 6 dígitos
-                    System.out.print("Digite o identificador do processo: ");
-                    this.inputProcessId = scanner.nextLine();
-
-                    option = "3";
-                    running = false;
+                    System.out.print("Digite o número do processo: ");
+                    String inputProcessNumber = scanner.nextLine();
+                    currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
+                    if(currentProcess != null){
+                        option = "3";
+                        running = false;
+                    }
                 }
+                case "3" -> ProcessController.createProcess();
+
                 case "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
@@ -115,7 +178,7 @@ public class Navigation {
     }
 
     public String oneProcessMenu() {
-        String option = "";
+        String option;
         boolean running = true;
 
         do {
@@ -138,10 +201,17 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Processo encerrado.");
-                case "2" -> System.out.println("Concorrente eleito para contratação.");
-                case "3" -> System.out.println("Processo editado.");
-                case "4" -> System.out.println("Processo removido.");
+                case "1" -> ProcessController.closeProcess(Integer.valueOf(inputProcessId));
+                case "2" -> ProcessController.chooseCompetitor(Integer.valueOf(inputProcessId));
+                case "3" -> ProcessController.update(Integer.valueOf(inputProcessId));
+                case "4" -> {
+                    boolean isDeleted = ProcessController.delete(Integer.valueOf(inputProcessId));
+
+                    if (isDeleted) {
+                        option = "9";
+                        running=false;
+                    }
+                }
                 case "5", "6", "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
@@ -150,43 +220,47 @@ public class Navigation {
         return option;
     }
 
-    public String documentsMenu() {
-        String option = "";
-        boolean running = true;
-
-        do {
-            System.out.println("\n\n");
-            System.out.println("+-------------------------------------------+");
-            System.out.println("|            agiDoc | Documentos            |");
-            System.out.println("+-------------------------------------------+");
-            System.out.println("| 1 - Adicionar Documento                   |");
-            System.out.println("| 2 - Listar Documentos                     |");
-            System.out.println("| 3 - Editar Documento                      |");
-            System.out.println("| 4 - Excluir Documento                     |");
-            System.out.println("| 5 - Assinar Documento                     |");
-            System.out.println("|                                           |");
-            System.out.println("| 0 - Sair                                  |");
-            System.out.println("| 9 - Voltar                                |");
-            System.out.println("+-------------------------------------------+");
-            System.out.print("Digite uma opção: ");
-            option = scanner.nextLine();
-
-            switch (option) {
-                case "1" -> System.out.println("Adicionar Documento");
-                case "2" -> System.out.println("Listar Documentos");
-                case "3" -> System.out.println("Editar Documento");
-                case "4" -> System.out.println("Excluir Documento");
-                case "5" -> System.out.println("Assinar Documento");
-                case "0", "9" -> running = false;
-                default -> System.out.println("Opção inválida. Tente novamente.");
-            }
-        } while (running);
-
-        return option;
-    }
+//    public String documentsMenu() {
+//        DocumentController document = new DocumentController(currentProcess.getDocuments());
+//        String option;
+//        boolean running = true;
+//
+//        do {
+//            System.out.println("\n\n");
+//            System.out.println("+-------------------------------------------+");
+//            System.out.println("|            agiDoc | Documentos            |");
+//            System.out.println("+-------------------------------------------+");
+//            System.out.println("| 1 - Adicionar Documento                   |");
+//            System.out.println("| 2 - Listar Documentos                     |");
+//            System.out.println("| 3 - Pesquisar um documento                |");
+//            System.out.println("| 4 - Editar Documento                      |");
+//            System.out.println("| 5 - Excluir Documento                     |");
+//            System.out.println("| 6 - Assinar Documento                     |");
+//            System.out.println("|                                           |");
+//            System.out.println("| 0 - Sair                                  |");
+//            System.out.println("| 9 - Voltar                                |");
+//            System.out.println("+-------------------------------------------+");
+//            System.out.print("Digite uma opção: ");
+//            option = scanner.nextLine();
+//
+//            switch (option) {
+//                case "1" -> document.createDocument(currentProcess, String.valueOf(inputProcessId));
+//                case "2" -> document.getAllDocuments();
+//                case "3" -> document.getDocument();
+//                case "4" -> document.updateDocument(currentProcess, String.valueOf(inputProcessId));
+//                case "5" -> document.deleteDocument(currentProcess);
+//                case "6" -> document.signDocument(currentProcess);
+//                case "0", "9" -> running = false;
+//                default -> System.out.println("Opção inválida. Tente novamente.");
+//            }
+//        } while (running);
+//
+//        return option;
+//    }
 
     public String competitorsMenu() {
-        String option = "";
+        CompetitorController competitor = new CompetitorController();
+        String option;
         boolean running = true;
 
         do {
@@ -206,10 +280,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> System.out.println("Adicionar Concorrente");
-                case "2" -> System.out.println("Listar Concorrentes");
-                case "3" -> System.out.println("Editar Concorrente");
-                case "4" -> System.out.println("Excluir Concorrente");
+                case "1" -> competitor.createCompetitor(inputProcessId);
+                case "2" -> competitor.listAll(inputProcessId);
+                case "3" -> competitor.update();
+                case "4" -> competitor.delete();
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }

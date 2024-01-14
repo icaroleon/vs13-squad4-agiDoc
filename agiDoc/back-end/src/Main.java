@@ -1,10 +1,11 @@
+import controller.UserController;
 import navigation.Navigation;
 
 import java.util.Scanner;
 import java.util.Stack;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         Stack<String> history = new Stack<>();
         boolean isNotValidLogin = true;
@@ -19,8 +20,9 @@ public class Main {
             System.out.print("Digite sua senha: ");
             String password = scanner.nextLine();
 
-            // TODO: Validar informações de login; Verificar se será usado método login do Employee
-            isNotValidLogin = false;
+
+            isNotValidLogin = !UserController.login(user, password);
+
         }
 
         boolean running = true;
