@@ -137,6 +137,18 @@ public class DocumentService implements IService<Integer, Document> {
 
                 document.setSigned(isSigned);
 
+                String sql2 = "SELECT * FROM DOCUMENTS_ASSOCIATIONS WHERE ID_DOCUMENT = ?";
+
+                PreparedStatement stmt2 = con.prepareStatement(sql2);
+
+                stmt2.setInt(1, document.getId());
+
+                ResultSet res2 = stmt2.executeQuery();
+
+                if (res2.next()) {
+                    document.setAssociatedId(res2.getInt("ID_PROCESS"));
+                }
+
                 docs.add(document);
             }
         } catch (SQLException e) {
@@ -205,9 +217,18 @@ public class DocumentService implements IService<Integer, Document> {
         try {
             con = DBConnection.getConnection();
 
-            String sql = "DELETE FROM DOCUMENTS WHERE ID_COMPETITOR = ?";
+            String sql1 = "DELETE FROM DOCUMENTS_ASSOCIATIONS WHERE ID_DOCUMENT = ?";
 
-            PreparedStatement stmt = con.prepareStatement(sql);
+            PreparedStatement stmt1 = con.prepareStatement(sql1);
+
+            stmt1.setInt(1, id);
+
+            int res1 = stmt1.executeUpdate();
+            System.out.println("deleteDocumentAssociation.res=" + res1);
+
+            String sql2 = "DELETE FROM DOCUMENTS WHERE ID_DOCUMENT = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql2);
             stmt.setInt(1, id);
 
             int res = stmt.executeUpdate();
