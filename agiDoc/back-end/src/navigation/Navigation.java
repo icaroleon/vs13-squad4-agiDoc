@@ -164,6 +164,7 @@ public class Navigation {
                     System.out.print("Digite o número do processo: ");
                     String inputProcessNumber = scanner.nextLine();
                     currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
+                    inputProcessId = currentProcess.getId();
                     if(currentProcess != null){
                         option = "3";
                         running = false;
@@ -186,7 +187,7 @@ public class Navigation {
         do {
             System.out.println("\n\n");
             System.out.println("+-------------------------------------------+");
-            System.out.printf("|           agiDoc | Processo: %s       |\n", this.inputProcessId);
+            System.out.printf("|           agiDoc | Processo: %s       |\n", this.currentProcess.getProcessNumber());
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1 - Encerrar Processo                     |");
             System.out.println("| 2 - Eleger Contratado                     |");

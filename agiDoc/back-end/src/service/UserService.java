@@ -38,7 +38,7 @@ public class UserService implements IService<Integer, User> {
 
             String sql = """
                     INSERT INTO USERS
-                    (ID_USER, REGISTRATION, NAME, "USER", PASSWORD, "ROLE", "POSITION", ID_DEPARTAMENT)
+                    (ID_USER, REGISTRATION, NAME, "USER", PASSWORD, "ROLE", "POSITION", ID_DEPARTMENT)
                     VALUES(?,?,?,?,?,?,?,?)
                     """;
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -82,7 +82,7 @@ public class UserService implements IService<Integer, User> {
             sql.append(" PASSWORD = ?, ");
             sql.append(" \"ROLE\" = ?, ");
             sql.append(" \"POSITION\" = ?, ");
-            sql.append(" ID_DEPARTAMENT = ? ");
+            sql.append(" ID_DEPARTMENT= ? ");
             sql.append(" WHERE ID_USER = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
@@ -149,9 +149,9 @@ public class UserService implements IService<Integer, User> {
             con = DBConnection.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT U.*, D.NAME AS NAME_DEPARTAMENT " +
+            String sql = "SELECT U.*, D.NAME AS NAME_DEPARTMENT " +
                     "FROM USERS U " +
-                    "LEFT JOIN DEPARTAMENTS D ON (D.ID_DEPARTAMENT = U.ID_DEPARTAMENT)";
+                    "LEFT JOIN DEPARTMENTS D ON (D.ID_DEPARTMENT = U.ID_DEPARTMENT)";
 
 
             ResultSet res = stmt.executeQuery(sql);
@@ -181,9 +181,9 @@ public class UserService implements IService<Integer, User> {
         try {
             con = DBConnection.getConnection();
 
-            String sql =  "SELECT U.*, D.NAME AS NAME_DEPARTAMENT " +
+            String sql =  "SELECT U.*, D.NAME AS NAME_DEPARTMENT " +
                     "FROM USERS U " +
-                    "INNER JOIN DEPARTAMENTS D ON (D.ID_DEPARTAMENT = U.ID_DEPARTAMENT) " +
+                    "INNER JOIN DEPARTMENTS D ON (D.ID_DEPARTMENT = U.ID_DEPARTMENT) " +
                     "WHERE U.ID_USER = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -218,8 +218,8 @@ public class UserService implements IService<Integer, User> {
         user.setPosition(res.getString("POSITION"));
 
         Department department = new Department();
-        department.setName(res.getString("NAME_DEPARTAMENT"));
-        department.setIdDepartment(res.getInt("ID_DEPARTAMENT"));
+        department.setName(res.getString("NAME_DEPARTMENT"));
+        department.setIdDepartment(res.getInt("ID_DEPARTMENT"));
         user.setDepartment(department);
         return user;
     }
