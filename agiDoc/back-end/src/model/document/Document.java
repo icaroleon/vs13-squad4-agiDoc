@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Document {
     private String protocol;
+    private Integer id;
     private LocalDate expirationDate;
     private boolean signed;
     private String file;
@@ -53,6 +54,14 @@ public class Document {
 
     public void setFile(String file) {
         this.file = file;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override
