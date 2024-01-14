@@ -40,6 +40,7 @@ public class UserController {
             boolean editedUser = userService.update(id, user);
             System.out.println("Edited? " + editedUser + "| com id= " + id);
         } catch (DatabaseException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }

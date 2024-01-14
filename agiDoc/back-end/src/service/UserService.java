@@ -76,24 +76,25 @@ public class UserService implements IService<Integer, User> {
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USERS SET ");
-            sql.append(" REGISTRATION = ?");
-            sql.append(" NAME = ?");
-            sql.append(" USER = ?");
-            sql.append(" PASSWORD = ?");
-            sql.append(" ROLE = ?");
-            sql.append(" POSITION = ?");
-            sql.append(" ID_DEPARTAMENT = ?");
+            sql.append(" REGISTRATION = ?, ");
+            sql.append(" NAME = ?, ");
+            sql.append(" \"USER\" = ?, ");
+            sql.append(" PASSWORD = ?, ");
+            sql.append(" \"ROLE\" = ?, ");
+            sql.append(" \"POSITION\" = ?, ");
+            sql.append(" ID_DEPARTAMENT = ? ");
             sql.append(" WHERE ID_USER = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, user.getName());
-            stmt.setString(2, user.getRegistration());
+            stmt.setString(1, user.getRegistration());
+            stmt.setString(2, user.getName());
             stmt.setString(3, user.getUser());
             stmt.setString(4, user.getPassword());
             stmt.setString(5, user.getRole());
             stmt.setString(6, user.getPosition());
             stmt.setInt(7, user.getDepartment().getIdDepartment());
+            stmt.setInt(8, id);
 
             int res = stmt.executeUpdate();
             System.out.println("editarUser.res=" + res);
@@ -112,6 +113,7 @@ public class UserService implements IService<Integer, User> {
             }
         }
     }
+
 
     @Override
     public boolean delete(Integer id) throws DatabaseException {
@@ -186,7 +188,7 @@ public class UserService implements IService<Integer, User> {
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
-            ResultSet res = stmt.executeQuery(sql);
+            ResultSet res = stmt.executeQuery();
 
             while (res.next()) {
                 User user = getUserFromResultSet(res);
