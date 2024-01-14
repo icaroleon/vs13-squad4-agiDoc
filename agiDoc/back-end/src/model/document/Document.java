@@ -2,12 +2,16 @@ package model.document;
 
 import java.time.LocalDate;
 
+import model.Associated;
+
 public class Document {
     private String protocol;
     private Integer id;
     private LocalDate expirationDate;
     private boolean signed;
     private String file;
+    private Associated associated;
+    private Integer associatedId;
 
     public Document() {
     }
@@ -62,6 +66,22 @@ public class Document {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setAssociated(Associated associated) {
+        this.associated = associated;
+    }
+
+    public Associated getAssociated() {
+        return associated;
+    }
+
+    public void setAssociatedId(Integer associatedId) {
+        this.associatedId = associatedId;
+    }
+
+    public Integer getAssociatedId() {
+        return associatedId;
     }
 
     @Override
