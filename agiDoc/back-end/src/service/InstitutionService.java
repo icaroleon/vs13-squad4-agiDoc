@@ -6,7 +6,6 @@ import model.address.Address;
 import model.contact.Contact;
 
 import database.DBConnection;
-import oracle.net.jdbc.TNSAddress.Address;
 
 import java.sql.*;
 import java.sql.ResultSet;
@@ -19,10 +18,10 @@ public class InstitutionService implements IService<Integer, Institution> {
 
 
     @Override
-    public Integer getNextId(Connection connection) throws SQLException {
+    public Integer getNextId(Connection con) throws SQLException {
         String sql = "SELECT SEQ_INSTITUTIONS.nextval mysequence from DUAL";
 
-        Statement stmt = connection.createStatement();
+        Statement stmt = con.createStatement();
         ResultSet res = stmt.executeQuery(sql);
 
         if (res.next()) {
@@ -113,7 +112,6 @@ public class InstitutionService implements IService<Integer, Institution> {
 
             stmt.setInt(1, id);
 
-            // Executa-se a consulta
             int res = stmt.executeUpdate();
             System.out.println("removerInstitutionPorId.res=" + res);
 
@@ -147,7 +145,6 @@ public class InstitutionService implements IService<Integer, Institution> {
                     JOIN ADDRESSES A ON AA.ID_ADDRESS = A.ID_ADDRESS
                     """;
 
-            // Executa-se a consulta
             ResultSet res = stmt.executeQuery(sql);
 
             while (res.next()) {
@@ -157,7 +154,7 @@ public class InstitutionService implements IService<Integer, Institution> {
 
 //                Contact contact = new Contact();
 
-                institution.setId(res.getInt("id_instituion"));
+                institution.setId(res.getInt("id_institution"));
                 institution.setCnpj(res.getString("cnpj"));
                 institution.setCompanyName(res.getString("company_name"));
 
@@ -200,4 +197,39 @@ public class InstitutionService implements IService<Integer, Institution> {
         }
         return institutions;
     }
+
+    public Institution get(int id) throws SQLException {
+        Connection con = null;
+        try{
+            con = DBConnection.getConnection();
+
+            String sql = """
+                    SELECT * FROM INSTITUTIONS
+                    WHERE ID_INSTITUTION = ?
+                    """;
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
+            ResultSet res = stmt.executeQuery(sql);
+
+            Institution institution = new Institution();
+
+            institution.setId(res.getInt("id_institution"));
+            institution.setCnpj(res.getString("cnpj"));
+            institution.setCompanyName(res.getString("company_name"));
+
+            return institution;
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
 }

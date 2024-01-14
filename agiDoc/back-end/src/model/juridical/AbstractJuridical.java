@@ -1,30 +1,54 @@
 package model.juridical;
 
+import model.address.Address;
+import model.contact.Contact;
+import model.department.Department;
 import model.document.Document;
 import model.user.User;
 
 import java.util.ArrayList;
 
 public abstract class AbstractJuridical implements IJuridical {
+
+    protected  String companyName;
     protected String cnpj;
-    protected String address;
-    protected String contact;
+    protected Address address;
+    protected Contact contact;
     protected ArrayList<User> users;
+    protected ArrayList<Department> departments;
 
     public AbstractJuridical() {
     }
 
-    public AbstractJuridical(String cpnj, String address, String contact) {
+    public AbstractJuridical(String cpnj, Address address, Contact contact) {
         this.cnpj = cpnj;
         this.address = address;
         this.contact = contact;
     }
 
-    public AbstractJuridical(String cpnj, String address, String contact, ArrayList<User> users) {
+    public AbstractJuridical(String companyName,String cpnj, Address address, Contact contact, ArrayList<Department> departments) {
+        this.companyName = companyName;
+        this.cnpj = cpnj;
+        this.address = address;
+        this.contact = contact;;
+        this.departments = departments;
+    }
+
+    public AbstractJuridical(String companyName,String cpnj, Address address, Contact contact, ArrayList<User> users, ArrayList<Department> departments) {
+        this.companyName = companyName;
         this.cnpj = cpnj;
         this.address = address;
         this.contact = contact;
         this.users = users;
+        this.departments = departments;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getCnpj() {
