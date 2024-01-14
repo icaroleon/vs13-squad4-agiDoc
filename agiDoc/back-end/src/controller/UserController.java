@@ -4,14 +4,23 @@ import exception.DatabaseException;
 import model.user.User;
 import service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserController {
 
     private static final UserService userService = new UserService();
 
-    public static boolean login(String userName, String password) {
+    public static boolean login(String userName, String password) throws DatabaseException {
         try {
-            return userService.list().stream().anyMatch(user -> user.getUser().equals(userName) && user.getPassword().equals(password));
+           if (userService.list().stream().anyMatch(user -> user.getUser().equals(userName) && user.getPassword().equals(password))){
+               return true;
+           } else {
+               System.out.println("User doesn't exists.");
+               return false;
+           }
         } catch (DatabaseException e) {
+            System.out.println("Erro ao acessar o banco de dados: " + e.getMessage());
             e.printStackTrace();
         }
         return false;

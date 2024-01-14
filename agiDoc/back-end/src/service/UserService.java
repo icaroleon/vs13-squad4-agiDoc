@@ -82,7 +82,7 @@ public class UserService implements IService<Integer, User> {
             sql.append(" PASSWORD = ?, ");
             sql.append(" \"ROLE\" = ?, ");
             sql.append(" \"POSITION\" = ?, ");
-            sql.append(" ID_DEPARTMENT= ? ");
+            sql.append(" ID_DEPARTMENT = ? ");
             sql.append(" WHERE ID_USER = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
