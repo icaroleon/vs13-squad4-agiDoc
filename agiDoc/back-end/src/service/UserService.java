@@ -151,7 +151,7 @@ public class UserService implements IService<Integer, User> {
 
             String sql = "SELECT U.*, D.NAME AS NAME_DEPARTMENT " +
                     "FROM USERS U " +
-                    "LEFT JOIN DEPARTMENTS D ON (D.ID_DEPARTMENT= U.ID_DEPARTMENT)";
+                    "LEFT JOIN DEPARTMENTS D ON (D.ID_DEPARTMENT = U.ID_DEPARTMENT)";
 
 
             ResultSet res = stmt.executeQuery(sql);
