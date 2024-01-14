@@ -1,67 +1,43 @@
 package service;
 
 import model.document.Document;
+
+import java.sql.*;
 import java.util.ArrayList;
 
-public class DocumentService implements IService<Document> {
-    private ArrayList<Document> documents;
+import exception.DatabaseException;
 
-    public DocumentService() {}
+public class DocumentService implements IService<Integer, Document> {
 
-    public DocumentService(ArrayList<Document> documents) {
-        this.documents = documents;
+    @Override
+    public Integer getNextId(Connection con) throws SQLException {
+        return 1;
     }
 
-    public Document create(Document document) {
-        documents.add(document);
-        return document;
+    @Override
+    public Document create(Document object) throws DatabaseException {
+        Document doc = new Document();
+        return doc;
     }
 
-    public Document get(String protocol) {
-        for (Document document : documents) {
-            if (document.getProtocol().equals(protocol)) {
-                return document;
-            }
-        }
-        throw new RuntimeException("Documento de protocolo " + protocol + " não encontrado");
+    @Override
+    public boolean update(Integer id, Document object) throws DatabaseException {
+        return true;
     }
 
-    public ArrayList<Document> getAll() {
-        return new ArrayList<>(documents);
+    @Override
+    public boolean delete(Integer id) throws DatabaseException {
+        return true;
     }
 
-    public Document update(String protocol, Document newDocument) {
-        Document document = this.get(protocol);
-
-        if (document != null) {
-            document.setOrigin(newDocument.getOrigin());
-            document.setOriginId(newDocument.getOriginId());
-            document.setExpirationDate(newDocument.getExpirationDate());
-            document.setContent(newDocument.getContent());
-            return document;
-        }
-
-        throw new RuntimeException("Document with protocol " + protocol + " not found");
+    public Document get(Integer id) {
+        return new Document();
     }
 
-    public void delete(String protocol) {
-        Document document = this.get(protocol);
-
-        if (document != null) {
-            documents.remove(document);
-        } else {
-            throw new RuntimeException("Document with protocol " + protocol + " not found");
-        }
+    @Override
+    public ArrayList<Document> list() throws DatabaseException {
+        ArrayList<Document> docs = new ArrayList<>();
+        return docs;
     }
 
-    public boolean signDocument(String protocol) {
-        Document document = this.get(protocol);
-
-        if (document != null) {
-            document.setSigned(true);
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

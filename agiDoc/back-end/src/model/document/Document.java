@@ -5,42 +5,22 @@ import java.time.LocalDate;
 public class Document {
     private String protocol;
     private LocalDate expirationDate;
-    private String origin;
-    private String originId;
     private boolean signed;
-    private String content;
-    private DocumentType type;
+    private String file;
 
-    public Document() {}
+    public Document() {
+    }
 
-    public Document(String protocol, LocalDate expirationDate, String origin, String originId, DocumentType type, String content) {
+    public Document(String protocol, LocalDate expirationDate,
+            String file) {
         this.protocol = protocol;
         this.expirationDate = expirationDate;
-        this.origin = origin;
-        this.originId = originId;
         this.signed = false;
-        this.content = content;
-        this.type = type;
+        this.file = file;
     }
 
     public boolean isSigned() {
         return signed;
-    }
-
-    public DocumentType getType() {
-        return type;
-    }
-
-    public void setType(DocumentType type) {
-        this.type = type;
-    }
-
-    public String getTypeName() {
-        return type.name();
-    }
-
-    public int getTypeInt() {
-        return type.ordinal();
     }
 
     public String getProtocol() {
@@ -59,22 +39,6 @@ public class Document {
         this.expirationDate = expirationDate;
     }
 
-    public String getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public String getOriginId() {
-        return originId;
-    }
-
-    public void setOriginId(String originId) {
-        this.originId = originId;
-    }
-
     public boolean getSigned() {
         return signed;
     }
@@ -83,12 +47,12 @@ public class Document {
         this.signed = signed;
     }
 
-    public String getContent() {
-        return content;
+    public String getFile() {
+        return this.file;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setFile(String file) {
+        this.file = file;
     }
 
     @Override
@@ -96,10 +60,7 @@ public class Document {
         return "\n\nDocumento encontrado com o protocolo " + protocol + ":\n" +
                 "Protocolo: " + this.getProtocol() + "\n" +
                 "Data de expiração: " + this.getExpirationDate() + "\n" +
-                "Origem: " + this.getOrigin() + "\n" +
-                "Índice da Origem: " + this.getOriginId() + "\n" +
                 "Assinatura: " + this.getSigned() + "\n" +
-                "Tipo do documento: " + this.getTypeName() + "\n" +
-                "Conteúdo: " + this.getContent();
+                "Conteúdo: " + this.getFile();
     }
 }
