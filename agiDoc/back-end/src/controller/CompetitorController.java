@@ -89,14 +89,14 @@ public class CompetitorController {
                 return;
             }
 
-            boolean isAddressUpdated = addressController.update(existCompetitor.getId());
+            boolean isAddressUpdated = addressController.update(existCompetitor.getAddress().getId());
 
             if (!isAddressUpdated) {
                 System.out.println("Erro ao atualizar dados do endereço do concorrente de id: " + validId);
                 return;
             }
 
-            boolean isContactUpdated = contactController.update(existCompetitor.getId());
+            boolean isContactUpdated = contactController.update(existCompetitor.getContact().getId());
 
             if (!isContactUpdated) {
                 System.out.println("Erro ao atualizar dados do contato do concorrente de id: " + validId);
