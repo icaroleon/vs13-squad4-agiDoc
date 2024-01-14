@@ -64,20 +64,16 @@ public class DocumentController {
         return null;
     }
 
-    public void listAll(int processId) {
+    public void list(Associated associated, Integer associatedId) {
         try {
-            ArrayList<Document> allDocuments = documentService.list();
+            documentService.list()
+                    .stream()
+                    .filter(document -> document.getAssociated().equals(associated)
+                            && document.getAssociatedId().equals(associatedId))
+                    .forEach(System.out::println);
 
-            if (allDocuments.isEmpty()) {
-                System.out.println("Nenhum documento encontrado.");
-                return;
-            }
-
-            for (Document document : allDocuments) {
-                System.out.println(document.toString());
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
+        } catch (DatabaseException e) {
+            e.printStackTrace();
         }
 
     }
