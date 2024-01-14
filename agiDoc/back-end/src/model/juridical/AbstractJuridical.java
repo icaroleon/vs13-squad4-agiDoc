@@ -45,6 +45,14 @@ public abstract class AbstractJuridical implements IJuridical {
         this.cnpj = cnpj;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public Address getAddress() {
         return address;
     }
