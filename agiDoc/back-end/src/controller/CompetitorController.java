@@ -2,8 +2,9 @@ package controller;
 
 import exception.DatabaseException;
 import model.address.Address;
-import model.address.AddressAssociated;
+import model.Associated;
 import model.competitor.Competitor;
+import model.contact.Contact;
 import service.CompetitorService;
 
 
@@ -15,8 +16,7 @@ public class CompetitorController {
     private final Scanner scanner = new Scanner(System.in);
     private final CompetitorService competitorService = new CompetitorService();
     private final AddressController addressController = new AddressController();
-    // TODO: Aguardando service de contact
-//    private final ContactController contactController = new ContactController();
+    private final ContactController contactController = new ContactController();
 
     public CompetitorController() {}
 
@@ -36,20 +36,18 @@ public class CompetitorController {
             return;
         }
 
-        Address createdAddress = addressController.create(AddressAssociated.COMPETITOR, newCompetitor.getId());
+        Address createdAddress = addressController.create(Associated.COMPETITOR, newCompetitor.getId());
         newCompetitor.setAddress(createdAddress);
 
-        // TODO: Aguardando controller Contact
-//        Contact createdContact = contactController.create(AddressAssociated.COMPETITOR, newCompetitor.getId());
-//        newCompetitor.setContact(createdContact);
+        Contact createdContact = contactController.create(Associated.COMPETITOR, newCompetitor.getId());
+        newCompetitor.setContact(createdContact);
 
         try {
             competitorService.addCompetitorToProcess(newCompetitor.getId(), processId);
+            System.out.println(newCompetitor);
         } catch (DatabaseException e) {
             System.out.println("ERRO: " + e.getMessage());
         }
-
-        System.out.println(newCompetitor);
     }
 
     public void listAll(int processId) {
@@ -98,12 +96,11 @@ public class CompetitorController {
                 return;
             }
 
-            // TODO: Aguardando contact
-//            boolean isContactUpdated = contactController.update(existCompetitor.getId());
+            boolean isContactUpdated = contactController.update(existCompetitor.getId());
 
-//            if (!isContactUpdated) {
-//                System.out.println("Erro ao atualizar dados do contato do concorrente de id: " + validId);
-//            }
+            if (!isContactUpdated) {
+                System.out.println("Erro ao atualizar dados do contato do concorrente de id: " + validId);
+            }
 
         } catch (DatabaseException e) {
             System.out.println("ERRO: " + e.getMessage());

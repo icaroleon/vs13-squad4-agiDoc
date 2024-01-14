@@ -1,6 +1,8 @@
 package service;
 
 import model.address.Address;
+import model.contact.Contact;
+import model.contact.ContactPhoneType;
 import service.IService;
 import exception.DatabaseException;
 import model.competitor.Competitor;
@@ -87,8 +89,7 @@ public class CompetitorService implements IService<Integer, Competitor> {
             while (res.next()) {
                 Competitor competitor = new Competitor();
                 Address address = new Address();
-                // TODO aguardando model contact
-//                Contact contact = new Contact();
+                Contact contact = new Contact();
 
                 competitor.setId(res.getInt("ID_COMPETITOR"));
                 competitor.setCompanyName(res.getString("COMPANY_NAME"));
@@ -105,15 +106,15 @@ public class CompetitorService implements IService<Integer, Competitor> {
                 address.setState(res.getString("STATE"));
                 address.setZipCode(res.getString("ZIP_CODE"));
 
-                // TODO aguardando model contact
-//                contact.setId(res.getInt("ID_CONTACT"));
-//                contact.setName(res.getString("NAME"));
-//                contact.setEmail(res.getString("EMAIL"));
-//                contact.setPhone(res.getString("PHONE"));
-//                contact.setPhoneType(res.getInt("TYPE"));
+
+                contact.setId(res.getInt("ID_CONTACT"));
+                contact.setName(res.getString("NAME"));
+                contact.setEmail(res.getString("EMAIL"));
+                contact.setPhone(res.getString("PHONE"));
+                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
 
                 competitor.setAddress(address);
-//                competitor.setContact(contact);
+                competitor.setContact(contact);
 
                 competitorList.add(competitor);
             }
@@ -215,8 +216,7 @@ public class CompetitorService implements IService<Integer, Competitor> {
 
             Competitor competitor = new Competitor();
             Address address = new Address();
-//            TODO: Aguardando contact
-//            Contact contact = new Contact();
+            Contact contact = new Contact();
 
             competitor.setId(res.getInt("ID_COMPETITOR"));
             competitor.setCompanyName(res.getString("COMPANY_NAME"));
@@ -231,15 +231,15 @@ public class CompetitorService implements IService<Integer, Competitor> {
             address.setState(res.getString("STATE"));
             address.setZipCode(res.getString("ZIP_CODE"));
 
-//            TODO: Aguardando contact
-//            contact.setId(res.getInt("ID_CONTACT"));
-//            contact.setName(res.getString("NAME"));
-//            contact.setEmail(res.getString("EMAIL"));
-//            contact.setPhone(res.getString("PHONE"));
-//            contact.setPhoneType(res.getInt("TYPE"));
+
+            contact.setId(res.getInt("ID_CONTACT"));
+            contact.setName(res.getString("NAME"));
+            contact.setEmail(res.getString("EMAIL"));
+            contact.setPhone(res.getString("PHONE"));
+            contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
 
             competitor.setAddress(address);
-//            competitor.setContact(contact)
+            competitor.setContact(contact);
 
             return competitor;
         } catch (SQLException e) {

@@ -1,9 +1,11 @@
 package model.competitor;
 
-//import model.contact.Contact;
+import model.address.Address;
+import model.contact.Contact;
 import model.document.Document;
 import model.juridical.AbstractJuridical;
 import model.process.Process;
+import model.user.User;
 
 import java.util.ArrayList;
 
@@ -21,21 +23,16 @@ public class Competitor extends AbstractJuridical {
         super(cpnj, companyName);
     }
 
-//    TODO: Precisa contact
-//    public Competitor(String cpnj, Address address, Contact contact, String companyName) {
-//        super(cpnj, address, contact);
-//        this.companyName = companyName;
-//    }
+    public Competitor(String cpnj, Address address, Contact contact, String companyName) {
+        super(cpnj, companyName, address, contact);
+    }
 
-//    TODO: Precisa contact
-//    public Competitor(String cpnj, Address address, Contact contact, ArrayList<Employee> employees, String companyName, Process process, ArrayList<Document> documents) {
-//        super(cpnj, address, contact, employees);
-//        this.companyName = companyName;
-//        this.process = process;
-//        this.documents = documents;
-//    }
+    public Competitor(String cpnj, Address address, Contact contact, ArrayList<User> employees, String companyName, ArrayList<Process> processes, ArrayList<Document> documents) {
+        super(cpnj, companyName, address, contact, employees);
+        this.processes = processes;
+        this.documents = documents;
+    }
 
-//    TODO: Falta adicionar o contato
     @Override
     public String toString(){
         return """
@@ -44,6 +41,8 @@ public class Competitor extends AbstractJuridical {
                 CNPJ: %s
                 Contratado: %s
                 Endereço: %s n° %d - %s. %s - %s / CEP %s
+                Contato: %s - %s / %s
+                email: %s
                 """.formatted(
                 this.id,
                 this.companyName,
@@ -54,7 +53,11 @@ public class Competitor extends AbstractJuridical {
                 this.address.getDistrict(),
                 this.address.getCity(),
                 this.address.getState(),
-                this.address.getZipCode()
+                this.address.getZipCode(),
+                this.contact.getName(),
+                this.contact.getPhone(),
+                this.contact.getPhoneType(),
+                this.contact.getEmail()
         );
     }
 
