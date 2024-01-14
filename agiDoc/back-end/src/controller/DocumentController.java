@@ -118,29 +118,12 @@ public class DocumentController {
         return false;
     }
 
-    public void delete() {
-        System.out.println("Tem certeza que deseja excluir um documento? (S/N)");
-        boolean isNotSure = !sc.nextLine().equalsIgnoreCase("S");
-
-        if (isNotSure)
-            return;
-
-        System.out.print("Digite o protocolo do documento que deseja excluir: ");
-        protocol = sc.nextLine();
-
+    public boolean delete(Integer id) {
         try {
-            System.out.println("Digite o id do processo que o documento pertence");
-            Process process = processService.get(sc.nextInt());
-
-            documentService.delete(1);
-            process.setDocuments(documentService.list());
-            System.out.println("Documento com o protocolo " + protocol + " foi excluído com sucesso");
-        } catch (RuntimeException e) {
-            System.out.println("Error: " + e.getMessage());
+            return documentService.delete(id);
         } catch (DatabaseException e) {
-            // Handle exception
-        } catch (Exception e) {
-            // Handle exception
+            e.printStackTrace();
         }
+        return false;
     }
 }
