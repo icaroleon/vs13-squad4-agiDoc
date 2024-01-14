@@ -1,17 +1,12 @@
 package controller;
 
-import database.Data;
 import exception.DatabaseException;
 import model.user.User;
-import model.institution.Institution;
 import service.UserService;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class UserController {
 
-    private static UserService userService = new UserService();
+    private static final UserService userService = new UserService();
 
     public static boolean login(String userName, String password) {
         try {
