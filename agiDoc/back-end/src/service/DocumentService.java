@@ -125,8 +125,48 @@ public class DocumentService implements IService<Integer, Document> {
     }
 
     @Override
-    public boolean update(Integer id, Document object) throws DatabaseException {
-        return true;
+    public boolean update(Integer id, Document document) throws DatabaseException {
+        Connection con = null;
+
+        try {
+            con = DBConnection.getConnection();
+
+            String sqlUpdate = """
+                    UPDATE DOCUMENT SET
+                        PROTOCOL = ?
+                        EXPIRATION_DATE = ?
+                        IS_SIGNED = ?
+                        FILE = ?
+                    WHERE ID_DOCUMENT = ?
+                    """;
+
+            PreparedStatement stmt = con.prepareStatement(sqlUpdate);
+
+            stmt.setString(1, document.getProtocol());
+            stmt.setString(2, document.getExpirationDate().toString());
+
+            int isSigned = 0;
+            if (document.getSigned()) {
+                isSigned = 1;
+            }
+
+            stmt.setInt(3, isSigned);
+            stmt.setString(4, document.getFile());
+            stmt.setInt(5, id);
+
+            int res = stmt.executeUpdate();
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
