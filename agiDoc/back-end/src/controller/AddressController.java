@@ -2,7 +2,7 @@ package controller;
 
 import exception.DatabaseException;
 import model.address.Address;
-import model.address.AddressAssociated;
+import model.Associated;
 import service.AddressService;
 
 import java.util.Scanner;
@@ -11,7 +11,7 @@ public class AddressController {
     private final AddressService addressService = new AddressService();
     private final Scanner scanner = new Scanner(System.in);
 
-    public Address create(AddressAssociated addressAssociated, Integer associatedId) {
+    public Address create(Associated associated, Integer associatedId) {
         try {
             Address address = new Address();
 
@@ -37,7 +37,7 @@ public class AddressController {
             System.out.print("[Endereço] CEP: ");
             address.setZipCode(scanner.nextLine().trim());
 
-            address.setAssociated(addressAssociated);
+            address.setAssociated(associated);
             address.setAssociatedId(associatedId);
 
             return addressService.create(address);
@@ -96,11 +96,11 @@ public class AddressController {
         return false;
     }
 
-    public void list(AddressAssociated addressAssociated, Integer associatedId) {
+    public void list(Associated associated, Integer associatedId) {
         try {
             addressService.list()
                     .stream()
-                    .filter(address -> address.getAssociated().equals(addressAssociated) && address.getAssociatedId().equals(associatedId))
+                    .filter(address -> address.getAssociated().equals(associated) && address.getAssociatedId().equals(associatedId))
                     .forEach(System.out::println);
         } catch (DatabaseException e) {
             e.printStackTrace();
