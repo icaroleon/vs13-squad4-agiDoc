@@ -2,6 +2,7 @@ package service;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import database.DBConnection;
 import model.process.Process;
@@ -10,8 +11,7 @@ import exception.DatabaseException;
 public class ProcessService implements IService<Integer, Process> {
     private ArrayList<Process> processes = new ArrayList<>();
 
-    public ProcessService() {
-    }
+    public ProcessService() {}
 
     public ProcessService(ArrayList<Process> processes) {
         this.processes = processes;
@@ -40,17 +40,16 @@ public class ProcessService implements IService<Integer, Process> {
             Integer nextId = this.getNextId(con);
             process.setId(nextId);
 
-            String sql = "INSERT INTO PROCESS\n" +
-                    "(ID_PROCESS, TITLE, STATUS, DESCRIPTION, ID_INSTITUTION)\n" +
-                    "VALUES(?, ?, ?, ?, ?)\n";
+            String sql = "INSERT INTO PROCESS\n" + "(ID_PROCESS, NUMBER, TITLE, DESCRIPTION, STATUS, ID_INSTITUTION)\n" + "VALUES(?, ?, ?, ?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setInt(1, process.getId());
-            stmt.setString(2, process.getTitle());
-            stmt.setString(3, process.getStatus());
-            stmt.setString(3, process.getDescription());
-            stmt.setInt(4, process.getInstitutionId());
+            stmt.setString(2, process.getProcessNumber());
+            stmt.setString(3, process.getTitle());
+            stmt.setString(4, process.getDescription());
+            stmt.setString(5, process.getStatus());
+            stmt.setInt(6, process.getInstitutionId());
 
             int res = stmt.executeUpdate();
             System.out.println("adicionarProcess.res= " + res);
@@ -68,20 +67,67 @@ public class ProcessService implements IService<Integer, Process> {
         }
     }
 
+    public List<Process> getProcessById(Integer id) throws Exception {
+        Connection con = null;
+        List<Process> returnValue = new ArrayList<>();
 
-    public Process get(Integer id) throws Exception {
-        for (Process process : processes) {
-            Integer processId = process.getId();
+        try {
+            con = DBConnection.getConnection();
 
-            if (processId.equals(id)) {
-                return process;
+            PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE ID_PROCESS = ?");
+
+            query.setInt(1, id);
+
+            return resultProcess(con, returnValue, query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Process> searchProcess(String processNumber) throws DatabaseException {
+        Connection con = null;
+        List<Process> returnValue = new ArrayList<>();
+
+        try {
+            con = DBConnection.getConnection();
+
+            PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE PROCESS_NUMBER = ?");
+
+            query.setString(1, processNumber);
+
+            return resultProcess(con, returnValue, query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<Process> resultProcess(Connection con, List<Process> returnValue, PreparedStatement query) throws DatabaseException {
+        try (ResultSet res = query.executeQuery()) {
+            while (res.next()) {
+                Process process = new Process();
+                process.setId(res.getInt("id_process"));
+                process.setProcessNumber(res.getString("processNumber"));
+                process.setTitle(res.getString("title"));
+                process.setDescription(res.getString("description"));
+                process.setStatus(res.getString("status"));
+                returnValue.add(process);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
-        throw new Exception("Processo nao encontrado!");
+        return returnValue;
     }
 
     @Override
-    public ArrayList<Process> getAll() throws DatabaseException {
+    public ArrayList<Process> list() throws DatabaseException {
         ArrayList<Process> processes = new ArrayList<>();
         Connection con = null;
 
@@ -93,7 +139,7 @@ public class ProcessService implements IService<Integer, Process> {
 
             ResultSet res = stmt.executeQuery(sql);
 
-            while (res.next()){
+            while (res.next()) {
                 Process process = new Process();
                 process.setId(res.getInt("id_process"));
                 process.setTitle(res.getString("title"));
@@ -101,23 +147,23 @@ public class ProcessService implements IService<Integer, Process> {
                 process.setStatus(res.getString("status"));
                 processes.add(process);
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
             try {
-                if (con != null){
+                if (con != null) {
                     con.close();
                 }
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return processes;
     }
 
-    public Process update(Integer id, Process process) throws DatabaseException {
+    public boolean update(Integer id, Process process) throws DatabaseException {
         Connection con = null;
-        try{
+        try {
             con = DBConnection.getConnection();
 
             StringBuilder sql = new StringBuilder();
@@ -137,7 +183,7 @@ public class ProcessService implements IService<Integer, Process> {
             int res = stmt.executeUpdate();
             System.out.println("editarPessoa.res=" + res);
 
-            return process;
+            return res > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

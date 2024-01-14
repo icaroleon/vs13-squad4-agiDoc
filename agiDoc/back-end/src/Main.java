@@ -20,7 +20,9 @@ public class Main {
             System.out.print("Digite sua senha: ");
             String password = scanner.nextLine();
 
+
             isNotValidLogin = !UserController.login(user, password);
+
         }
 
         boolean running = true;

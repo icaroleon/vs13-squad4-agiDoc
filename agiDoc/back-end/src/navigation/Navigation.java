@@ -4,6 +4,8 @@ import controller.DocumentController;
 import controller.CompetitorController;
 import controller.UserController;
 import controller.ProcessController;
+import model.department.Department;
+import exception.DatabaseException;
 import model.process.Process;
 import model.user.User;
 
@@ -18,7 +20,7 @@ public class Navigation {
         this.scanner = new Scanner(System.in);
     }
 
-    public String showMenu(String option) {
+    public String showMenu(String option) throws DatabaseException {
         this.scanner = new Scanner(System.in);
         String chooseNavigation = "";
 
@@ -135,7 +137,7 @@ public class Navigation {
         return option;
     }
 
-    public String processesMenu() {
+    public String processesMenu() throws DatabaseException {
         String option;
         boolean running = true;
 
@@ -157,10 +159,9 @@ public class Navigation {
             switch (option) {
                 case "1" -> ProcessController.getAll();
                 case "2" -> {
-                    System.out.print("Digite o identificador do processo: ");
-                    String id = scanner.nextLine();
-                    this.inputProcessId = Integer.parseInt(id);
-                    currentProcess = ProcessController.get(inputProcessId);
+                    System.out.print("Digite o número do processo: ");
+                    String inputProcessNumber = scanner.nextLine();
+                    currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
                     if(currentProcess != null){
                         option = "3";
                         running = false;
@@ -200,11 +201,11 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> ProcessController.closeProcess(inputProcessId);
-                case "2" -> ProcessController.chooseCompetitor(inputProcessId);
-                case "3" -> ProcessController.update(inputProcessId);
+                case "1" -> ProcessController.closeProcess(Integer.valueOf(inputProcessId));
+                case "2" -> ProcessController.chooseCompetitor(Integer.valueOf(inputProcessId));
+                case "3" -> ProcessController.update(Integer.valueOf(inputProcessId));
                 case "4" -> {
-                    boolean isDeleted = ProcessController.delete(inputProcessId);
+                    boolean isDeleted = ProcessController.delete(Integer.valueOf(inputProcessId));
 
                     if (isDeleted) {
                         option = "9";
@@ -243,10 +244,10 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> document.createDocument(currentProcess, inputProcessId);
+                case "1" -> document.createDocument(currentProcess, String.valueOf(inputProcessId));
                 case "2" -> document.getAllDocuments();
                 case "3" -> document.getDocument();
-                case "4" -> document.updateDocument(currentProcess, inputProcessId);
+                case "4" -> document.updateDocument(currentProcess, String.valueOf(inputProcessId));
                 case "5" -> document.deleteDocument(currentProcess);
                 case "6" -> document.signDocument(currentProcess);
                 case "0", "9" -> running = false;

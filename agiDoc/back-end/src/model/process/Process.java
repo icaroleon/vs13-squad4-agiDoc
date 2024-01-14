@@ -5,28 +5,28 @@ import java.util.UUID;
 
 import model.competitor.Competitor;
 import model.document.Document;
+import model.document.DocumentType;
 
 public class Process implements IProcess {
+    UUID uuid = UUID.randomUUID();
+
     private Integer id;
-    private String title, status, description;
+    private String processNumber = uuid.toString().substring(0, 6);
+    private String title, description;
+    private String status = "Aberto";
     private Competitor contracted;
     private ArrayList<Competitor> competitors;
     private ArrayList<Document> documents;
-    private Integer institutionId;
+    private Integer institutionId = 1;
 
-    public Process(Integer id) {
+    public Process(Integer id, String processNumber) {
         this.id = id;
     }
 
-    public Process(String title, String description) {
-        this.title = title;
-        this.description = description;
-        this.status = "Aberto";
-        this.competitors = new ArrayList<>();
-        this.documents = new ArrayList<>();
-    }
-
-    public Process(String title, String description, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
+    public Process(Integer institutionId, Integer id, String processNumber, String title, String description, ArrayList<Competitor> competitors, ArrayList<Document> documents) {
+        this.institutionId = id;
+        this.id = id;
+        this.processNumber = processNumber;
         this.title = title;
         this.description = description;
         this.status = "Aberto";
@@ -35,7 +35,16 @@ public class Process implements IProcess {
     }
 
     public Process() {
+    }
 
+    public Process(String title, String description) {
+    }
+
+    public String getProcessNumber() {
+        return processNumber;
+    }
+
+    public void setProcessNumber(String processNumber) {
     }
 
     public void setContracted(Competitor contracted) {
