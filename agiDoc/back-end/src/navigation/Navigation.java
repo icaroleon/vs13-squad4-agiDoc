@@ -99,6 +99,7 @@ public class Navigation {
                 case "3" -> {
                     System.out.print("Digite o ID do usuário para obter: ");
                     int idUser = scanner.nextInt();
+                    scanner.nextLine();
                     UserController.getUserById(idUser);
                 }
                 case "4" -> {
@@ -126,6 +127,7 @@ public class Navigation {
                 case "5" -> {
                     System.out.print("Digite o ID do usuário para remover: ");
                     int userId = scanner.nextInt();
+                    scanner.nextLine();
                     UserController.removeUser(userId);
                 }
 

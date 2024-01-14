@@ -17,6 +17,7 @@ public class User {
     @Override
     public String toString() {
         return " Users {" +
+                "\n\tuser_id: " + idUser +
                 "\n\tRegistration: '" + registration + '\'' +
                 ",\n\tName: '" + name + '\'' +
                 ",\n\tUser: '" + user + '\'' +
