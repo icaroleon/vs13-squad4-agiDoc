@@ -25,10 +25,10 @@ public class Navigation {
             case "0" -> chooseNavigation = this.mainMenu();
             case "1" -> chooseNavigation = this.processesMenu();
             case "2" -> chooseNavigation = this.userMenu();
-            case "3" -> chooseNavigation = this.oneProcessMenu();
-            case "5" -> chooseNavigation = this.documentsMenu();
-            case "6" -> chooseNavigation = this.competitorsMenu();
-            case "7" -> chooseNavigation = this.institutionMenu();
+            case "3" -> chooseNavigation = this.institutionMenu();
+            case "4" -> chooseNavigation = this.oneProcessMenu();
+            case "6" -> chooseNavigation = this.documentsMenu();
+            case "7" -> chooseNavigation = this.competitorsMenu();
         }
 
         return chooseNavigation;
@@ -43,7 +43,7 @@ public class Navigation {
         System.out.println("+-------------------------------------------+");
         System.out.println("| 1 - Processos                             |");
         System.out.println("| 2 - Usuários                              |");
-        System.out.println("| 7 - Instituição                           |");
+        System.out.println("| 3 - Instituição                           |");
         System.out.println("|                                           |");
         System.out.println("| 0 - Sair                                  |");
         System.out.println("+-------------------------------------------+");
@@ -143,7 +143,7 @@ public class Navigation {
                     currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
                     inputProcessId = currentProcess.getId();
                     if(currentProcess != null){
-                        option = "3";
+                        option = "4";
                         running = false;
                     }
                 }

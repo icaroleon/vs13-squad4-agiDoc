@@ -20,8 +20,8 @@ public class Main {
                 System.out.println("+-------------------------------------------+");
                 System.out.println("|              Menu | agiDoc                |");
                 System.out.println("+-------------------------------------------+");
-                System.out.println("| 1. Login                                  |");
-                System.out.println("| 2. Criar novo usuário                     |");
+                System.out.println("| 1 - Login                                 |");
+                System.out.println("| 2 - Criar novo usuário                    |");
                 System.out.println("+-------------------------------------------+");
                 System.out.print("Escolha uma opção: ");
                 int option = scanner.nextInt();
@@ -33,16 +33,16 @@ public class Main {
                             System.out.println("+-------------------------------------------+");
                             System.out.println("|              Login | agiDoc               |");
                             System.out.println("+-------------------------------------------+");
-                            System.out.println("| 0. Voltar                                 |");
+                            System.out.println("| 9 - Voltar                                |");
                             System.out.println("+-------------------------------------------+");
 
                             System.out.print("Digite seu usuário: ");
                             String userName = scanner.nextLine();
-                            if (userName.equals("0")) break;
+                            if (userName.equals("9")) break;
 
                             System.out.print("Digite sua senha: ");
                             String password = scanner.nextLine();
-                            if (password.equals("0")) break;
+                            if (password.equals("9")) break;
 
                             if (UserController.login(userName, password)) {
                                 isNotValidLogin = false;
@@ -57,27 +57,27 @@ public class Main {
                         System.out.println("+-------------------------------------------+");
                         System.out.println("|     Criar novo usuário | agiDoc           |");
                         System.out.println("+-------------------------------------------+");
-                        System.out.println("| 0. Voltar                                 |");
+                        System.out.println("| 9 - Voltar                                 |");
                         System.out.println("+-------------------------------------------+");
 
                         System.out.print("Digite o nome: ");
                         String name = scanner.nextLine().trim();
-                        if (name.equals("0")) break;
+                        if (name.equals("9")) break;
                         user.setName(name);
 
                         System.out.print("Digite o nome de usuário: ");
                         String userUser = scanner.nextLine().trim();
-                        if (userUser.equals("0")) break;
+                        if (userUser.equals("9")) break;
                         user.setUser(userUser);
 
                         System.out.print("Digite a senha: ");
                         String password = scanner.nextLine().trim();
-                        if (password.equals("0")) break;
+                        if (password.equals("9")) break;
                         user.setPassword(password);
 
                         System.out.print("Digite o cargo: ");
                         String position = scanner.nextLine().trim();
-                        if (position.equals("0")) break;
+                        if (position.equals("9")) break;
                         user.setPosition(position);
 
                         try {
@@ -101,7 +101,7 @@ public class Main {
 
                 switch (navigationOption) {
                     case "0" -> running = false;
-                    case "1", "2" , "7" -> history.push(navigationOption);
+                    case "1", "2", "3" -> history.push(navigationOption);
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
             } else {
