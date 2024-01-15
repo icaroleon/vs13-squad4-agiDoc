@@ -1,5 +1,6 @@
 package service;
 
+import model.Associated;
 import model.document.Document;
 
 import java.sql.*;
@@ -56,8 +57,8 @@ public class DocumentService implements IService<Integer, Document> {
             document.setId(nextId);
 
             String sqlInsert = """
-                        INSERT INTO DOCUMENTS (ID_DOCUMENT, PROTOCOL, EXPIRATION_DATE, IS_SIGNED, FILE, ID_SIGNATURE)
-                        VALUES (?, ?, ?, ?, ?, ?)
+                        INSERT INTO DOCUMENTS (ID_DOCUMENT, PROTOCOL, EXPIRATION_DATE, IS_SIGNED)
+                        VALUES (?, ?, ?, ?)
                     """;
 
             PreparedStatement stmt = con.prepareStatement(sqlInsert);
@@ -65,14 +66,7 @@ public class DocumentService implements IService<Integer, Document> {
             stmt.setInt(1, document.getId());
             stmt.setString(2, document.getProtocol());
             stmt.setString(3, document.getExpirationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            if (document.getSigned() == true) {
-                stmt.setString(4, "1");
-            } else {
-                stmt.setString(4, "0");
-            }
-            stmt.setString(5, document.getFile());
-            // TODO: Deve ser implementado ID_SIGNATURE OU NAO?
-            stmt.setString(6, "IMPLEMENTAR?");
+            stmt.setInt(4, 0);
 
             int res1 = stmt.executeUpdate();
 
@@ -115,10 +109,7 @@ public class DocumentService implements IService<Integer, Document> {
             con = DBConnection.getConnection();
             Statement stmt = con.createStatement();
 
-            String sqlSelect = """
-                    SELECT * FROM VS_13_EQUIPE_4.DOCUMENTS C
-                    JOIN VS_13_EQUIPE_4.DOCUMENTS_ASSOCIATIONS DA ON DA.ID_DOCUMENT = C.ID_DOCUMENT
-                    """;
+            String sqlSelect = "SELECT * FROM DOCUMENTS";
 
             ResultSet res = stmt.executeQuery(sqlSelect);
 
@@ -127,14 +118,9 @@ public class DocumentService implements IService<Integer, Document> {
 
                 document.setId(res.getInt("ID_DOCUMENT"));
                 document.setProtocol(res.getString("PROTOCOL"));
-                document.setExpirationDate(
-                        res.getDate("EXPIRATION_DATE").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                document.setExpirationDate(res.getDate("EXPIRATION_DATE").toLocalDate());
 
-                boolean isSigned = false;
-
-                if (res.getInt("IS_SIGNED") == 1)
-                    isSigned = true;
-
+                boolean isSigned = res.getInt("IS_SIGNED") == 1;
                 document.setSigned(isSigned);
 
                 String sql2 = "SELECT * FROM DOCUMENTS_ASSOCIATIONS WHERE ID_DOCUMENT = ?";
@@ -146,6 +132,7 @@ public class DocumentService implements IService<Integer, Document> {
                 ResultSet res2 = stmt2.executeQuery();
 
                 if (res2.next()) {
+                    document.setAssociated(Associated.PROCESS);
                     document.setAssociatedId(res2.getInt("ID_PROCESS"));
                 }
 
@@ -173,30 +160,16 @@ public class DocumentService implements IService<Integer, Document> {
         try {
             con = DBConnection.getConnection();
 
-            String sqlUpdate = """
-                    UPDATE DOCUMENT SET
-                        PROTOCOL = ?
-                        EXPIRATION_DATE = ?
-                        IS_SIGNED = ?
-                        FILE = ?
-                    WHERE ID_DOCUMENT = ?
-                    """;
+            String sqlUpdate = "UPDATE DOCUMENTS SET PROTOCOL = ?, EXPIRATION_DATE = ? WHERE ID_DOCUMENT = ?";
 
             PreparedStatement stmt = con.prepareStatement(sqlUpdate);
 
             stmt.setString(1, document.getProtocol());
-            stmt.setString(2, document.getExpirationDate().toString());
-
-            int isSigned = 0;
-            if (document.getSigned()) {
-                isSigned = 1;
-            }
-
-            stmt.setInt(3, isSigned);
-            stmt.setString(4, document.getFile());
-            stmt.setInt(5, id);
+            stmt.setString(2, document.getExpirationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            stmt.setInt(3, id);
 
             int res = stmt.executeUpdate();
+            System.out.println("updateDocument.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -232,6 +205,7 @@ public class DocumentService implements IService<Integer, Document> {
             stmt.setInt(1, id);
 
             int res = stmt.executeUpdate();
+            System.out.println("deleteDocument.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -253,30 +227,23 @@ public class DocumentService implements IService<Integer, Document> {
         try {
             con = DBConnection.getConnection();
 
-            String sqlSelect = """
-                    SELECT * FROM VS_13_EQUIPE_4.DOCUMENTS C
-                    JOIN VS_13_EQUIPE_4.DOCUMENTS_ASSOCIATIONS DA ON DA.ID_DOCUMENT = C.ID_DOCUMENT
-                    WHERE ID_COMPETITOR = ?
-                    """;
+            String sqlSelect = "SELECT * FROM DOCUMENTS WHERE ID_DOCUMENT = ?";
 
             PreparedStatement stmt = con.prepareStatement(sqlSelect);
             stmt.setInt(1, id);
 
-            ResultSet res = stmt.executeQuery(sqlSelect);
+            ResultSet res = stmt.executeQuery();
 
             Document document = new Document();
 
-            document.setId(res.getInt("ID_DOCUMENT"));
-            document.setProtocol(res.getString("PROTOCOL"));
-            document.setExpirationDate(
-                    res.getDate("EXPIRATION_DATE").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            if (res.next()) {
+                document.setId(res.getInt("ID_DOCUMENT"));
+                document.setProtocol(res.getString("PROTOCOL"));
+                document.setExpirationDate(res.getDate("EXPIRATION_DATE").toLocalDate());
 
-            boolean isSigned = false;
-
-            if (res.getInt("IS_SIGNED") == 1)
-                isSigned = true;
-
-            document.setSigned(isSigned);
+                boolean isSigned = res.getInt("IS_SIGNED") == 1;
+                document.setSigned(isSigned);
+            }
 
             return document;
         } catch (SQLException e) {
@@ -291,4 +258,32 @@ public class DocumentService implements IService<Integer, Document> {
         }
     }
 
+    public boolean sign(Integer id, Integer signatureId) throws DatabaseException {
+        Connection con = null;
+
+        try {
+            con = DBConnection.getConnection();
+
+            String sqlUpdate = "UPDATE DOCUMENTS SET IS_SIGNED = ?, ID_SIGNATURE = ? WHERE ID_DOCUMENT = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sqlUpdate);
+
+            stmt.setInt(1, 1);
+            stmt.setInt(2, signatureId);
+            stmt.setInt(3, id);
+
+            int res = stmt.executeUpdate();
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

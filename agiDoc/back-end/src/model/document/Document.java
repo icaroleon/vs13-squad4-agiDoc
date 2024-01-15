@@ -86,7 +86,7 @@ public class Document {
 
     @Override
     public String toString() {
-        return "\n\nDocumento encontrado com o protocolo " + protocol + ":\n" +
+        return "\n\nId: " + id + "\n" +
                 "Protocolo: " + this.getProtocol() + "\n" +
                 "Data de expiração: " + this.getExpirationDate() + "\n" +
                 "Assinatura: " + this.getSigned() + "\n" +
