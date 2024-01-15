@@ -92,9 +92,6 @@ public class Navigation {
                     int userId = scanner.nextInt();
                     scanner.nextLine();
 
-                    System.out.print("Digite a matrícula: ");
-                    user.setRegistration(scanner.nextLine().trim());
-
                     System.out.print("Digite o nome: ");
                     user.setName(scanner.nextLine().trim());
 

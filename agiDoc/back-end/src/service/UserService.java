@@ -220,7 +220,7 @@ public class UserService implements IService<Integer, User> {
         user.setName(res.getString("NAME"));
         user.setUser(res.getString("USER"));
         user.setPassword(res.getString("PASSWORD"));
-        user.setRegistration(res.getString("ROLE"));
+        user.setRegistration(res.getString("REGISTRATION"));
         user.setPosition(res.getString("POSITION"));
 
         Department department = new Department();
