@@ -166,13 +166,14 @@ public class Navigation {
             System.out.println("+-------------------------------------------+");
             System.out.printf("|           agiDoc | Processo: %s       |\n", this.currentProcess.getProcessNumber());
             System.out.println("+-------------------------------------------+");
-            System.out.println("| 1 - Encerrar Processo                     |");
-            System.out.println("| 2 - Eleger Contratado                     |");
-            System.out.println("| 3 - Editar Processo                       |");
-            System.out.println("| 4 - Excluir Processo                      |");
+            System.out.println("| 1 - Listar informações do Processo        |");
+            System.out.println("| 2 - Encerrar Processo                     |");
+            System.out.println("| 3 - Eleger Contratado                     |");
+            System.out.println("| 4 - Editar Processo                       |");
+            System.out.println("| 5 - Excluir Processo                      |");
             System.out.println("|                                           |");
-            System.out.println("| 5 - Documentos                            |");
-            System.out.println("| 6 - Concorrentes                          |");
+            System.out.println("| 6 - Documentos                            |");
+            System.out.println("| 7 - Concorrentes                          |");
             System.out.println("|                                           |");
             System.out.println("| 0 - Sair                                  |");
             System.out.println("| 9 - Voltar                                |");
@@ -181,10 +182,11 @@ public class Navigation {
             option = scanner.nextLine();
 
             switch (option) {
-                case "1" -> ProcessController.closeProcess(Integer.valueOf(inputProcessId));
-                case "2" -> ProcessController.chooseCompetitor(Integer.valueOf(inputProcessId));
-                case "3" -> ProcessController.update(Integer.valueOf(inputProcessId));
-                case "4" -> {
+                case "1" -> ProcessController.getProcessByNumber(this.currentProcess.getProcessNumber());
+                case "2" -> ProcessController.closeProcess(Integer.valueOf(inputProcessId));
+                case "3" -> ProcessController.chooseCompetitor(Integer.valueOf(inputProcessId));
+                case "4" -> ProcessController.update(Integer.valueOf(inputProcessId));
+                case "5" -> {
                     boolean isDeleted = ProcessController.delete(Integer.valueOf(inputProcessId));
 
                     if (isDeleted) {
@@ -192,7 +194,7 @@ public class Navigation {
                         running=false;
                     }
                 }
-                case "5", "6", "9", "0" -> running = false;
+                case "6", "7", "8", "9", "0"  -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
         } while (running);
