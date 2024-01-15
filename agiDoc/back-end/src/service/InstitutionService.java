@@ -75,14 +75,15 @@ public class InstitutionService implements IService<Integer, Institution> {
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE INSTITUTIONS SET ");
-            sql.append(" cnpj = ?,");
-            sql.append(" company_name = ?,");
+            sql.append(" cnpj = ?, ");
+            sql.append(" company_name = ? ");
             sql.append(" WHERE id_institution = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
             stmt.setString(1, institution.getCnpj());
             stmt.setString(2, institution.getCompanyName());
+            stmt.setInt(3, id);
 
             int res = stmt.executeUpdate();
             System.out.println("editarInstitutions.res=" + res);
@@ -214,37 +215,41 @@ public class InstitutionService implements IService<Integer, Institution> {
             stmt.setInt(1, id);
 
             ResultSet res = stmt.executeQuery();
-
             Institution institution = new Institution();
 
             Address address = new Address();
 
             Contact contact = new Contact();
+            if (res.next()){
 
-            institution.setId(res.getInt("id_institution"));
-            institution.setCnpj(res.getString("cnpj"));
-            institution.setCompanyName(res.getString("company_name"));
 
-            address.setId(res.getInt("ID_ADDRESS"));
-            address.setStreet(res.getString("STREET"));
-            address.setDistrict(res.getString("DISTRICT"));
-            address.setNumber(res.getInt("NUMBER"));
-            address.setComplement(res.getString("COMPLEMENT"));
-            address.setCity(res.getString("CITY"));
-            address.setState(res.getString("STATE"));
-            address.setZipCode(res.getString("ZIP_CODE"));
+                institution.setId(res.getInt("id_institution"));
+                institution.setCnpj(res.getString("cnpj"));
+                institution.setCompanyName(res.getString("company_name"));
 
-            institution.setAddress(address);
+                address.setId(res.getInt("ID_ADDRESS"));
+                address.setStreet(res.getString("STREET"));
+                address.setDistrict(res.getString("DISTRICT"));
+                address.setNumber(res.getInt("NUMBER"));
+                address.setComplement(res.getString("COMPLEMENT"));
+                address.setCity(res.getString("CITY"));
+                address.setState(res.getString("STATE"));
+                address.setZipCode(res.getString("ZIP_CODE"));
 
-            contact.setId(res.getInt("ID_CONTACT"));
-            contact.setName(res.getString("NAME"));
-            contact.setEmail(res.getString("EMAIL"));
-            contact.setPhone(res.getString("PHONE"));
-            contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
+                institution.setAddress(address);
 
-            institution.setContact(contact);
+                contact.setId(res.getInt("ID_CONTACT"));
+                contact.setName(res.getString("NAME"));
+                contact.setEmail(res.getString("EMAIL"));
+                contact.setPhone(res.getString("PHONE"));
+                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("PHONE_TYPE")));
 
+                institution.setContact(contact);
+
+            }
+            System.out.println(institution);
             return institution;
+
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());

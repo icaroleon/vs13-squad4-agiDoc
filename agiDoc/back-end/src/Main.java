@@ -1,40 +1,116 @@
 import controller.UserController;
+import exception.DatabaseException;
+import model.user.User;
 import navigation.Navigation;
+import service.InstitutionService;
 
+import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        Stack<String> history = new Stack<>();
         boolean isNotValidLogin = true;
-
-        while (isNotValidLogin) {
-            System.out.println("+-------------------------------------------+");
-            System.out.println("|              Login | agiDoc               |");
-            System.out.println("+-------------------------------------------+");
-            System.out.print("Digite seu usuários: ");
-            String user = scanner.nextLine();
-
-            System.out.print("Digite sua senha: ");
-            String password = scanner.nextLine();
-
-
-            isNotValidLogin = !UserController.login(user, password);
-
-        }
-
-        boolean running = true;
+        User user = new User();
+        Stack<String> history = new Stack<>();
         Navigation nav = new Navigation();
+        boolean running = true;
 
+        while (running) {
+            try {
+                System.out.println("+-------------------------------------------+");
+                System.out.println("|              Menu | agiDoc                |");
+                System.out.println("+-------------------------------------------+");
+                System.out.println("| 1. Login                                  |");
+                System.out.println("| 2. Criar novo usuário                     |");
+                System.out.println("+-------------------------------------------+");
+                System.out.print("Escolha uma opção: ");
+                int option = scanner.nextInt();
+                scanner.nextLine();
+
+                switch (option) {
+                    case 1:
+                        do {
+                            System.out.println("+-------------------------------------------+");
+                            System.out.println("|              Login | agiDoc               |");
+                            System.out.println("+-------------------------------------------+");
+                            System.out.println("| 0. Voltar                                 |");
+                            System.out.println("+-------------------------------------------+");
+
+                            System.out.print("Digite seu usuário: ");
+                            String userName = scanner.nextLine();
+                            if (userName.equals("0")) break;
+
+                            System.out.print("Digite sua senha: ");
+                            String password = scanner.nextLine();
+                            if (password.equals("0")) break;
+
+                            if (UserController.login(userName, password)) {
+                                isNotValidLogin = false;
+                                running = false;
+                            } else {
+                                System.out.println("Usuário não existe ou credenciais inválidas. Tente novamente.");
+                            }
+                        } while (isNotValidLogin);
+                        break;
+
+                    case 2:
+                        System.out.println("+-------------------------------------------+");
+                        System.out.println("|     Criar novo usuário | agiDoc           |");
+                        System.out.println("+-------------------------------------------+");
+                        System.out.println("| 0. Voltar                                 |");
+                        System.out.println("+-------------------------------------------+");
+
+                        System.out.print("Digite a matrícula: ");
+                        String registration = scanner.nextLine().trim();
+                        if (registration.equals("0")) break;
+                        user.setRegistration(registration);
+
+
+                        System.out.print("Digite o nome: ");
+                        String name = scanner.nextLine().trim();
+                        if (name.equals("0")) break;
+                        user.setName(name);
+
+                        System.out.print("Digite o nome de usuário: ");
+                        String userUser = scanner.nextLine().trim();
+                        if (userUser.equals("0")) break;
+                        user.setUser(userUser);
+
+                        System.out.print("Digite a senha: ");
+                        String password = scanner.nextLine().trim();
+                        if (password.equals("0")) break;
+                        user.setPassword(password);
+
+                        System.out.print("Digite o cargo: ");
+                        String position = scanner.nextLine().trim();
+                        if (position.equals("0")) break;
+                        user.setPosition(position);
+
+                        try {
+                            UserController.addUser(user);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Por favor, tente novamente.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, insira uas opções acima.");
+                scanner.nextLine();
+            }
+        }
+        running = true;
         while (running) {
             if (history.isEmpty()) {
                 String navigationOption = nav.showMenu("0");
 
                 switch (navigationOption) {
                     case "0" -> running = false;
-                    case "1", "2" -> history.push(navigationOption);
+                    case "1", "2" , "7" -> history.push(navigationOption);
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
             } else {

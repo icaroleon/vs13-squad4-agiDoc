@@ -39,7 +39,7 @@ public class InstitutionController {
     }
 
     public void update() {
-        System.out.print("Digite o id da empresa que quer fazer as alterações: ");
+        System.out.print("Digite o id da instituição que quer fazer as alterações: ");
         String id = scanner.nextLine();
 
         try {
@@ -102,6 +102,7 @@ public class InstitutionController {
 
         } catch (DatabaseException e) {
             System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

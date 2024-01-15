@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CompetitorService implements IService<Integer, Competitor> {
+    public CompetitorService() {
+    }
+
     public CompetitorService(ArrayList<Competitor> competitors) {
     }
 

@@ -2,6 +2,7 @@ package controller;
 
 import model.competitor.Competitor;
 import model.process.Process;
+import model.process.ProcessStatus;
 import service.CompetitorService;
 import service.ProcessService;
 import exception.DatabaseException;
@@ -53,8 +54,10 @@ public abstract class ProcessController {
     }
 
     public static void getAll() throws DatabaseException {
-        for (Process process : processService.list()) {
-            System.out.println(process.toString());
+        try {
+            processService.list().forEach(System.out::println);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
         }
     }
 
@@ -70,6 +73,8 @@ public abstract class ProcessController {
             System.out.print("Digite a nova descrição do processo (deixe em branco para manter o valor atual): ");
             String description = scanner.nextLine();
             processToEdit.setDescription((description.isEmpty()) ? processToEdit.getDescription() : description);
+
+            processService.update(processId, processToEdit);
 
             System.out.println("Processo n° " + processId + " atualizado com sucesso.");
         } catch (DatabaseException e) {
@@ -105,14 +110,16 @@ public abstract class ProcessController {
         if (isNotSure) return;
 
         try {
-            Process process = (Process) processService.getProcessById(processId);
+            Process process = processService.getProcessById(processId);
 
             if (process.getContracted() == null) {
                 System.out.println("ERRO: Processo não tem concorrente contratado!");
                 return;
             }
 
-            process.setStatus("Fechado");
+            process.setProcessStatus(ProcessStatus.COMPLETED);
+
+            processService.update(process.getId(), process);
 
             System.out.println("Processo n°: " + processId + " fechado.");
         } catch (Exception e) {

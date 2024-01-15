@@ -10,13 +10,14 @@ public class User {
     private String password;
     private String role = "admin";
     private String position;
-    private Department department;
+    private Department department = new Department();
 
     public User(){}
 
     @Override
     public String toString() {
         return " Users {" +
+                "\n\tuser_id: " + idUser +
                 "\n\tRegistration: '" + registration + '\'' +
                 ",\n\tName: '" + name + '\'' +
                 ",\n\tUser: '" + user + '\'' +
