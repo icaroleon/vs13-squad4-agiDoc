@@ -47,7 +47,7 @@ public class Competitor extends AbstractJuridical {
                 this.id,
                 this.companyName,
                 this.cnpj,
-                this.isContracted,
+                this.isContracted == 0 ? "Não contratado" : "Contratado",
                 this.address.getStreet(),
                 this.address.getNumber(),
                 this.address.getDistrict(),

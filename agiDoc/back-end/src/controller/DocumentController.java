@@ -1,6 +1,7 @@
 package controller;
 
 import model.Associated;
+import model.competitor.Competitor;
 import model.document.Document;
 import service.DocumentService;
 
@@ -44,12 +45,7 @@ public class DocumentController {
                 }
             } while (!isValidDate);
 
-            System.out.print("Digite o conteúdo do documento: ");
-            String content = scanner.nextLine();
-            document.setFile(content);
-
             document.setSigned(false);
-
             document.setAssociated(associated);
             document.setAssociatedId(associatedId);
 
@@ -67,16 +63,24 @@ public class DocumentController {
                     .filter(document -> document.getAssociated().equals(associated)
                             && document.getAssociatedId().equals(associatedId))
                     .forEach(System.out::println);
-
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
 
     }
 
-    public boolean update(Integer id) {
+    public boolean update() {
         try {
-            Document document = new Document();
+            System.out.print("Digite o id do documento que quer atualizar: ");
+            String id = scanner.nextLine();
+
+            int validId = Integer.parseInt(id);
+            Document document = documentService.get(validId);
+
+            if (document == null) {
+                System.out.println("Id do documento não encontrado!");
+                return false;
+            }
 
             System.out.print("Digite o novo protocolo: ");
             document.setProtocol(scanner.nextLine().trim());
@@ -103,20 +107,43 @@ public class DocumentController {
                 }
             } while (!isValidDate);
 
-            System.out.print("Digite o novo conteúdo do documento: ");
-            String content = scanner.nextLine();
-            document.setFile(content);
-
-            return documentService.update(id, document);
+            return documentService.update(validId, document);
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public boolean delete(Integer id) {
+    public boolean delete() {
         try {
-            return documentService.delete(id);
+            System.out.print("Digite o id do documento que quer assinar: ");
+            String id = scanner.nextLine();
+
+            int validId = Integer.parseInt(id);
+            Document document = documentService.get(validId);
+
+            return documentService.delete(validId);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean signDocument(Integer signatureId) {
+        try {
+            System.out.print("Digite o id do documento que quer assinar: ");
+            String id = scanner.nextLine();
+
+            int validId = Integer.parseInt(id);
+            Document document = documentService.get(validId);
+
+            if (document.getSigned()) {
+                System.out.println("Esse documento já foi assinado");
+                return false;
+            }
+
+            System.out.println("Documento assinado com sucesso!");
+            return documentService.sign(validId, signatureId);
         } catch (DatabaseException e) {
             e.printStackTrace();
         }

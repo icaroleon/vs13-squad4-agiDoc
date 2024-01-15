@@ -65,7 +65,6 @@ public class ContactService implements IService<Integer, Contact> {
             stmt1.setInt(5, contact.getPhoneType().getType());
 
             int res1 = stmt1.executeUpdate();
-            System.out.println("createContact.res=" + res1);
 
             String sql2 = """
                     INSERT INTO CONTACTS_ASSOCIATIONS (ID_CONTACT_ASSOCIATION, ID_CONTACT, ID_COMPETITOR, ID_INSTITUTION)
@@ -86,7 +85,6 @@ public class ContactService implements IService<Integer, Contact> {
             }
 
             int res2 = stmt2.executeUpdate();
-            System.out.println("createContactAssociation.res=" + res2);
 
             return contact;
         } catch (SQLException e) {
@@ -131,7 +129,6 @@ public class ContactService implements IService<Integer, Contact> {
             stmt.setInt(index++, id);
 
             int res = stmt.executeUpdate();
-            System.out.println("updateContact.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -160,7 +157,6 @@ public class ContactService implements IService<Integer, Contact> {
             stmt1.setInt(1, id);
 
             int res1 = stmt1.executeUpdate();
-            System.out.println("deleteContactAssociation.res=" + res1);
 
             String sql2 = "DELETE FROM CONTACTS WHERE ID_CONTACT = ?";
 
@@ -169,7 +165,6 @@ public class ContactService implements IService<Integer, Contact> {
             stmt2.setInt(1, id);
 
             int res2 = stmt2.executeUpdate();
-            System.out.println("deleteContact.res=" + res2);
 
             return res2 > 0;
         } catch (SQLException e) {
