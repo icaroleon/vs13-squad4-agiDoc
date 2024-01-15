@@ -38,7 +38,7 @@ public class UserService implements IService<Integer, User> {
 
             String sql = """
                     INSERT INTO USERS
-                    (ID_USER, REGISTRATION, NAME, USER, PASSWORD, ROLE, POSITION, ID_DEPARTMENT)
+                    (ID_USER, REGISTRATION, NAME, "USER", PASSWORD, "ROLE", "POSITION", ID_DEPARTMENT)
                     VALUES(?,?,?,?,?,?,?,?)
                     """;
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -49,7 +49,7 @@ public class UserService implements IService<Integer, User> {
             stmt.setString(4, user.getUser());
             stmt.setString(5, user.getPassword());
             stmt.setString(6, user.getRole());
-            stmt.setString(7, user.getPosition());;
+            stmt.setString(7, user.getPosition());
             stmt.setInt(8, user.getDepartment().getIdDepartment());
 
             int res = stmt.executeUpdate();
@@ -76,24 +76,25 @@ public class UserService implements IService<Integer, User> {
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USERS SET ");
-            sql.append(" REGISTRATION = ?");
-            sql.append(" NAME = ?");
-            sql.append(" USER = ?");
-            sql.append(" PASSWORD = ?");
-            sql.append(" ROLE = ?");
-            sql.append(" POSITION = ?");
-            sql.append(" ID_DEPARTAMENT = ?");
+            sql.append(" REGISTRATION = ?, ");
+            sql.append(" NAME = ?, ");
+            sql.append(" \"USER\" = ?, ");
+            sql.append(" PASSWORD = ?, ");
+            sql.append(" \"ROLE\" = ?, ");
+            sql.append(" \"POSITION\" = ?, ");
+            sql.append(" ID_DEPARTMENT = ? ");
             sql.append(" WHERE ID_USER = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, user.getName());
-            stmt.setString(2, user.getRegistration());
+            stmt.setString(1, user.getRegistration());
+            stmt.setString(2, user.getName());
             stmt.setString(3, user.getUser());
             stmt.setString(4, user.getPassword());
             stmt.setString(5, user.getRole());
             stmt.setString(6, user.getPosition());
             stmt.setInt(7, user.getDepartment().getIdDepartment());
+            stmt.setInt(8, id);
 
             int res = stmt.executeUpdate();
             System.out.println("editarUser.res=" + res);
@@ -112,6 +113,7 @@ public class UserService implements IService<Integer, User> {
             }
         }
     }
+
 
     @Override
     public boolean delete(Integer id) throws DatabaseException {
@@ -147,9 +149,9 @@ public class UserService implements IService<Integer, User> {
             con = DBConnection.getConnection();
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT U.*, D.NAME AS NAME_DEPARTAMENT " +
+            String sql = "SELECT U.*, D.NAME AS NAME_DEPARTMENT " +
                     "FROM USERS U " +
-                    "LEFT JOIN DEPARTAMENTS D ON (D.ID_DEPARTAMENT = U.ID_DEPARTAMENT)";
+                    "LEFT JOIN DEPARTMENTS D ON (D.ID_DEPARTMENT = U.ID_DEPARTMENT)";
 
 
             ResultSet res = stmt.executeQuery(sql);
@@ -179,14 +181,14 @@ public class UserService implements IService<Integer, User> {
         try {
             con = DBConnection.getConnection();
 
-            String sql = "SELECT U.*, D.NAME AS DEPARTAMENT_NAME " +
+            String sql =  "SELECT U.*, D.NAME AS NAME_DEPARTMENT " +
                     "FROM USERS U " +
-                    "INNER JOIN DEPARTAMENTS D ON (U.ID_DEPARTAMENT = D.ID_DEPARTAMENT) " +
+                    "INNER JOIN DEPARTMENTS D ON (D.ID_DEPARTMENT = U.ID_DEPARTMENT) " +
                     "WHERE U.ID_USER = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
-            ResultSet res = stmt.executeQuery(sql);
+            ResultSet res = stmt.executeQuery();
 
             while (res.next()) {
                 User user = getUserFromResultSet(res);
@@ -210,12 +212,14 @@ public class UserService implements IService<Integer, User> {
         User user = new User();
         user.setIdUser(res.getInt("ID_USER"));
         user.setName(res.getString("NAME"));
+        user.setUser(res.getString("USER"));
+        user.setPassword(res.getString("PASSWORD"));
         user.setRegistration(res.getString("ROLE"));
         user.setPosition(res.getString("POSITION"));
 
         Department department = new Department();
-        department.setName(res.getString("NAME"));
-        department.setIdDepartment(res.getInt("ID_DEPARTAMENT"));
+        department.setName(res.getString("NAME_DEPARTMENT"));
+        department.setIdDepartment(res.getInt("ID_DEPARTMENT"));
         user.setDepartment(department);
         return user;
     }

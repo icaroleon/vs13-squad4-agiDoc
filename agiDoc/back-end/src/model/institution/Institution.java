@@ -31,14 +31,12 @@ public class Institution extends AbstractJuridical {
                     Company Name: %s
                     Address: %s
                     Contact: %s
-                    N° Processes: %d
                 }
                 """.formatted(
                 this.cnpj,
                 this.companyName,
                 this.address,
-                this.contact,
-                this.processes.size()
+                this.contact
         );
     }
 

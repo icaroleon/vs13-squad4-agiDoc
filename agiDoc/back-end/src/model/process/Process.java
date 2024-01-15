@@ -13,7 +13,7 @@ public class Process implements IProcess {
     private Integer id;
     private String processNumber = uuid.toString().substring(0, 6);
     private String title, description;
-    private String status = "Aberto";
+    private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
     private Competitor contracted;
     private ArrayList<Competitor> competitors;
     private ArrayList<Document> documents;
@@ -29,7 +29,6 @@ public class Process implements IProcess {
         this.processNumber = processNumber;
         this.title = title;
         this.description = description;
-        this.status = "Aberto";
         this.competitors = competitors;
         this.documents = documents;
     }
@@ -38,6 +37,8 @@ public class Process implements IProcess {
     }
 
     public Process(String title, String description) {
+        this.title = title;
+        this.description = description;
     }
 
     public String getProcessNumber() {
@@ -45,6 +46,7 @@ public class Process implements IProcess {
     }
 
     public void setProcessNumber(String processNumber) {
+        this.processNumber = processNumber;
     }
 
     public void setContracted(Competitor contracted) {
@@ -117,32 +119,30 @@ public class Process implements IProcess {
         return contracted;
     }
 
-    public String getStatus() {
-        return status;
+    public ProcessStatus getProcessStatus() {
+        return processStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setProcessStatus(ProcessStatus processStatus) {
+        this.processStatus = processStatus;
     }
 
     @Override
     public String toString() {
         return """
                 Id: %s
+                Número do Processo: %s
                 Titulo: %s
                 Status: %s
                 Descrição: %s
-                Contratado: %s
-                N° Documentos: %d
-                N° Concorrentes: %d
+                Contratado: %s      
                 """.formatted(
                     this.id,
+                    this.processNumber,
                     this.title,
-                    this.status,
+                    this.processStatus,
                     this.description,
-                    this.contracted == null ? "" : this.contracted.getCompanyName(),
-                    this.documents.size(),
-                    this.competitors.size()
+                    this.contracted == null ? "Contratado ainda não selecionado" : this.contracted.getCompanyName()
                 );
     }
 }
