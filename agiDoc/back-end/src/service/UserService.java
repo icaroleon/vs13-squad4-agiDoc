@@ -32,6 +32,10 @@ public class UserService implements IService<Integer, User> {
     public User create(User user) throws DatabaseException {
         Connection con = null;
         try {
+            if (user.getRegistration().isEmpty() || user.getName().isEmpty() || user.getUser().isEmpty() || user.getPassword().isEmpty() || user.getRole().isEmpty() || user.getPosition().isEmpty()) {
+                System.out.println("Nenhum campo pode estar em branco. Tente novamente.");
+                return null;
+            }
             con = DBConnection.getConnection();
             Integer nextId = this.getNextId(con);
             user.setIdUser(nextId);
@@ -73,6 +77,7 @@ public class UserService implements IService<Integer, User> {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
+            ArrayList<User> ls = listUser(id);
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USERS SET ");
@@ -87,14 +92,15 @@ public class UserService implements IService<Integer, User> {
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, user.getRegistration());
-            stmt.setString(2, user.getName());
-            stmt.setString(3, user.getUser());
-            stmt.setString(4, user.getPassword());
-            stmt.setString(5, user.getRole());
-            stmt.setString(6, user.getPosition());
-            stmt.setInt(7, user.getDepartment().getIdDepartment());
+            stmt.setString(1, user.getRegistration().isEmpty() ? ls.get(0).getRegistration() : user.getRegistration());
+            stmt.setString(2, user.getName().isEmpty() ? ls.get(0).getName() : user.getName());
+            stmt.setString(3, user.getUser().isEmpty() ? ls.get(0).getUser() : user.getUser());
+            stmt.setString(4, user.getPassword().isEmpty() ? ls.get(0).getPassword() : user.getPassword());
+            stmt.setString(5, user.getRole().isEmpty() ? ls.get(0).getRole() : user.getRole());
+            stmt.setString(6, user.getPosition().isEmpty() ? ls.get(0).getPosition() : user.getPosition());
+            stmt.setInt(7, user.getDepartment().getIdDepartment() == 0 ? ls.get(0).getDepartment().getIdDepartment() : user.getDepartment().getIdDepartment());
             stmt.setInt(8, id);
+
 
             int res = stmt.executeUpdate();
             System.out.println("editarUser.res=" + res);
@@ -174,7 +180,7 @@ public class UserService implements IService<Integer, User> {
         }
     }
 
-    public ArrayList<User> ListUser (Integer id) throws  DatabaseException {
+    public ArrayList<User> listUser (Integer id) throws  DatabaseException {
         ArrayList<User> users = new ArrayList<>();
         Connection con = null;
 
