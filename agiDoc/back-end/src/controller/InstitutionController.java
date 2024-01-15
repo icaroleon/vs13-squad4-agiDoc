@@ -70,6 +70,15 @@ public class InstitutionController {
 
             String option = scanner.nextLine();
             int validOption = Integer.parseInt(option);
+            if (validOption != 1 || validOption != 2){
+                System.out.println("Digite uma opção válida!");
+                System.out.println("""
+                    1 - Deseja alterar o endereço da instituição?
+                    2 - Voltar ao menu anterior
+                    """);
+                option = scanner.nextLine();
+                validOption = Integer.parseInt(option);
+            }
             if (validOption == 1)
             {
                 boolean isAddressUpdated = addressController.update(existInstitution.getAddress().getId());
@@ -79,12 +88,25 @@ public class InstitutionController {
                     return;
                 }
 
+
+                //Opção para alterar ou não o contato
+
                 System.out.println("""
                     1 - Deseja alterar o contato da instituição?
                     2 - Voltar ao menu anterior
                     """);
                 option = scanner.nextLine();
                 validOption = Integer.parseInt(option);
+
+                if (validOption != 1 || validOption != 2){
+                    System.out.println("Digite uma opção válida!");
+                    System.out.println("""
+                    1 - Deseja alterar o contato da instituição?
+                    2 - Voltar ao menu anterior
+                    """);
+                    option = scanner.nextLine();
+                    validOption = Integer.parseInt(option);
+                }
                 if (validOption == 1){
                     boolean isContactUpdated = contactController.update(existInstitution.getContact().getId());
 
