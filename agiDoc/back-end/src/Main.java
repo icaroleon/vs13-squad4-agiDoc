@@ -1,10 +1,7 @@
 import controller.UserController;
-import exception.DatabaseException;
 import model.user.User;
 import navigation.Navigation;
-import service.InstitutionService;
 
-import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Stack;

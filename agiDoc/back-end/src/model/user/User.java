@@ -6,7 +6,7 @@ public class User {
     UUID uuid = UUID.randomUUID();
 
     private int idUser;
-    private String registration =  uuid.toString().substring(0, 6);;
+    private String registration =  uuid.toString().substring(0, 6);
     private String name;
     private String user;
     private String password;

@@ -1,15 +1,12 @@
 package navigation;
 
-//import controller.DocumentController;
 import controller.CompetitorController;
 import controller.InstitutionController;
 import controller.UserController;
 import controller.ProcessController;
-import model.department.Department;
 import exception.DatabaseException;
 import model.process.Process;
 import model.user.User;
-import service.InstitutionService;
 
 import java.util.Scanner;
 
