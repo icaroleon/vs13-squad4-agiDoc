@@ -1,13 +1,10 @@
 package navigation;
 
-//import controller.DocumentController;
 import controller.*;
 import model.Associated;
-import model.department.Department;
 import exception.DatabaseException;
 import model.process.Process;
 import model.user.User;
-import service.InstitutionService;
 
 import java.util.Scanner;
 
@@ -264,7 +261,7 @@ public class Navigation {
                 case "1" -> competitor.createCompetitor(inputProcessId);
                 case "2" -> competitor.listAll(inputProcessId);
                 case "3" -> competitor.update();
-                case "4" -> competitor.delete();
+                case "4" -> competitor.delete(inputProcessId);
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
