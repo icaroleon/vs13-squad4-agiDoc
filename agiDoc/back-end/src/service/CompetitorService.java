@@ -57,7 +57,6 @@ public class CompetitorService implements IService<Integer, Competitor> {
 
             int res = stmt.executeUpdate();
 
-            System.out.println(res + "competitor adicionado");
             return competitor;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
@@ -83,7 +82,7 @@ public class CompetitorService implements IService<Integer, Competitor> {
 
             String sqlSelect = """
                     SELECT * FROM COMPETITORS C
-                    JOIN PROCESSES_COMPETITORS PC ON PC.ID_COMPETITOR = C.IN_COMPETITOR
+                    JOIN PROCESSES_COMPETITORS PC ON PC.ID_COMPETITOR = C.ID_COMPETITOR
                     JOIN CONTACTS_ASSOCIATIONS CA ON CA.ID_COMPETITOR = C.ID_COMPETITOR
                     JOIN CONTACTS CO ON CO.ID_CONTACT = CA.ID_CONTACT
                     JOIN ADDRESSES_ASSOCIATIONS AA ON AA.ID_COMPETITOR = C.ID_COMPETITOR
@@ -117,7 +116,7 @@ public class CompetitorService implements IService<Integer, Competitor> {
                 contact.setName(res.getString("NAME"));
                 contact.setEmail(res.getString("EMAIL"));
                 contact.setPhone(res.getString("PHONE"));
-                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
+                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("PHONE_TYPE")));
 
                 competitor.setAddress(address);
                 competitor.setContact(contact);
@@ -144,7 +143,7 @@ public class CompetitorService implements IService<Integer, Competitor> {
         try {
             con = DBConnection.getConnection();
 
-            String sql = "DELETE FROM COMPETITOR WHERE ID_COMPETITOR = ?";
+            String sql = "DELETE FROM COMPETITORS WHERE ID_COMPETITOR = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -174,7 +173,7 @@ public class CompetitorService implements IService<Integer, Competitor> {
 
             String sqlUpdate = """
                 UPDATE COMPETITORS SET
-                    COMPANY_NAME = ?
+                    COMPANY_NAME = ?,
                     CNPJ = ?
                 WHERE ID_COMPETITOR = ?                            
                 """;
@@ -224,28 +223,30 @@ public class CompetitorService implements IService<Integer, Competitor> {
             Address address = new Address();
             Contact contact = new Contact();
 
-            competitor.setId(res.getInt("ID_COMPETITOR"));
-            competitor.setCompanyName(res.getString("COMPANY_NAME"));
-            competitor.setCnpj(res.getString("CNPJ"));
+            if (res.next()) {
+                competitor.setId(res.getInt("ID_COMPETITOR"));
+                competitor.setCompanyName(res.getString("COMPANY_NAME"));
+                competitor.setCnpj(res.getString("CNPJ"));
 
-            address.setId(res.getInt("ID_ADDRESS"));
-            address.setStreet(res.getString("STREET"));
-            address.setDistrict(res.getString("DISTRICT"));
-            address.setNumber(res.getInt("NUMBER"));
-            address.setComplement(res.getString("COMPLEMENT"));
-            address.setCity(res.getString("CITY"));
-            address.setState(res.getString("STATE"));
-            address.setZipCode(res.getString("ZIP_CODE"));
+                address.setId(res.getInt("ID_ADDRESS"));
+                address.setStreet(res.getString("STREET"));
+                address.setDistrict(res.getString("DISTRICT"));
+                address.setNumber(res.getInt("NUMBER"));
+                address.setComplement(res.getString("COMPLEMENT"));
+                address.setCity(res.getString("CITY"));
+                address.setState(res.getString("STATE"));
+                address.setZipCode(res.getString("ZIP_CODE"));
 
 
-            contact.setId(res.getInt("ID_CONTACT"));
-            contact.setName(res.getString("NAME"));
-            contact.setEmail(res.getString("EMAIL"));
-            contact.setPhone(res.getString("PHONE"));
-            contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
+                contact.setId(res.getInt("ID_CONTACT"));
+                contact.setName(res.getString("NAME"));
+                contact.setEmail(res.getString("EMAIL"));
+                contact.setPhone(res.getString("PHONE"));
+                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("PHONE_TYPE")));
 
-            competitor.setAddress(address);
-            competitor.setContact(contact);
+                competitor.setAddress(address);
+                competitor.setContact(contact);
+            }
 
             return competitor;
         } catch (SQLException e) {
@@ -263,6 +264,8 @@ public class CompetitorService implements IService<Integer, Competitor> {
         Connection con = null;
 
         try {
+            con = DBConnection.getConnection();
+
             String sqlInsert = """
                         INSERT INTO PROCESSES_COMPETITORS (ID_PROCESS, ID_COMPETITOR, IS_ENABLED)
                         VALUES (?, ?, ?)
@@ -273,6 +276,35 @@ public class CompetitorService implements IService<Integer, Competitor> {
             pstmt.setInt(1, processId);
             pstmt.setInt(2, competitorId);
             pstmt.setInt(3, 0);
+
+            int res = pstmt.executeUpdate();
+
+            return res > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean removeCompetitorToProcess(int competitorId, int processId) throws DatabaseException {
+        Connection con = null;
+
+        try {
+            con = DBConnection.getConnection();
+
+            String sqlDelete = "DELETE FROM PROCESSES_COMPETITORS WHERE ID_COMPETITOR = ? AND ID_PROCESS = ?";
+
+            PreparedStatement pstmt = con.prepareStatement(sqlDelete);
+
+            pstmt.setInt(1, competitorId);
+            pstmt.setInt(2, processId);
 
             int res = pstmt.executeUpdate();
 

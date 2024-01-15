@@ -265,7 +265,7 @@ public class Navigation {
                 case "1" -> competitor.createCompetitor(inputProcessId);
                 case "2" -> competitor.listAll(inputProcessId);
                 case "3" -> competitor.update();
-                case "4" -> competitor.delete();
+                case "4" -> competitor.delete(inputProcessId);
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
