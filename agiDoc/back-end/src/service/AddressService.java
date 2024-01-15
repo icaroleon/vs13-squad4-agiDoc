@@ -66,7 +66,6 @@ public class AddressService implements IService<Integer, Address> {
             stmt1.setString(8, address.getZipCode());
 
             int res1 = stmt1.executeUpdate();
-            System.out.println("createAddress.res=" + res1);
 
             String sql2 = """
                     INSERT INTO ADDRESSES_ASSOCIATIONS (ID_ADDRESS_ASSOCIATION, ID_ADDRESS, ID_COMPETITOR, ID_INSTITUTION)
@@ -87,7 +86,6 @@ public class AddressService implements IService<Integer, Address> {
             }
 
             int res2 = stmt2.executeUpdate();
-            System.out.println("createAddressAssociation.res=" + res2);
 
             return address;
         } catch (SQLException e) {
@@ -138,7 +136,6 @@ public class AddressService implements IService<Integer, Address> {
             stmt.setInt(index++, id);
 
             int res = stmt.executeUpdate();
-            System.out.println("updateAddress.res=" + res);
 
             return res > 0;
         } catch (SQLException e) {
@@ -167,7 +164,6 @@ public class AddressService implements IService<Integer, Address> {
             stmt1.setInt(1, id);
 
             int res1 = stmt1.executeUpdate();
-            System.out.println("deleteAddressAssociation.res=" + res1);
 
             String sql2 = "DELETE FROM ADDRESSES WHERE ID_ADDRESS = ?";
 
@@ -176,7 +172,6 @@ public class AddressService implements IService<Integer, Address> {
             stmt2.setInt(1, id);
 
             int res2 = stmt2.executeUpdate();
-            System.out.println("deleteAddress.res=" + res2);
 
             return res2 > 0;
         } catch (SQLException e) {

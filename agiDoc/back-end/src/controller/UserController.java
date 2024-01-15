@@ -8,12 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserController {
-
     private static final UserService userService = new UserService();
+    private static int userLoggedId;
+
+    public static int getUserLoggedId() {
+        return userLoggedId;
+    }
 
     public static boolean login(String userName, String password) throws DatabaseException {
         try {
            if (userService.list().stream().anyMatch(user -> user.getUser().equals(userName) && user.getPassword().equals(password))){
+               User userLogged = userService.list().stream().filter(user -> user.getUser().equals(userName) && user.getPassword().equals(password)).findFirst().get();
+               userLoggedId = userLogged.getIdUser();
                return true;
            } else {
                System.out.println("User doesn't exists.");
