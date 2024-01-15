@@ -14,8 +14,6 @@ public abstract class ProcessController {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ProcessService processService = new ProcessService();
 
-    //Integer institutionId, Integer id, String processNumber, String title, String description, ArrayList<Competitor> competitors
-
     public static void createProcess() throws DatabaseException {
         System.out.print("Digite o titulo do processo: ");
         String title = scanner.nextLine();
@@ -23,12 +21,17 @@ public abstract class ProcessController {
         System.out.print("Digite a descrição do processo: ");
         String description = scanner.nextLine();
 
-        Process process = new Process(title, description);
+        if (title.isEmpty() || description.isEmpty()){
+            System.out.println("Nenhum campo pode estar em branco. Tente novamente.");
+        } else {
 
-        processService.create(process);
+            Process process = new Process(title, description);
 
-        System.out.println("Processo criado!\n");
-        System.out.println(process);
+            processService.create(process);
+
+            System.out.println("Processo criado!\n");
+            System.out.println(process);
+        }
     }
 
     public static Process get(Integer id) {
