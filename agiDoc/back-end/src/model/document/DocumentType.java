@@ -1,4 +1,4 @@
-package entities.document;
+package model.document;
 
 public enum DocumentType {
     OFFICIAL_ANNOUNCEMENT,
