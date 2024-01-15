@@ -62,12 +62,6 @@ public class Main {
                         System.out.println("| 0. Voltar                                 |");
                         System.out.println("+-------------------------------------------+");
 
-                        System.out.print("Digite a matrícula: ");
-                        String registration = scanner.nextLine().trim();
-                        if (registration.equals("0")) break;
-                        user.setRegistration(registration);
-
-
                         System.out.print("Digite o nome: ");
                         String name = scanner.nextLine().trim();
                         if (name.equals("0")) break;
