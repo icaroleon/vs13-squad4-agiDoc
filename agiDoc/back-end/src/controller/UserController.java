@@ -29,7 +29,9 @@ public class UserController {
     public static void addUser(User user) {
         try {
             User addedUser = userService.create(user);
-            System.out.println("User add successfully! " + addedUser);
+            if (addedUser != null) {
+                System.out.println("Usuário adicionado com sucesso! " + addedUser);
+            }
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
@@ -64,7 +66,7 @@ public class UserController {
 
     public static void getUserById(Integer id) {
         try {
-            userService.ListUser(id).forEach(System.out::println);
+            userService.listUser(id).forEach(System.out::println);
         } catch (DatabaseException e) {
             e.printStackTrace();
         }

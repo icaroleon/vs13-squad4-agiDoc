@@ -1,10 +1,12 @@
 package model.user;
-
+import java.util.UUID;
 import model.department.Department;
 
 public class User {
+    UUID uuid = UUID.randomUUID();
+
     private int idUser;
-    private String registration;
+    private String registration =  uuid.toString().substring(0, 6);
     private String name;
     private String user;
     private String password;

@@ -1,9 +1,7 @@
 import controller.UserController;
-import exception.DatabaseException;
 import model.user.User;
 import navigation.Navigation;
 
-import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Stack;
@@ -48,6 +46,7 @@ public class Main {
 
                             if (UserController.login(userName, password)) {
                                 isNotValidLogin = false;
+                                running = false;
                             } else {
                                 System.out.println("Usuário não existe ou credenciais inválidas. Tente novamente.");
                             }
@@ -60,12 +59,6 @@ public class Main {
                         System.out.println("+-------------------------------------------+");
                         System.out.println("| 0. Voltar                                 |");
                         System.out.println("+-------------------------------------------+");
-
-                        System.out.print("Digite a matrícula: ");
-                        String registration = scanner.nextLine().trim();
-                        if (registration.equals("0")) break;
-                        user.setRegistration(registration);
-
 
                         System.out.print("Digite o nome: ");
                         String name = scanner.nextLine().trim();
@@ -100,15 +93,15 @@ public class Main {
                 System.out.println("Entrada inválida. Por favor, insira uas opções acima.");
                 scanner.nextLine();
             }
-
         }
+        running = true;
         while (running) {
             if (history.isEmpty()) {
                 String navigationOption = nav.showMenu("0");
 
                 switch (navigationOption) {
                     case "0" -> running = false;
-                    case "1", "2" -> history.push(navigationOption);
+                    case "1", "2" , "7" -> history.push(navigationOption);
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
             } else {
