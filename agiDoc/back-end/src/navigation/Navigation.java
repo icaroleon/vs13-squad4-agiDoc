@@ -63,11 +63,10 @@ public class Navigation {
             System.out.println("+-------------------------------------------+");
             System.out.println("|           agiDoc | Usuários               |");
             System.out.println("+-------------------------------------------+");
-            System.out.println("| 1 - Cadastrar usuário                     |");
-            System.out.println("| 2 - Listar usuários                       |");
-            System.out.println("| 3 - Listar um usuário específico          |");
-            System.out.println("| 4 - Editar usuário                        |");
-            System.out.println("| 5 - Remover usuário                       |");
+            System.out.println("| 1 - Listar usuários                       |");
+            System.out.println("| 2 - Listar um usuário específico          |");
+            System.out.println("| 3 - Editar usuário                        |");
+            System.out.println("| 4 - Remover usuário                       |");
             System.out.println("|                                           |");
             System.out.println("| 0 - Sair                                  |");
             System.out.println("| 9 - Voltar                                |");
@@ -77,32 +76,14 @@ public class Navigation {
 
             User user = new User();
             switch (option) {
-                case "1" -> {
-                    System.out.print("Digite a matrícula: ");
-                    user.setRegistration(scanner.nextLine().trim());
-
-                    System.out.print("Digite o nome: ");
-                    user.setName(scanner.nextLine().trim());
-
-                    System.out.print("Digite o nome de usuário: ");
-                    user.setUser(scanner.nextLine().trim());
-
-                    System.out.print("Digite a senha: ");
-                    user.setPassword(scanner.nextLine().trim());
-
-                    System.out.print("Digite o cargo: ");
-                    user.setPosition(scanner.nextLine().trim());
-
-                    UserController.addUser(user);
-                }
-                case "2" -> UserController.getUsers();
-                case "3" -> {
+                case "1" -> UserController.getUsers();
+                case "2" -> {
                     System.out.print("Digite o ID do usuário para obter: ");
                     int idUser = scanner.nextInt();
                     scanner.nextLine();
                     UserController.getUserById(idUser);
                 }
-                case "4" -> {
+                case "3" -> {
                     System.out.print("Digite o ID do usuário para editar: ");
                     int userId = scanner.nextInt();
                     scanner.nextLine();
@@ -124,7 +105,7 @@ public class Navigation {
 
                     UserController.editUser(userId, user);
                 }
-                case "5" -> {
+                case "4" -> {
                     System.out.print("Digite o ID do usuário para remover: ");
                     int userId = scanner.nextInt();
                     scanner.nextLine();
@@ -164,6 +145,7 @@ public class Navigation {
                     System.out.print("Digite o número do processo: ");
                     String inputProcessNumber = scanner.nextLine();
                     currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
+                    inputProcessId = currentProcess.getId();
                     if(currentProcess != null){
                         option = "3";
                         running = false;
@@ -186,7 +168,7 @@ public class Navigation {
         do {
             System.out.println("\n\n");
             System.out.println("+-------------------------------------------+");
-            System.out.printf("|           agiDoc | Processo: %s       |\n", this.inputProcessId);
+            System.out.printf("|           agiDoc | Processo: %s       |\n", this.currentProcess.getProcessNumber());
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1 - Encerrar Processo                     |");
             System.out.println("| 2 - Eleger Contratado                     |");

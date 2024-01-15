@@ -7,6 +7,7 @@ import java.util.List;
 import database.DBConnection;
 import model.process.Process;
 import exception.DatabaseException;
+import model.process.ProcessStatus;
 
 public class ProcessService implements IService<Integer, Process> {
     private ArrayList<Process> processes = new ArrayList<>();
@@ -40,7 +41,7 @@ public class ProcessService implements IService<Integer, Process> {
             Integer nextId = this.getNextId(con);
             process.setId(nextId);
 
-            String sql = "INSERT INTO PROCESS\n" + "(ID_PROCESS, NUMBER, TITLE, DESCRIPTION, STATUS, ID_INSTITUTION)\n" + "VALUES(?, ?, ?, ?, ?, ?)\n";
+            String sql = "INSERT INTO PROCESSES\n" + "(ID_PROCESS, PROCESS_NUMBER, TITLE, DESCRIPTION, STATUS, ID_INSTITUTION)\n" + "VALUES(?, ?, ?, ?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -48,7 +49,7 @@ public class ProcessService implements IService<Integer, Process> {
             stmt.setString(2, process.getProcessNumber());
             stmt.setString(3, process.getTitle());
             stmt.setString(4, process.getDescription());
-            stmt.setString(5, process.getStatus());
+            stmt.setInt(5, process.getProcessStatus().getType());
             stmt.setInt(6, process.getInstitutionId());
 
             int res = stmt.executeUpdate();
@@ -67,7 +68,7 @@ public class ProcessService implements IService<Integer, Process> {
         }
     }
 
-    public List<Process> getProcessById(Integer id) throws Exception {
+    public Process getProcessById(Integer id) throws Exception {
         Connection con = null;
         List<Process> returnValue = new ArrayList<>();
 
@@ -78,13 +79,13 @@ public class ProcessService implements IService<Integer, Process> {
 
             query.setInt(1, id);
 
-            return resultProcess(con, returnValue, query);
+            return resultProcess(con, returnValue, query).get(0);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public List<Process> searchProcess(String processNumber) throws DatabaseException {
+    public Process searchProcess(String processNumber) throws DatabaseException {
         Connection con = null;
         List<Process> returnValue = new ArrayList<>();
 
@@ -95,7 +96,7 @@ public class ProcessService implements IService<Integer, Process> {
 
             query.setString(1, processNumber);
 
-            return resultProcess(con, returnValue, query);
+            return resultProcess(con, returnValue, query).get(0);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -106,10 +107,10 @@ public class ProcessService implements IService<Integer, Process> {
             while (res.next()) {
                 Process process = new Process();
                 process.setId(res.getInt("id_process"));
-                process.setProcessNumber(res.getString("processNumber"));
+                process.setProcessNumber(res.getString("process_number"));
                 process.setTitle(res.getString("title"));
                 process.setDescription(res.getString("description"));
-                process.setStatus(res.getString("status"));
+                process.setProcessStatus(ProcessStatus.ofType(res.getInt("status")));
                 returnValue.add(process);
             }
         } catch (SQLException e) {
@@ -142,9 +143,10 @@ public class ProcessService implements IService<Integer, Process> {
             while (res.next()) {
                 Process process = new Process();
                 process.setId(res.getInt("id_process"));
+                process.setProcessNumber(res.getString("process_number"));
                 process.setTitle(res.getString("title"));
                 process.setDescription(res.getString("description"));
-                process.setStatus(res.getString("status"));
+                process.setProcessStatus(ProcessStatus.ofType(res.getInt("status")));
                 processes.add(process);
             }
         } catch (SQLException e) {
@@ -167,17 +169,17 @@ public class ProcessService implements IService<Integer, Process> {
             con = DBConnection.getConnection();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE PROCESS SET ");
+            sql.append("UPDATE PROCESSES SET ");
             sql.append(" title = ?,");
             sql.append(" description = ?,");
-            sql.append(" status = ?,");
+            sql.append(" status = ?");
             sql.append(" WHERE id_process = ?");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
             stmt.setString(1, process.getTitle());
             stmt.setString(2, process.getDescription());
-            stmt.setString(3, process.getStatus());
+            stmt.setInt(3, process.getProcessStatus().getType());
             stmt.setInt(4, process.getId());
 
             int res = stmt.executeUpdate();
@@ -202,7 +204,7 @@ public class ProcessService implements IService<Integer, Process> {
         try {
             con = DBConnection.getConnection();
 
-            String sql = "DELETE FROM PROCESS WHERE id_process = ?";
+            String sql = "DELETE FROM PROCESSES WHERE id_process = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
