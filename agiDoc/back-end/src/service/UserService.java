@@ -75,9 +75,24 @@ public class UserService implements IService<Integer, User> {
     @Override
     public boolean update(Integer id, User user) throws DatabaseException {
         Connection con = null;
+
+        if (id == null) {
+            System.out.println("Deve-se ser fornecido um id.");
+            return false;
+        }
+
         try {
             con = DBConnection.getConnection();
             ArrayList<User> ls = listUser(id);
+
+            String checkSql = "SELECT COUNT(*) FROM USERS WHERE ID_USER = ?";
+            PreparedStatement checkStmt = con.prepareStatement(checkSql);
+            checkStmt.setInt(1, id);
+            ResultSet rs = checkStmt.executeQuery();
+            if (!rs.next() || rs.getInt(1) == 0) {
+                System.out.println("Nenhum usuário encontrado com o id fornecido.");
+                return false;
+            }
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USERS SET ");
@@ -124,8 +139,23 @@ public class UserService implements IService<Integer, User> {
     @Override
     public boolean delete(Integer id) throws DatabaseException {
         Connection con = null;
+        if (id == null) {
+            System.out.println("Deve-se ser fornecido um id.");
+            return false;
+        }
+
         try {
             con = DBConnection.getConnection();
+
+            String checkSql = "SELECT COUNT(*) FROM USERS WHERE ID_USER = ?";
+            PreparedStatement checkStmt = con.prepareStatement(checkSql);
+            checkStmt.setInt(1, id);
+            ResultSet rs = checkStmt.executeQuery();
+            if (!rs.next() || rs.getInt(1) == 0) {
+                System.out.println("Nenhum usuário encontrado com o id fornecido.");
+                return false;
+            }
+
             String sql = "DELETE FROM USERS WHERE ID_USER = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -136,6 +166,9 @@ public class UserService implements IService<Integer, User> {
             return res > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
+        } catch (NumberFormatException e) {
+                System.out.println("O id fornecido não é um número.");
+                return false;
         } finally {
             try {
                 if (con != null) {
@@ -184,6 +217,10 @@ public class UserService implements IService<Integer, User> {
         ArrayList<User> users = new ArrayList<>();
         Connection con = null;
 
+        if (id == null) {
+            System.out.println("Deve-se ser fornecido um id.");
+            return null;
+        }
         try {
             con = DBConnection.getConnection();
 
@@ -200,6 +237,11 @@ public class UserService implements IService<Integer, User> {
                 User user = getUserFromResultSet(res);
                 users.add(user);
             }
+
+            if (users.isEmpty()) {
+                System.out.println("Usuário inexistente");
+            }
+
             return users;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
