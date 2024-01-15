@@ -2,6 +2,7 @@ import controller.UserController;
 import exception.DatabaseException;
 import model.user.User;
 import navigation.Navigation;
+import service.InstitutionService;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
@@ -108,7 +109,7 @@ public class Main {
 
                 switch (navigationOption) {
                     case "0" -> running = false;
-                    case "1", "2" -> history.push(navigationOption);
+                    case "1", "2" , "7" -> history.push(navigationOption);
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
             } else {
