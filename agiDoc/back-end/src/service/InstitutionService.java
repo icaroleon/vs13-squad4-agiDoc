@@ -42,7 +42,7 @@ public class InstitutionService implements IService<Integer, Institution> {
             institution.setId(nextId);
 
             String sql = "INSERT INTO INSTITUTIONS\n" +
-                    "(ID_PROCESS, CNPJ, COMPANY_NAME)\n" +
+                    "(ID_INSTITUTION, CNPJ, COMPANY_NAME)\n" +
                     "VALUES(?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -177,7 +177,7 @@ public class InstitutionService implements IService<Integer, Institution> {
                 contact.setName(res.getString("NAME"));
                 contact.setEmail(res.getString("EMAIL"));
                 contact.setPhone(res.getString("PHONE"));
-                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("TYPE")));
+                contact.setPhoneType(ContactPhoneType.ofType(res.getInt("PHONE_TYPE")));
 
                 institution.setContact(contact);
 
@@ -247,7 +247,7 @@ public class InstitutionService implements IService<Integer, Institution> {
                 institution.setContact(contact);
 
             }
-            System.out.println(institution);
+
             return institution;
 
 

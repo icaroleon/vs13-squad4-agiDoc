@@ -285,6 +285,7 @@ public class Navigation {
             System.out.println("|            agiDoc | Instituição           |");
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1 - Editar Instituição                    |");
+            System.out.println("| 2 - Listar Instituição                    |");
             System.out.println("|                                           |");
             System.out.println("| 0 - Sair                                  |");
             System.out.println("| 9 - Voltar                                |");
@@ -294,6 +295,7 @@ public class Navigation {
 
             switch (option) {
                 case "1" -> institution.update();
+                case "2" -> institution.listAll();
                 case "9", "0" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
