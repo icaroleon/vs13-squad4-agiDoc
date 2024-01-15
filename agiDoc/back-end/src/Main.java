@@ -49,6 +49,7 @@ public class Main {
 
                             if (UserController.login(userName, password)) {
                                 isNotValidLogin = false;
+                                running = false;
                             } else {
                                 System.out.println("Usuário não existe ou credenciais inválidas. Tente novamente.");
                             }
@@ -101,8 +102,8 @@ public class Main {
                 System.out.println("Entrada inválida. Por favor, insira uas opções acima.");
                 scanner.nextLine();
             }
-
         }
+        running = true;
         while (running) {
             if (history.isEmpty()) {
                 String navigationOption = nav.showMenu("0");
