@@ -1,11 +1,15 @@
 package service;
 
+import exception.DatabaseException;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface IService<T> {
-    T get(String id) throws Exception;
-    ArrayList<T> getAll();
-    T create(T object);
-    T update(String id, T object) throws Exception;
-    void delete(String id) throws Exception;
+public interface IService<KEY, OBJECT> {
+    Integer getNextId(Connection con) throws SQLException;
+    OBJECT create(OBJECT object) throws DatabaseException;
+    boolean update(KEY id, OBJECT object) throws DatabaseException;
+    boolean delete(KEY id) throws DatabaseException;
+    ArrayList<OBJECT> list() throws DatabaseException;
 }

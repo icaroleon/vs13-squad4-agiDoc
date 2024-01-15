@@ -1,6 +1,6 @@
-package entities.juridical;
+package model.juridical;
 
-import entities.document.Document;
+import model.document.Document;
 
 public interface IJuridical {
     public boolean signDocument(Document document);

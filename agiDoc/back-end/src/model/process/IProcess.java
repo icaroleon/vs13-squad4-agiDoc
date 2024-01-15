@@ -1,6 +1,6 @@
-package entities.process;
+package model.process;
 
-import entities.competitor.Competitor;
+import model.competitor.Competitor;
 
 public interface IProcess {
     boolean chooseContractor(Competitor competitor);

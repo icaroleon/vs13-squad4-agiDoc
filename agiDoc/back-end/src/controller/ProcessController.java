@@ -1,76 +1,93 @@
 package controller;
 
-import data.Data;
-import entities.competitor.Competitor;
-import entities.process.Process;
+import model.competitor.Competitor;
+import model.process.Process;
+import model.process.ProcessStatus;
 import service.CompetitorService;
 import service.ProcessService;
+import exception.DatabaseException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public abstract class ProcessController {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final ProcessService processService = new ProcessService(Data.institution.getProcesses());
+    private static final ProcessService processService = new ProcessService();
 
-    public static void createProcess() {
+    public static void createProcess() throws DatabaseException {
         System.out.print("Digite o titulo do processo: ");
         String title = scanner.nextLine();
 
         System.out.print("Digite a descrição do processo: ");
         String description = scanner.nextLine();
 
-        Process process = new Process(title, description);
+        if (title.isEmpty() || description.isEmpty()){
+            System.out.println("Nenhum campo pode estar em branco. Tente novamente.");
+        } else {
 
-        processService.create(process);
-        Data.institution.setProcesses(processService.getAll());
+            Process process = new Process(title, description);
 
-        System.out.println("Processo criado!\n");
-        System.out.println(process);
+            processService.create(process);
+
+            System.out.println("Processo criado!\n");
+            System.out.println(process);
+        }
     }
 
-    public static Process get(String id) {
+    public static Process get(Integer id) {
         Process process = null;
         try {
-            process = processService.get(id);
+            process = (Process) processService.getProcessById(id);
             System.out.println(process.toString());
         } catch (Exception e) {
-            System.out.println("Processo nao encontrado!");
+            System.out.println("Processo não encontrado!");
         }
         return process;
     }
 
-    public static void getAll() {
-        for (Process process : processService.getAll()) {
+    public static Process getProcessByNumber(String processNumber) {
+        Process process = null;
+        try {
+            process = (Process) processService.searchProcess(processNumber);
             System.out.println(process.toString());
+        } catch (Exception e) {
+            System.out.println("Processo não encontrado!");
+        }
+        return process;
+    }
+
+    public static void getAll() throws DatabaseException {
+        try {
+            processService.list().forEach(System.out::println);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void update(String processId) {
+    public static void update(Integer processId) {
         try {
-            Process process = processService.get(processId);
+
+            Process processToEdit = (Process) processService.getProcessById(processId);
 
             System.out.print("Digite o novo titulo do processo (deixe em branco para manter o valor atual): ");
             String title = scanner.nextLine();
-            title = (title.isEmpty()) ? process.getTitle() : title;
+            processToEdit.setTitle((title.isEmpty()) ? processToEdit.getTitle() : title);
 
             System.out.print("Digite a nova descrição do processo (deixe em branco para manter o valor atual): ");
             String description = scanner.nextLine();
-            description = (description.isEmpty()) ? process.getTitle() : description;
+            processToEdit.setDescription((description.isEmpty()) ? processToEdit.getDescription() : description);
 
-            Process newProcess = new Process(title, description);
-
-            processService.update(processId, newProcess);
-            Data.institution.setProcesses(processService.getAll());
+            processService.update(processId, processToEdit);
 
             System.out.println("Processo n° " + processId + " atualizado com sucesso.");
-            System.out.println(newProcess);
-        } catch (Exception e) {
+        } catch (DatabaseException e) {
             System.out.println("Erro: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static boolean delete(String processId) {
+    public static boolean delete(Integer processId) {
         System.out.println("Tem certeza que deseja excluir este processo? (S/N)");
         boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
 
@@ -78,35 +95,34 @@ public abstract class ProcessController {
 
         try {
             processService.delete(processId);
-            Data.institution.setProcesses(processService.getAll());
 
             System.out.println("Processo n°: " + processId + " excluído com sucesso!");
 
             return true;
-        } catch (Exception e) {
+        } catch (DatabaseException e) {
             System.out.println("Erro: " + e.getMessage());
 
             return false;
         }
     }
 
-    public static void closeProcess(String processId) {
+    public static void closeProcess(Integer processId) {
         System.out.println("Tem certeza que deseja fechar este processo? (S/N)");
         boolean isNotSure = !scanner.nextLine().equalsIgnoreCase("S");
 
         if (isNotSure) return;
 
         try {
-            Process process = processService.get(processId);
+            Process process = processService.getProcessById(processId);
 
             if (process.getContracted() == null) {
                 System.out.println("ERRO: Processo não tem concorrente contratado!");
                 return;
             }
 
-            process.setStatus("Fechado");
+            process.setProcessStatus(ProcessStatus.COMPLETED);
 
-            Data.institution.setProcesses(processService.getAll());
+            processService.update(process.getId(), process);
 
             System.out.println("Processo n°: " + processId + " fechado.");
         } catch (Exception e) {
@@ -114,9 +130,9 @@ public abstract class ProcessController {
         }
     }
 
-    public static void chooseCompetitor(String processId) {
+    public static void chooseCompetitor(Integer processId) {
         try {
-            Process process = processService.get(processId);
+            Process process = (Process) processService.getProcessById(processId);
             ArrayList<Competitor> competitors = process.getCompetitors();
 
             competitors.forEach(competitor -> System.out.println(competitor.toString()));
@@ -125,7 +141,7 @@ public abstract class ProcessController {
             String competitorId = scanner.nextLine();
 
             CompetitorService competitorService = new CompetitorService(competitors);
-            process.chooseContractor(competitorService.get(competitorId));
+            process.chooseContractor(competitorService.get(Integer.parseInt(competitorId)));
 
             System.out.println("Concorrente escolhido com sucesso!");
         } catch (Exception e) {
