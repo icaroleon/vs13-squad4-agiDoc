@@ -21,9 +21,19 @@ public class AddressController {
             System.out.print("[Endereço] Bairro: ");
             address.setDistrict(scanner.nextLine().trim());
 
-            System.out.print("[Endereço] Número: ");
-            address.setNumber(scanner.nextInt());
-            scanner.nextLine();
+            boolean isNotValid = true;
+            while (isNotValid) {
+                System.out.print("[Endereço] Número: ");
+                String inputNumber = scanner.nextLine();
+
+                try {
+                    address.setNumber(Integer.parseInt(inputNumber));
+                    isNotValid = false;
+                } catch (Exception e) {
+                    System.out.println("digite um número válido!");
+                }
+            }
+
 
             System.out.print("[Endereço] Complemento: ");
             address.setComplement(scanner.nextLine().trim());
@@ -59,10 +69,18 @@ public class AddressController {
             String district = scanner.nextLine().trim();
             if (!district.isEmpty()) address.setDistrict(district);
 
-            System.out.print("[Endereço] Número: ");
-            int number = scanner.nextInt();
-            scanner.nextLine();
-            if (number > 0) address.setNumber(number);
+            boolean isNotValid = true;
+            while (isNotValid) {
+                System.out.print("[Endereço] Número: ");
+                String inputNumber = scanner.nextLine();
+
+                try {
+                    if (!inputNumber.isEmpty()) address.setNumber(Integer.parseInt(inputNumber));
+                    isNotValid = false;
+                } catch (Exception e) {
+                    System.out.println("digite um número válido!");
+                }
+            }
 
             System.out.print("[Endereço] Complemento: ");
             String complement = scanner.nextLine().trim();

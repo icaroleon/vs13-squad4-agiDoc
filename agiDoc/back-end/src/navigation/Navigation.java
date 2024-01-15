@@ -1,9 +1,7 @@
 package navigation;
 
-import controller.CompetitorController;
-import controller.InstitutionController;
-import controller.UserController;
-import controller.ProcessController;
+import controller.*;
+import model.Associated;
 import exception.DatabaseException;
 import model.process.Process;
 import model.user.User;
@@ -27,10 +25,10 @@ public class Navigation {
             case "0" -> chooseNavigation = this.mainMenu();
             case "1" -> chooseNavigation = this.processesMenu();
             case "2" -> chooseNavigation = this.userMenu();
-            case "3" -> chooseNavigation = this.oneProcessMenu();
-        //    case "5" -> chooseNavigation = this.documentsMenu();
-            case "6" -> chooseNavigation = this.competitorsMenu();
-            case "7" -> chooseNavigation = this.institutionMenu();
+            case "3" -> chooseNavigation = this.institutionMenu();
+            case "4" -> chooseNavigation = this.oneProcessMenu();
+            case "6" -> chooseNavigation = this.documentsMenu();
+            case "7" -> chooseNavigation = this.competitorsMenu();
         }
 
         return chooseNavigation;
@@ -45,7 +43,7 @@ public class Navigation {
         System.out.println("+-------------------------------------------+");
         System.out.println("| 1 - Processos                             |");
         System.out.println("| 2 - Usuários                              |");
-        System.out.println("| 7 - Instituição                           |");
+        System.out.println("| 3 - Instituição                           |");
         System.out.println("|                                           |");
         System.out.println("| 0 - Sair                                  |");
         System.out.println("+-------------------------------------------+");
@@ -145,7 +143,7 @@ public class Navigation {
                     currentProcess = ProcessController.getProcessByNumber(inputProcessNumber);
                     inputProcessId = currentProcess.getId();
                     if(currentProcess != null){
-                        option = "3";
+                        option = "4";
                         running = false;
                     }
                 }
@@ -204,43 +202,41 @@ public class Navigation {
         return option;
     }
 
-//    public String documentsMenu() {
-//        DocumentController document = new DocumentController(currentProcess.getDocuments());
-//        String option;
-//        boolean running = true;
-//
-//        do {
-//            System.out.println("\n\n");
-//            System.out.println("+-------------------------------------------+");
-//            System.out.println("|            agiDoc | Documentos            |");
-//            System.out.println("+-------------------------------------------+");
-//            System.out.println("| 1 - Adicionar Documento                   |");
-//            System.out.println("| 2 - Listar Documentos                     |");
-//            System.out.println("| 3 - Pesquisar um documento                |");
-//            System.out.println("| 4 - Editar Documento                      |");
-//            System.out.println("| 5 - Excluir Documento                     |");
-//            System.out.println("| 6 - Assinar Documento                     |");
-//            System.out.println("|                                           |");
-//            System.out.println("| 0 - Sair                                  |");
-//            System.out.println("| 9 - Voltar                                |");
-//            System.out.println("+-------------------------------------------+");
-//            System.out.print("Digite uma opção: ");
-//            option = scanner.nextLine();
-//
-//            switch (option) {
-//                case "1" -> document.createDocument(currentProcess, String.valueOf(inputProcessId));
-//                case "2" -> document.getAllDocuments();
-//                case "3" -> document.getDocument();
-//                case "4" -> document.updateDocument(currentProcess, String.valueOf(inputProcessId));
-//                case "5" -> document.deleteDocument(currentProcess);
-//                case "6" -> document.signDocument(currentProcess);
-//                case "0", "9" -> running = false;
-//                default -> System.out.println("Opção inválida. Tente novamente.");
-//            }
-//        } while (running);
-//
-//        return option;
-//    }
+    public String documentsMenu() {
+        DocumentController document = new DocumentController();
+        String option;
+        boolean running = true;
+
+        do {
+            System.out.println("\n\n");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|            agiDoc | Documentos            |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1 - Adicionar Documento                   |");
+            System.out.println("| 2 - Listar Documentos                     |");
+            System.out.println("| 3 - Editar Documento                      |");
+            System.out.println("| 4 - Excluir Documento                     |");
+            System.out.println("| 5 - Assinar Documento                     |");
+            System.out.println("|                                           |");
+            System.out.println("| 0 - Sair                                  |");
+            System.out.println("| 9 - Voltar                                |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Digite uma opção: ");
+            option = scanner.nextLine();
+
+            switch (option) {
+                case "1" -> document.create(Associated.PROCESS, currentProcess.getId());
+                case "2" -> document.list(Associated.PROCESS, currentProcess.getId());
+                case "3" -> document.update();
+                case "4" -> document.delete();
+                case "5" -> document.signDocument(UserController.getUserLoggedId());
+                case "0", "9" -> running = false;
+                default -> System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (running);
+
+        return option;
+    }
 
     public String competitorsMenu() {
         CompetitorController competitor = new CompetitorController();
@@ -267,7 +263,7 @@ public class Navigation {
                 case "1" -> competitor.createCompetitor(inputProcessId);
                 case "2" -> competitor.listAll(inputProcessId);
                 case "3" -> competitor.update();
-                case "4" -> competitor.delete();
+                case "4" -> competitor.delete(inputProcessId);
                 case "0", "9" -> running = false;
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }

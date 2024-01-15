@@ -57,6 +57,7 @@ public class CompetitorController {
             competitorList = competitorService.list();
         } catch (SQLException e) {
             System.out.println("ERRO: " + e.getMessage());
+            e.printStackTrace();
         }
 
         for (Competitor competitor : competitorList) {
@@ -107,7 +108,7 @@ public class CompetitorController {
         }
     }
 
-    public void delete() {
+    public void delete(Integer processId) {
         try {
             System.out.print("Digite o id do concorrente que deseja remover: ");
             String id = scanner.nextLine();
@@ -118,6 +119,11 @@ public class CompetitorController {
 
             if (isNotSure) return;
 
+            Competitor competitor = competitorService.get(validId);
+
+            addressController.delete(competitor.getAddress().getId());
+            contactController.delete(competitor.getContact().getId());
+            competitorService.removeCompetitorToProcess(competitor.getId(), processId);
             competitorService.delete(validId);
         } catch (DatabaseException e) {
             System.out.println("ERRO: " + e.getMessage());
