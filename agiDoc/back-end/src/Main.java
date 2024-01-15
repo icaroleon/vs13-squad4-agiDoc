@@ -14,6 +14,7 @@ public class Main {
         Stack<String> history = new Stack<>();
         Navigation nav = new Navigation();
         boolean running = true;
+        boolean running2 = true;
 
         while (running) {
             try {
@@ -22,12 +23,18 @@ public class Main {
                 System.out.println("+-------------------------------------------+");
                 System.out.println("| 1 - Login                                 |");
                 System.out.println("| 2 - Criar novo usuário                    |");
+                System.out.println("|                                           |");
+                System.out.println("| 0 - Sair                                  |");
                 System.out.println("+-------------------------------------------+");
                 System.out.print("Escolha uma opção: ");
                 int option = scanner.nextInt();
                 scanner.nextLine();
 
                 switch (option) {
+                    case 0:
+                        running = false;
+                        running2 = false;
+                        break;
                     case 1:
                         do {
                             System.out.println("+-------------------------------------------+");
@@ -94,13 +101,13 @@ public class Main {
                 scanner.nextLine();
             }
         }
-        running = true;
-        while (running) {
+
+        while (running2) {
             if (history.isEmpty()) {
                 String navigationOption = nav.showMenu("0");
 
                 switch (navigationOption) {
-                    case "0" -> running = false;
+                    case "0" -> running2 = false;
                     case "1", "2", "3" -> history.push(navigationOption);
                     default -> System.out.println("Opção inválida! Tente novamente.");
                 }
@@ -109,7 +116,7 @@ public class Main {
 
                 switch (navigationOption) {
                     case "9" -> history.pop();
-                    case "0" -> running = false;
+                    case "0" -> running2 = false;
                     default -> history.push(navigationOption);
                 }
             }
