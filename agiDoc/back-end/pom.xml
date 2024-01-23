@@ -8,7 +8,7 @@
 		<version>3.1.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>br.com.agidoc</groupId>
 	<artifactId>agiDoc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>agiDoc</name>

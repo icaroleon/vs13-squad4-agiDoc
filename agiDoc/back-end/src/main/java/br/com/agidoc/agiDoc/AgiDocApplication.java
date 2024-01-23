@@ -1,4 +1,4 @@
-package com.example.agiDoc;
+package br.com.agidoc.agiDoc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
