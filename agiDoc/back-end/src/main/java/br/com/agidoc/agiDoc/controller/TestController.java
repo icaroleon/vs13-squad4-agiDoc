@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/teste")
 public class TestController {
     @GetMapping
     public String testRoute () throws SQLException {
