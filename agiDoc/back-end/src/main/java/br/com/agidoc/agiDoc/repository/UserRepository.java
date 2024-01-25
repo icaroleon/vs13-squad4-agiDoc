@@ -4,10 +4,14 @@ import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.department.Department;
 import br.com.agidoc.agiDoc.model.user.User;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@Repository
+@NoArgsConstructor
 public class UserRepository implements IRepository<Integer, User> {
     @Override
     public Integer getNextId(Connection con) throws SQLException {
