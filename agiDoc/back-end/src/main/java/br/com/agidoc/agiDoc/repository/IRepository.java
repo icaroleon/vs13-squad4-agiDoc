@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public interface IRepository<KEY, OBJECT> {
     Integer getNextId(Connection con) throws SQLException;
     OBJECT create(OBJECT object) throws DatabaseException;
-    boolean update(KEY id, OBJECT object) throws Exception;
-    boolean delete(KEY id) throws Exception;
+    OBJECT update(KEY id, OBJECT object) throws Exception;
+    void delete(KEY id) throws Exception;
     ArrayList<OBJECT> list() throws DatabaseException;
 }
