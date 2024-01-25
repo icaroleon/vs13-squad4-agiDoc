@@ -48,7 +48,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    boolean update(Integer id, User user) throws Exception;
+    User update(Integer id, User user) throws Exception;
 
     @Operation(summary = "Delete User", description = "Delete a user in database")
     @ApiResponses(
@@ -58,5 +58,5 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    boolean delete(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }

@@ -5,6 +5,7 @@ import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.service.ContactService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,12 +31,12 @@ public class ContactController implements IContactController {
     }
 
     @PutMapping("/{id}")
-    public boolean update(@PathVariable Integer id, @RequestBody Contact contact) throws Exception{
+    public Contact update(@PathVariable Integer id, @RequestBody Contact contact) throws Exception{
         return this.contactService.update(id, contact);
     }
 
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable Integer id) throws Exception{
-        return this.contactService.delete(id);
+    public void delete(@PathVariable Integer id) throws Exception{
+        this.contactService.delete(id);
     }
 }
