@@ -5,6 +5,7 @@ import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.document.Document;
 
+import javax.print.Doc;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
     }
 
     @Override
-    public boolean update(Integer id, Document document) throws DatabaseException {
+    public Document update(Integer id, Document document) throws DatabaseException {
         Connection con = null;
 
         try {
@@ -165,7 +166,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
             int res = stmt.executeUpdate();
             System.out.println("updateDocument.res=" + res);
 
-            return res > 0;
+            return document;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -179,7 +180,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
     }
 
     @Override
-    public boolean delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -200,8 +201,6 @@ public class DocumentRepository implements IRepository<Integer, Document> {
 
             int res = stmt.executeUpdate();
             System.out.println("deleteDocument.res=" + res);
-
-            return res > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

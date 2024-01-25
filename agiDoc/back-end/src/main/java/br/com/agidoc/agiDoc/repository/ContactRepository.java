@@ -105,7 +105,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     }
 
     @Override
-    public boolean update(Integer id, Contact contact) throws DatabaseException {
+    public Contact update(Integer id, Contact contact) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -134,7 +134,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
 
             int res = stmt.executeUpdate();
 
-            return res > 0;
+            return contact;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -149,7 +149,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     }
 
     @Override
-    public boolean delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -170,7 +170,6 @@ public class ContactRepository implements IRepository<Integer, Contact> {
 
             int res2 = stmt2.executeUpdate();
 
-            return res2 > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

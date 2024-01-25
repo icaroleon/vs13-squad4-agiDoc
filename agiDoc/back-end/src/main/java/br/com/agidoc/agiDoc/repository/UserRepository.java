@@ -2,6 +2,7 @@ package br.com.agidoc.agiDoc.repository;
 
 import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
+import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.department.Department;
 import br.com.agidoc.agiDoc.model.user.User;
 import lombok.NoArgsConstructor;
@@ -33,10 +34,6 @@ public class UserRepository implements IRepository<Integer, User> {
     public User create(User user) throws DatabaseException {
         Connection con = null;
         try {
-            if (user.getRegistration().isEmpty() || user.getName().isEmpty() || user.getUser().isEmpty() || user.getPassword().isEmpty() || user.getRole().isEmpty() || user.getPosition().isEmpty()) {
-                System.out.println("Nenhum campo pode estar em branco. Tente novamente.");
-                return null;
-            }
             con = DBConnection.getConnection();
             Integer nextId = this.getNextId(con);
             user.setIdUser(nextId);
@@ -74,13 +71,8 @@ public class UserRepository implements IRepository<Integer, User> {
     }
 
     @Override
-    public boolean update(Integer id, User user) throws DatabaseException {
+    public User update(Integer id, User user) throws DatabaseException, RegraDeNegocioException {
         Connection con = null;
-
-        if (id == null) {
-            System.out.println("Deve-se ser fornecido um id.");
-            return false;
-        }
 
         try {
             con = DBConnection.getConnection();
@@ -90,10 +82,11 @@ public class UserRepository implements IRepository<Integer, User> {
             PreparedStatement checkStmt = con.prepareStatement(checkSql);
             checkStmt.setInt(1, id);
             ResultSet rs = checkStmt.executeQuery();
-            if (!rs.next() || rs.getInt(1) == 0) {
-                System.out.println("Nenhum usuário encontrado com o id fornecido.");
-                return false;
-            }
+
+            if (!rs.next() || rs.getInt(1) == 0)
+                throw new RegraDeNegocioException("Nenhum usuario com o id fornecido foi encontrado.");
+
+
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE USERS SET ");
@@ -121,7 +114,7 @@ public class UserRepository implements IRepository<Integer, User> {
             int res = stmt.executeUpdate();
             System.out.println("editarUser.res=" + res);
 
-            return res > 0;
+            return user;
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
@@ -138,12 +131,8 @@ public class UserRepository implements IRepository<Integer, User> {
 
 
     @Override
-    public boolean delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws DatabaseException, RegraDeNegocioException {
         Connection con = null;
-        if (id == null) {
-            System.out.println("Deve-se ser fornecido um id.");
-            return false;
-        }
 
         try {
             con = DBConnection.getConnection();
@@ -152,10 +141,9 @@ public class UserRepository implements IRepository<Integer, User> {
             PreparedStatement checkStmt = con.prepareStatement(checkSql);
             checkStmt.setInt(1, id);
             ResultSet rs = checkStmt.executeQuery();
-            if (!rs.next() || rs.getInt(1) == 0) {
-                System.out.println("Nenhum usuário encontrado com o id fornecido.");
-                return false;
-            }
+
+            if (!rs.next() || rs.getInt(1) == 0)
+                throw new RegraDeNegocioException("Nenhum usuario com o id fornecido foi encontrado.");
 
             String sql = "DELETE FROM USERS WHERE ID_USER = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -163,13 +151,10 @@ public class UserRepository implements IRepository<Integer, User> {
 
             int res = stmt.executeUpdate();
             System.out.println("removerContatoPorId.res=" + res);
-
-            return res > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } catch (NumberFormatException e) {
-            System.out.println("O id fornecido não é um número.");
-            return false;
+            throw new RegraDeNegocioException("Id fornecido não é um numero.");
         } finally {
             try {
                 if (con != null) {
@@ -214,14 +199,10 @@ public class UserRepository implements IRepository<Integer, User> {
         }
     }
 
-    public ArrayList<User> listUser (Integer id) throws  DatabaseException {
+    public ArrayList<User> listUser (Integer id) throws DatabaseException, RegraDeNegocioException {
         ArrayList<User> users = new ArrayList<>();
         Connection con = null;
 
-        if (id == null) {
-            System.out.println("Deve-se ser fornecido um id.");
-            return null;
-        }
         try {
             con = DBConnection.getConnection();
 
@@ -239,9 +220,8 @@ public class UserRepository implements IRepository<Integer, User> {
                 users.add(user);
             }
 
-            if (users.isEmpty()) {
-                System.out.println("Usuário inexistente");
-            }
+            if (users.isEmpty())
+                throw new RegraDeNegocioException("Nenhum usuario com o id fornecido foi encontrado.");
 
             return users;
         } catch (SQLException e) {

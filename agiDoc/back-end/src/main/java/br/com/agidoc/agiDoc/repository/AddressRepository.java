@@ -102,7 +102,7 @@ public class AddressRepository implements IRepository <Integer, Address> {
     }
 
     @Override
-    public boolean update(Integer id, Address address) throws DatabaseException {
+    public Address update(Integer id, Address address) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -137,7 +137,7 @@ public class AddressRepository implements IRepository <Integer, Address> {
 
             int res = stmt.executeUpdate();
 
-            return res > 0;
+            return address;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -152,7 +152,7 @@ public class AddressRepository implements IRepository <Integer, Address> {
     }
 
     @Override
-    public boolean delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -172,8 +172,6 @@ public class AddressRepository implements IRepository <Integer, Address> {
             stmt2.setInt(1, id);
 
             int res2 = stmt2.executeUpdate();
-
-            return res2 > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

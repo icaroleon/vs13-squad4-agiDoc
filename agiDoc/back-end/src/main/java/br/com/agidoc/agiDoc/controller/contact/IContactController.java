@@ -40,7 +40,7 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    boolean update(@PathVariable Integer id, @RequestBody Contact contact) throws Exception;
+    Contact update(@PathVariable Integer id, @RequestBody Contact contact) throws Exception;
 
     @Operation(summary = "Delete Contact", description = "Delete a contact in database")
     @ApiResponses(
@@ -50,5 +50,5 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    boolean delete(@PathVariable Integer id) throws Exception;
+    void delete(@PathVariable Integer id) throws Exception;
 }

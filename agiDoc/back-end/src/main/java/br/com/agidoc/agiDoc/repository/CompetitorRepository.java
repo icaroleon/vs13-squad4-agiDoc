@@ -135,7 +135,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
     }
 
     @Override
-    public boolean delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -146,8 +146,6 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
             stmt.setInt(1, id);
 
             int res = stmt.executeUpdate();
-
-            return res > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -162,7 +160,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
     }
 
     @Override
-    public boolean update(Integer id, Competitor competitor) throws DatabaseException {
+    public Competitor update(Integer id, Competitor competitor) throws DatabaseException {
         Connection con = null;
 
         try {
@@ -183,7 +181,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
 
             int res = stmt.executeUpdate();
 
-            return res > 0;
+            return competitor;
         } catch(SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

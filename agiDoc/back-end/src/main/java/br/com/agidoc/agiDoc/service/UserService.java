@@ -17,7 +17,7 @@ public class UserService {
         return this.userRepository.create(user);
     }
 
-    public List<User> listById(Integer id) throws DatabaseException {
+    public List<User> listById(Integer id) throws Exception {
         return this.userRepository.listUser(id);
     }
 
@@ -25,11 +25,11 @@ public class UserService {
         return this.userRepository.list();
     }
 
-    public boolean update(Integer id, User user) throws DatabaseException {
+    public User update(Integer id, User user) throws Exception {
         return this.userRepository.update(id, user);
     }
 
-    public boolean delete(Integer id) throws DatabaseException {
-        return this.userRepository.delete(id);
+    public void delete(Integer id) throws Exception {
+        this.userRepository.delete(id);
     }
 }

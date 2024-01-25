@@ -61,7 +61,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
     }
 
     @Override
-    public boolean update(Integer id, Institution institution) throws DatabaseException {
+    public Institution update(Integer id, Institution institution) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -81,7 +81,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
             int res = stmt.executeUpdate();
             System.out.println("editarInstitutions.res=" + res);
 
-            return res > 0;
+            return institution;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -96,7 +96,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
     }
 
     @Override
-    public boolean delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -109,8 +109,6 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
 
             int res = stmt.executeUpdate();
             System.out.println("removerInstitutionPorId.res=" + res);
-
-            return res > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

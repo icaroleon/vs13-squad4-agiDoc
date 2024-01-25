@@ -34,12 +34,12 @@ public class UserController implements IUserController{
     }
 
     @PutMapping("/{id}")
-    public boolean update(@PathVariable Integer id,@RequestBody User user) throws Exception {
+    public User update(@PathVariable Integer id,@RequestBody User user) throws Exception {
         return this.userService.update(id, user);
     }
 
     @DeleteMapping("/{id}")
-    public boolean delete(@PathVariable Integer id) throws Exception {
-        return this.userService.delete(id);
+    public void delete(@PathVariable Integer id) throws Exception {
+        this.userService.delete(id);
     }
 }

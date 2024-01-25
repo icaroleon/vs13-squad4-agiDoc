@@ -158,7 +158,7 @@ public class ProcessRepository implements IRepository<Integer, Process>{
         return processes;
     }
 
-    public boolean update(Integer id, Process process) throws DatabaseException {
+    public Process update(Integer id, Process process) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -180,7 +180,7 @@ public class ProcessRepository implements IRepository<Integer, Process>{
             int res = stmt.executeUpdate();
             System.out.println("editarPessoa.res=" + res);
 
-            return res > 0;
+            return process;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -194,7 +194,7 @@ public class ProcessRepository implements IRepository<Integer, Process>{
         }
     }
 
-    public boolean delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -208,8 +208,6 @@ public class ProcessRepository implements IRepository<Integer, Process>{
             // Executa-se a consulta
             int res = stmt.executeUpdate();
             System.out.println("removerPessoaPorId.res=" + res);
-
-            return res > 0;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

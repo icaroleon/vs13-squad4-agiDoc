@@ -20,11 +20,11 @@ public class ContactService {
         return this.contactRepository.list();
     }
 
-    public boolean update(Integer id, Contact contact) throws Exception{
+    public Contact update(Integer id, Contact contact) throws Exception{
         return this.contactRepository.update(id, contact);
     }
 
-    public boolean delete(Integer id) throws Exception {
-        return this.contactRepository.delete(id);
+    public void delete(Integer id) throws Exception {
+        this.contactRepository.delete(id);
     }
 }
