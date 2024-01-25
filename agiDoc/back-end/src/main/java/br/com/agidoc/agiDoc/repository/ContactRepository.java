@@ -5,10 +5,15 @@ import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@Repository
+@NoArgsConstructor
 public class ContactRepository implements IRepository<Integer, Contact> {
     public Integer getNextId(Connection connection) throws DatabaseException {
         try {
