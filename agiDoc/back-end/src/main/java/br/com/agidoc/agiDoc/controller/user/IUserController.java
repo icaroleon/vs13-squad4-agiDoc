@@ -1,5 +1,9 @@
 package br.com.agidoc.agiDoc.controller.user;
 
+import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
+import br.com.agidoc.agiDoc.dto.user.UserDTO;
+import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
+import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.user.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,7 +11,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.ResponseEntity;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface IUserController {
@@ -19,7 +25,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    User create(User user) throws Exception;
+    ResponseEntity<UserDTO> create(@Valid UserCreateDTO userCreateDTO) throws Exception;
 
     @Operation(summary = "List Users", description = "List all users in database")
     @ApiResponses(
@@ -28,16 +34,16 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<User> list() throws Exception;
+   ResponseEntity<List<UserDTO>> list() throws Exception;
 
-    @Operation(summary = "List Users by id", description = "List users by id in database")
+    @Operation(summary = "Get User by id", description = "Get user by id in database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Return a list of users with a given id."),
+                    @ApiResponse(responseCode = "200", description = "Return user with a given id."),
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<User> listById(Integer id) throws Exception;
+    ResponseEntity<UserDTO> getById(Integer id) throws Exception;
 
     @Operation(summary = "Update User", description = "Update a user in database")
     @ApiResponses(
@@ -48,7 +54,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    User update(Integer id, User user) throws Exception;
+    ResponseEntity<UserDTO> update(Integer id, @Valid UserUpdateDTO userUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete User", description = "Delete a user in database")
     @ApiResponses(
@@ -58,5 +64,17 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    void delete(Integer id) throws Exception;
+    ResponseEntity<Void> delete(Integer id) throws Exception;
+
+    @Operation(summary = "Login", description = "Login with a user")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "User logged successfully."),
+                    @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true)), description = "User not found."),
+                    @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true)), description = "Wrong data inserted, check the error in response."),
+                    @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(hidden = true)), description = "Invalid password."),
+                    @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
+            }
+    )
+    ResponseEntity<Void> login(@Valid UserLoginDTO userLoginDTO) throws Exception;
 }
