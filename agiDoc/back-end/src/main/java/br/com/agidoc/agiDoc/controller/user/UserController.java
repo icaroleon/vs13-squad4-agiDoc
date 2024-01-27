@@ -8,6 +8,8 @@ import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,27 +24,28 @@ public class UserController implements IUserController{
     private final UserService userService;
 
     @PostMapping
-    public UserDTO create(@RequestBody UserCreateDTO userCreateDTO) throws Exception {
-        return this.userService.create(userCreateDTO);
+    public ResponseEntity<UserDTO> create(@RequestBody UserCreateDTO userCreateDTO) throws Exception {
+        return new ResponseEntity<>(this.userService.create(userCreateDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<UserDTO> list() throws Exception {
-        return this.userService.list();
+    public ResponseEntity<List<UserDTO>> list() throws Exception {
+        return new ResponseEntity<>(this.userService.list(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public List<UserDTO> listById(@PathVariable Integer id) throws Exception {
-        return this.userService.listById(id);
+    public ResponseEntity<List<UserDTO>> listById(@PathVariable Integer id) throws Exception {
+        return new ResponseEntity<>(this.userService.listById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public UserDTO update(@PathVariable Integer id,@RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
-        return this.userService.update(id, userUpdateDTO);
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id,@RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
+        return new ResponseEntity<>(this.userService.update(id, userUpdateDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) throws Exception {
         this.userService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

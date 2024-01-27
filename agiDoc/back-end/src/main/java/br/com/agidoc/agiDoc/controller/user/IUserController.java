@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    UserDTO create(UserCreateDTO userCreateDTO) throws Exception;
+    ResponseEntity<UserDTO> create(UserCreateDTO userCreateDTO) throws Exception;
 
     @Operation(summary = "List Users", description = "List all users in database")
     @ApiResponses(
@@ -31,7 +32,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<UserDTO> list() throws Exception;
+   ResponseEntity<List<UserDTO>> list() throws Exception;
 
     @Operation(summary = "List Users by id", description = "List users by id in database")
     @ApiResponses(
@@ -40,7 +41,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<UserDTO> listById(Integer id) throws Exception;
+    ResponseEntity<List<UserDTO>> listById(Integer id) throws Exception;
 
     @Operation(summary = "Update User", description = "Update a user in database")
     @ApiResponses(
@@ -51,7 +52,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception;
+    ResponseEntity<UserDTO> update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete User", description = "Delete a user in database")
     @ApiResponses(
@@ -61,5 +62,5 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    void delete(Integer id) throws Exception;
+    ResponseEntity<Void> delete(Integer id) throws Exception;
 }
