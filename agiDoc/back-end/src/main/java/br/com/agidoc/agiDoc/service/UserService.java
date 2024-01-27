@@ -37,8 +37,9 @@ public class UserService {
     }
 
     public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception {
-        User user = this.objectMapper.convertValue(userUpdateDTO, User.class);
+        User user = this.userRepository.listUser(id).get(0);
 
+        this.objectMapper.updateValue(user, userUpdateDTO);
         user = this.userRepository.update(id, user);
 
         return this.objectMapper.convertValue(user, UserDTO.class);
