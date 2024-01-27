@@ -34,8 +34,8 @@ public class UserController implements IUserController{
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<UserDTO>> listById(@PathVariable Integer id) throws Exception {
-        return new ResponseEntity<>(this.userService.listById(id), HttpStatus.OK);
+    public ResponseEntity<UserDTO> getById(@PathVariable Integer id) throws Exception {
+        return new ResponseEntity<>(this.userService.getById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

@@ -4,6 +4,7 @@ import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.department.Department;
+import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.user.User;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -76,7 +77,7 @@ public class UserRepository implements IRepository<Integer, User> {
 
         try {
             con = DBConnection.getConnection();
-            ArrayList<User> ls = listUser(id);
+            User userToUpdate = getUserById(id);
 
             String checkSql = "SELECT COUNT(*) FROM USERS WHERE ID_USER = ?";
             PreparedStatement checkStmt = con.prepareStatement(checkSql);
@@ -101,13 +102,13 @@ public class UserRepository implements IRepository<Integer, User> {
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
-            stmt.setString(1, user.getRegistration().isEmpty() ? ls.get(0).getRegistration() : user.getRegistration());
-            stmt.setString(2, user.getName().isEmpty() ? ls.get(0).getName() : user.getName());
-            stmt.setString(3, user.getUser().isEmpty() ? ls.get(0).getUser() : user.getUser());
-            stmt.setString(4, user.getPassword().isEmpty() ? ls.get(0).getPassword() : user.getPassword());
-            stmt.setString(5, user.getRole().isEmpty() ? ls.get(0).getRole() : user.getRole());
-            stmt.setString(6, user.getPosition().isEmpty() ? ls.get(0).getPosition() : user.getPosition());
-            stmt.setInt(7, user.getDepartment().getIdDepartment() == 0 ? ls.get(0).getDepartment().getIdDepartment() : user.getDepartment().getIdDepartment());
+            stmt.setString(1, user.getRegistration().isEmpty() ? userToUpdate.getRegistration() : user.getRegistration());
+            stmt.setString(2, user.getName().isEmpty() ? userToUpdate.getName() : user.getName());
+            stmt.setString(3, user.getUser().isEmpty() ? userToUpdate.getUser() : user.getUser());
+            stmt.setString(4, user.getPassword().isEmpty() ? userToUpdate.getPassword() : user.getPassword());
+            stmt.setString(5, user.getRole().isEmpty() ? userToUpdate.getRole() : user.getRole());
+            stmt.setString(6, user.getPosition().isEmpty() ? userToUpdate.getPosition() : user.getPosition());
+            stmt.setInt(7, user.getDepartment().getIdDepartment() == 0 ? userToUpdate.getDepartment().getIdDepartment() : user.getDepartment().getIdDepartment());
             stmt.setInt(8, id);
 
 
@@ -199,8 +200,7 @@ public class UserRepository implements IRepository<Integer, User> {
         }
     }
 
-    public ArrayList<User> listUser (Integer id) throws DatabaseException, RegraDeNegocioException {
-        ArrayList<User> users = new ArrayList<>();
+    public User getUserById (Integer id) throws DatabaseException, RegraDeNegocioException {
         Connection con = null;
 
         try {
@@ -215,15 +215,20 @@ public class UserRepository implements IRepository<Integer, User> {
             stmt.setInt(1, id);
             ResultSet res = stmt.executeQuery();
 
-            while (res.next()) {
-                User user = getUserFromResultSet(res);
-                users.add(user);
-            }
-
-            if (users.isEmpty())
+            if(!res.next())
                 throw new RegraDeNegocioException("Nenhum usuario com o id fornecido foi encontrado.");
 
-            return users;
+            User user = new User();
+
+            user.setIdUser(res.getInt("ID_USER"));
+            user.setRegistration(res.getString("REGISTRATION"));
+            user.setName(res.getString("NAME"));
+            user.setUser(res.getString("USER"));
+            user.setPassword(res.getString("PASSWORD"));
+            user.setRole(res.getString("ROLE"));
+            user.setPosition(res.getString("POSITION"));
+
+            return user;
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

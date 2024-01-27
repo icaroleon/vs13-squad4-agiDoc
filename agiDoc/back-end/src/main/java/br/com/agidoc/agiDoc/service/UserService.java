@@ -28,8 +28,10 @@ public class UserService {
         return this.objectMapper.convertValue(user, UserDTO.class);
     }
 
-    public List<UserDTO> listById(Integer id) throws Exception {
-        return this.userRepository.listUser(id).stream().map(user -> this.objectMapper.convertValue(user, UserDTO.class)).collect(Collectors.toList());
+    public UserDTO getById(Integer id) throws Exception {
+        User user = this.userRepository.getUserById(id);
+
+        return this.objectMapper.convertValue(user, UserDTO.class);
     }
 
     public List<UserDTO> list() throws DatabaseException {
@@ -37,7 +39,7 @@ public class UserService {
     }
 
     public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception {
-        User user = this.userRepository.listUser(id).get(0);
+        User user = this.userRepository.getUserById(id);
 
         this.objectMapper.updateValue(user, userUpdateDTO);
         user = this.userRepository.update(id, user);

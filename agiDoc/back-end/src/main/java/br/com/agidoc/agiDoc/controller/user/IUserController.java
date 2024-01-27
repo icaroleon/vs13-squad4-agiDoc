@@ -34,14 +34,14 @@ public interface IUserController {
     )
    ResponseEntity<List<UserDTO>> list() throws Exception;
 
-    @Operation(summary = "List Users by id", description = "List users by id in database")
+    @Operation(summary = "Get User by id", description = "Get user by id in database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Return a list of users with a given id."),
+                    @ApiResponse(responseCode = "200", description = "Return user with a given id."),
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<List<UserDTO>> listById(Integer id) throws Exception;
+    ResponseEntity<UserDTO> getById(Integer id) throws Exception;
 
     @Operation(summary = "Update User", description = "Update a user in database")
     @ApiResponses(
