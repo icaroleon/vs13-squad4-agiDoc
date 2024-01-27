@@ -1,5 +1,8 @@
 package br.com.agidoc.agiDoc.controller.user;
 
+import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
+import br.com.agidoc.agiDoc.dto.user.UserDTO;
+import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.service.UserService;
@@ -19,23 +22,23 @@ public class UserController implements IUserController{
     private final UserService userService;
 
     @PostMapping
-    public User create(@RequestBody User user) throws Exception {
-        return this.userService.create(user);
+    public UserDTO create(@RequestBody UserCreateDTO userCreateDTO) throws Exception {
+        return this.userService.create(userCreateDTO);
     }
 
     @GetMapping
-    public List<User> list() throws Exception {
+    public List<UserDTO> list() throws Exception {
         return this.userService.list();
     }
 
     @GetMapping("/{id}")
-    public List<User> listById(@PathVariable Integer id) throws Exception {
+    public List<UserDTO> listById(@PathVariable Integer id) throws Exception {
         return this.userService.listById(id);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Integer id,@RequestBody User user) throws Exception {
-        return this.userService.update(id, user);
+    public UserDTO update(@PathVariable Integer id,@RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
+        return this.userService.update(id, userUpdateDTO);
     }
 
     @DeleteMapping("/{id}")

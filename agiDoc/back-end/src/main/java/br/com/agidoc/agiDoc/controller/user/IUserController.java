@@ -1,5 +1,8 @@
 package br.com.agidoc.agiDoc.controller.user;
 
+import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
+import br.com.agidoc.agiDoc.dto.user.UserDTO;
+import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.user.User;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +22,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    User create(User user) throws Exception;
+    UserDTO create(UserCreateDTO userCreateDTO) throws Exception;
 
     @Operation(summary = "List Users", description = "List all users in database")
     @ApiResponses(
@@ -28,7 +31,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<User> list() throws Exception;
+    List<UserDTO> list() throws Exception;
 
     @Operation(summary = "List Users by id", description = "List users by id in database")
     @ApiResponses(
@@ -37,7 +40,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<User> listById(Integer id) throws Exception;
+    List<UserDTO> listById(Integer id) throws Exception;
 
     @Operation(summary = "Update User", description = "Update a user in database")
     @ApiResponses(
@@ -48,7 +51,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    User update(Integer id, User user) throws Exception;
+    UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete User", description = "Delete a user in database")
     @ApiResponses(
