@@ -2,6 +2,7 @@ package br.com.agidoc.agiDoc.controller.user;
 
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
+import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
 import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.user.User;
@@ -64,4 +65,16 @@ public interface IUserController {
             }
     )
     ResponseEntity<Void> delete(Integer id) throws Exception;
+
+    @Operation(summary = "Login", description = "Login with a user")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "User logged successfully."),
+                    @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true)), description = "User not found."),
+                    @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true)), description = "Wrong data inserted, check the error in response."),
+                    @ApiResponse(responseCode = "401", content = @Content(schema = @Schema(hidden = true)), description = "Invalid password."),
+                    @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
+            }
+    )
+    ResponseEntity<Void> login(@Valid UserLoginDTO userLoginDTO) throws Exception;
 }

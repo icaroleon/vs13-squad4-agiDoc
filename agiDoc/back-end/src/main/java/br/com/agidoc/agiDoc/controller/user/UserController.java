@@ -53,7 +53,7 @@ public class UserController implements IUserController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody UserLoginDTO userLoginDTO) throws Exception {
+    public ResponseEntity<Void> login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
         if(this.userService.login(userLoginDTO)){
             return ResponseEntity.ok().build();
         }
