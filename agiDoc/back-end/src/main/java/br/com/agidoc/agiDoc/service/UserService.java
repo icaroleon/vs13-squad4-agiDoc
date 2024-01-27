@@ -3,8 +3,10 @@ package br.com.agidoc.agiDoc.service;
 import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
+import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
 import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
+import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
-    public UserDTO create(UserCreateDTO userCreateDTO) throws DatabaseException {
+    public UserDTO create(UserCreateDTO userCreateDTO) throws Exception {
         User user = this.objectMapper.convertValue(userCreateDTO, User.class);
 
         user = this.userRepository.create(user);
@@ -49,5 +51,14 @@ public class UserService {
 
     public void delete(Integer id) throws Exception {
         this.userRepository.delete(id);
+    }
+
+    public boolean login(UserLoginDTO userLoginDTO) throws DatabaseException, RegraDeNegocioException {
+        String username = userLoginDTO.getUsername();
+        String password = userLoginDTO.getPassword();
+
+        User user = this.userRepository.getUserByUsername(username);
+
+        return user.getPassword().equals(password);
     }
 }

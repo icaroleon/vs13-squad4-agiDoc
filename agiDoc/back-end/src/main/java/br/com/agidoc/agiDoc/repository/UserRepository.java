@@ -7,12 +7,14 @@ import br.com.agidoc.agiDoc.model.department.Department;
 import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.user.User;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 @Repository
+@Slf4j
 @NoArgsConstructor
 public class UserRepository implements IRepository<Integer, User> {
     @Override
@@ -32,7 +34,7 @@ public class UserRepository implements IRepository<Integer, User> {
     }
 
     @Override
-    public User create(User user) throws DatabaseException {
+    public User create(User user) throws Exception {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -59,6 +61,9 @@ public class UserRepository implements IRepository<Integer, User> {
             System.out.println("adicionarContato.res" + res);
             return user;
         } catch (SQLException e) {
+            if(e.getErrorCode() == 1)
+                throw new RegraDeNegocioException("Usuário já existente no banco!");
+
             throw new DatabaseException(e.getCause());
         } finally {
             try {
@@ -217,6 +222,50 @@ public class UserRepository implements IRepository<Integer, User> {
 
             if(!res.next())
                 throw new RegraDeNegocioException("Nenhum usuario com o id fornecido foi encontrado.");
+
+            User user = new User();
+
+            user.setIdUser(res.getInt("ID_USER"));
+            user.setRegistration(res.getString("REGISTRATION"));
+            user.setName(res.getString("NAME"));
+            user.setUser(res.getString("USER"));
+            user.setPassword(res.getString("PASSWORD"));
+            user.setRole(res.getString("ROLE"));
+            user.setPosition(res.getString("POSITION"));
+
+            return user;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public User getUserByUsername (String username) throws DatabaseException, RegraDeNegocioException {
+        Connection con = null;
+
+        try {
+            con = DBConnection.getConnection();
+
+            String sql =  """
+                    SELECT U.*, D.NAME AS NAME_DEPARTMENT
+                    FROM USERS U 
+                    INNER JOIN DEPARTMENTS D ON (D.ID_DEPARTMENT = U.ID_DEPARTMENT) 
+                    WHERE U."USER" = ?
+                    """;
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet res = stmt.executeQuery();
+
+            if(!res.next())
+                throw new RegraDeNegocioException("Nenhum usuario com o username fornecido foi encontrado.");
 
             User user = new User();
 

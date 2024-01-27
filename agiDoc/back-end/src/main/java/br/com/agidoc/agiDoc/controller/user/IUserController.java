@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface IUserController {
@@ -23,7 +24,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<UserDTO> create(UserCreateDTO userCreateDTO) throws Exception;
+    ResponseEntity<UserDTO> create(@Valid UserCreateDTO userCreateDTO) throws Exception;
 
     @Operation(summary = "List Users", description = "List all users in database")
     @ApiResponses(
@@ -52,7 +53,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<UserDTO> update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception;
+    ResponseEntity<UserDTO> update(Integer id, @Valid UserUpdateDTO userUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete User", description = "Delete a user in database")
     @ApiResponses(

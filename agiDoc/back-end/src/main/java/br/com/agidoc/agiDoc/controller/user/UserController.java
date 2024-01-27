@@ -2,8 +2,10 @@ package br.com.agidoc.agiDoc.controller.user;
 
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
+import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
 import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
+import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class UserController implements IUserController{
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@RequestBody UserCreateDTO userCreateDTO) throws Exception {
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userCreateDTO) throws Exception {
         return new ResponseEntity<>(this.userService.create(userCreateDTO), HttpStatus.CREATED);
     }
 
@@ -39,7 +42,7 @@ public class UserController implements IUserController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Integer id,@RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @Valid @RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
         return new ResponseEntity<>(this.userService.update(id, userUpdateDTO), HttpStatus.OK);
     }
 
@@ -47,5 +50,14 @@ public class UserController implements IUserController{
     public ResponseEntity<Void> delete(@PathVariable Integer id) throws Exception {
         this.userService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@RequestBody UserLoginDTO userLoginDTO) throws Exception {
+        if(this.userService.login(userLoginDTO)){
+            return ResponseEntity.ok().build();
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 }
