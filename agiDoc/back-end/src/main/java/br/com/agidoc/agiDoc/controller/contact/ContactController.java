@@ -1,6 +1,9 @@
 package br.com.agidoc.agiDoc.controller.contact;
 
 import br.com.agidoc.agiDoc.controller.contact.IContactController;
+import br.com.agidoc.agiDoc.dto.contact.ContactCreateDTO;
+import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
+import br.com.agidoc.agiDoc.dto.contact.ContactUpdateDTO;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.service.ContactService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,20 +22,14 @@ import java.util.List;
 public class ContactController implements IContactController {
     private final ContactService contactService;
 
-
-    @PostMapping
-    public Contact create(@RequestBody Contact contact) throws Exception{
-        return this.contactService.create(contact);
-    }
-
     @GetMapping
-    public List<Contact> list() throws Exception{
+    public List<ContactDTO> list() throws Exception{
         return this.contactService.list();
     }
 
     @PutMapping("/{id}")
-    public Contact update(@PathVariable Integer id, @RequestBody Contact contact) throws Exception{
-        return this.contactService.update(id, contact);
+    public ContactDTO update(@PathVariable Integer id, @RequestBody ContactUpdateDTO contactUpdateDTO) throws Exception{
+        return this.contactService.update(id, contactUpdateDTO);
     }
 
     @DeleteMapping("/{id}")

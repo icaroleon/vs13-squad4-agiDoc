@@ -1,5 +1,8 @@
 package br.com.agidoc.agiDoc.controller.contact;
 
+import br.com.agidoc.agiDoc.dto.contact.ContactCreateDTO;
+import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
+import br.com.agidoc.agiDoc.dto.contact.ContactUpdateDTO;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,16 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public interface IContactController {
-    @Operation(summary = "Create Contact", description = "Create a contact in database")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Return created contact."),
-                    @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true)), description = "Wrong data inserted, check the error in response."),
-                    @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
-            }
-    )
-    Contact create(@RequestBody Contact contact) throws Exception;
-
     @Operation(summary = "List Contacts", description = "List all contacts in database")
     @ApiResponses(
             value = {
@@ -29,7 +22,7 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<Contact> list() throws Exception;
+    List<ContactDTO> list() throws Exception;
 
     @Operation(summary = "Update Contact", description = "Update a contact in database")
     @ApiResponses(
@@ -40,7 +33,7 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    Contact update(@PathVariable Integer id, @RequestBody Contact contact) throws Exception;
+    ContactDTO update(@PathVariable Integer id, @RequestBody ContactUpdateDTO contactUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete Contact", description = "Delete a contact in database")
     @ApiResponses(
