@@ -19,8 +19,5 @@ public class ProcessDTO{
     private String processNumber = UUID.randomUUID().toString().substring(0, 6);
     private String title, description;
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
-    private Competitor contracted;
-    private ArrayList<Competitor> competitors;
-    private ArrayList<Document> documents;
     private Integer institutionId = 1;
 }
