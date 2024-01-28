@@ -23,6 +23,12 @@ public class Institution extends AbstractJuridical {
         this.processes = processes;
     }
 
+    public Institution(Integer idInstitution, String companyName,String cnpj){
+        setId(idInstitution);
+        setCompanyName(companyName);
+        setCnpj(cnpj);
+    }
+
     @Override
     public String toString() {
         return """ 
@@ -37,7 +43,7 @@ public class Institution extends AbstractJuridical {
                 this.companyName,
                 this.address,
                 this.contact
-        );
+        ).replace("Null", "não informado.");
     }
 
     public int getId() {
