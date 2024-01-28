@@ -2,14 +2,17 @@ package br.com.agidoc.agiDoc.repository;
 
 import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
+import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.document.Document;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-import javax.print.Doc;
 import java.sql.*;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+@Repository
+@NoArgsConstructor
 public class DocumentRepository implements IRepository<Integer, Document> {
     public Integer getNextId(Connection con) throws SQLException {
         String sql = "SELECT SEQ_DOCUMENTS.nextval mysequence from DUAL";
@@ -31,8 +34,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(sql);
 
-            if (res.next())
-                return res.getInt("MY_SEQUENCE");
+            if (res.next()) return res.getInt("MY_SEQUENCE");
 
             return null;
         } catch (SQLException e) {
@@ -60,7 +62,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
 
             stmt.setInt(1, document.getId());
             stmt.setString(2, document.getProtocol());
-            stmt.setString(3, document.getExpirationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            stmt.setObject(3, document.getExpirationDate());
             stmt.setInt(4, 0);
 
             int res1 = stmt.executeUpdate();
@@ -76,13 +78,15 @@ public class DocumentRepository implements IRepository<Integer, Document> {
 
             stmt2.setInt(1, associationNextId);
             stmt2.setInt(2, document.getId());
-            stmt2.setInt(3, document.getAssociatedId());
+            stmt2.setInt(3, 1);
 
             int res2 = stmt2.executeUpdate();
             System.out.println("createAddressAssociation.res=" + res2);
 
             return document;
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
             throw new DatabaseException(e.getCause());
         } finally {
             try {
@@ -128,7 +132,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
 
                 if (res2.next()) {
                     document.setAssociated(Associated.PROCESS);
-                    document.setAssociatedId(res2.getInt("ID_PROCESS"));
+                    document.setProcessId(res2.getInt("ID_PROCESS"));
                 }
 
                 docs.add(document);
@@ -149,38 +153,32 @@ public class DocumentRepository implements IRepository<Integer, Document> {
     }
 
     @Override
-    public Document update(Integer id, Document document) throws DatabaseException {
+    public Document update(Integer idDocument, Document document) throws Exception {
         Connection con = null;
 
         try {
             con = DBConnection.getConnection();
 
-            String sqlUpdate = "UPDATE DOCUMENTS SET PROTOCOL = ?, EXPIRATION_DATE = ? WHERE ID_DOCUMENT = ?";
+            String sqlUpdate = "UPDATE DOCUMENTS SET EXPIRATION_DATE = ? WHERE ID_DOCUMENT = ?";
 
             PreparedStatement stmt = con.prepareStatement(sqlUpdate);
 
-            stmt.setString(1, document.getProtocol());
-            stmt.setString(2, document.getExpirationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            stmt.setInt(3, id);
+            stmt.setObject(1, document.getExpirationDate());
+            stmt.setInt(2, idDocument);
 
-            int res = stmt.executeUpdate();
-            System.out.println("updateDocument.res=" + res);
-
-            return document;
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return document;
+            } else {
+                throw new RegraDeNegocioException("No document found with ID = " + idDocument);
+            }
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
-        } finally {
-            try {
-                if (con != null)
-                    con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     @Override
-    public void delete(Integer id) throws DatabaseException {
+    public void delete(Integer idDocument) throws Exception {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -189,18 +187,22 @@ public class DocumentRepository implements IRepository<Integer, Document> {
 
             PreparedStatement stmt1 = con.prepareStatement(sql1);
 
-            stmt1.setInt(1, id);
+            stmt1.setInt(1, idDocument);
 
             int res1 = stmt1.executeUpdate();
-            System.out.println("deleteDocumentAssociation.res=" + res1);
 
             String sql2 = "DELETE FROM DOCUMENTS WHERE ID_DOCUMENT = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql2);
-            stmt.setInt(1, id);
+            stmt.setInt(1, idDocument);
 
-            int res = stmt.executeUpdate();
-            System.out.println("deleteDocument.res=" + res);
+            int rowsAffected  = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                throw new RegraDeNegocioException("Documento excluído com sucesso.");
+            } else {
+                throw new RegraDeNegocioException("No document found with ID = " + idDocument);
+            }
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -243,8 +245,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
             throw new DatabaseException(e.getCause());
         } finally {
             try {
-                if (con != null)
-                    con.close();
+                if (con != null) con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -272,11 +273,54 @@ public class DocumentRepository implements IRepository<Integer, Document> {
             throw new DatabaseException(e.getCause());
         } finally {
             try {
-                if (con != null)
-                    con.close();
+                if (con != null) con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Document findById(Integer idDocument) throws Exception {
+        Connection con = null;
+
+        try {
+            con = DBConnection.getConnection();
+
+            String sqlFindById = """
+                    SELECT *
+                    FROM DOCUMENTS D
+                    JOIN DOCUMENTS_ASSOCIATIONS DA ON (DA.ID_DOCUMENT = D.ID_DOCUMENT)
+                    JOIN PROCESSES P ON (P.ID_PROCESS = DA.ID_PROCESS)
+                    WHERE D.ID_DOCUMENT = ?
+                    """;
+
+            PreparedStatement stmt = con.prepareStatement(sqlFindById);
+
+            stmt.setInt(1, idDocument);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                return this.getDocumentFromResultSet(resultSet);
+            } else {
+                throw new RegraDeNegocioException("No document found with ID = " + idDocument);
+            }
+        } catch (DatabaseException e) {
+            throw new DatabaseException(e.getCause());
+        }
+    }
+
+    public Document getDocumentFromResultSet(ResultSet resultSet) throws SQLException {
+        Document document = new Document();
+
+        document.setId(resultSet.getInt("ID_DOCUMENT"));
+        document.setProcessId(resultSet.getInt("ID_PROCESS"));
+        document.setProtocol(resultSet.getString("PROTOCOL"));
+        document.setExpirationDate(resultSet.getDate("EXPIRATION_DATE").toLocalDate());
+        document.setSigned(resultSet.getBoolean("IS_SIGNED"));
+        document.setFile(resultSet.getBlob("FILE") != null ? resultSet.getBlob("FILE").toString() : "Sem arquivo anexado");
+        document.setAssociated(resultSet.wasNull() ? Associated.ofType(4) : Associated.ofType(resultSet.getInt("ID_DOCUMENT_ASSOCIATION")));
+
+        return document;
     }
 }

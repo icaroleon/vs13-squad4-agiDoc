@@ -17,18 +17,12 @@ public class DocumentCreateDTO {
 
     @FutureOrPresent
     @Schema(required = true, example = "30-12-2024")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate expirationDate;
-
     private boolean signed;
-
-
     private String file;
-
     private Associated associated;
-
     private String processNumber;
-
     private Integer processId;
     private String titleProcess, descriptionProcess;
 }

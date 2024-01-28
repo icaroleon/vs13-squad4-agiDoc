@@ -3,7 +3,6 @@ package br.com.agidoc.agiDoc.service;
 import br.com.agidoc.agiDoc.dto.document.DocumentCreateDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
-import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.repository.DocumentRepository;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,14 +24,11 @@ public class DocumentService {
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDTO) throws Exception {
         Process process = processService.findById(idProcess);
-        if (process == null) {
-            throw new RegraDeNegocioException("Pessoa para o id " + idProcess + " não encontrado.");
-        }
         Document document = objectMapper.convertValue(documentCreateDTO, Document.class);
         document = documentRepository.create(document);
-        DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
-        documentDTO.setProcess(process);
-        return documentDTO;
+
+
+        return findDocByIdAndConvertedToDto(document.getId());
     }
 
     public List<DocumentDTO> list() throws Exception {
@@ -54,15 +48,21 @@ public class DocumentService {
         return documentsDtoList;
     }
 
-    public Document update(Integer idDocument, Document document) throws DatabaseException {
-        return this.documentRepository.update(idDocument, document);
+    public DocumentDTO update(Integer idDocument, DocumentCreateDTO documentCreateDTO) throws Exception {
+
+        Document document = objectMapper.convertValue(documentCreateDTO, Document.class);
+        documentRepository.update(idDocument, document);
+        DocumentDTO documentDTO = this.findDocByIdAndConvertedToDto(idDocument);
+
+        return documentDTO;
     }
 
-    public void delete(Integer id) throws DatabaseException {
+    public void delete(Integer id) throws Exception {
         documentRepository.delete(id);
+        //TODO RETORNAR METODO BOOILEAN EM VEZ DE EXCEPTION
     }
 
-    public DocumentDTO findById(Integer idDocument) throws Exception {
+    public DocumentDTO findDocByIdAndConvertedToDto(Integer idDocument) throws Exception {
 
         Document document = documentRepository.findById(idDocument);
         Process process = processService.findById(document.getProcessId());

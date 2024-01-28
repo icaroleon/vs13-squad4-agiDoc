@@ -5,7 +5,8 @@ import java.util.Arrays;
 public enum Associated {
     COMPETITOR(1),
     INSTITUTION(2),
-    PROCESS(3);
+    PROCESS(3),
+    SEM_ASSOCIACAO(4);
 
     private final Integer type;
 

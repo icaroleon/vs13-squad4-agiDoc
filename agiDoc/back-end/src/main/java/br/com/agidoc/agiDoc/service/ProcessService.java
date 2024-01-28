@@ -4,10 +4,8 @@ import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.repository.ProcessRepository;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.jni.Proc;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
