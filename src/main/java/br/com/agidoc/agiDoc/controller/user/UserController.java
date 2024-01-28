@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @Validated
 @RequestMapping("/user")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController implements IUserController{
     private final UserService userService;
 
