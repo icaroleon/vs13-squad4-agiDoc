@@ -2,6 +2,7 @@ package br.com.agidoc.agiDoc.controller.process;
 
 import br.com.agidoc.agiDoc.dto.process.ProcessCreateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
+import br.com.agidoc.agiDoc.dto.process.ProcessUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.service.ProcessService;
@@ -25,7 +26,7 @@ public class ProcessController implements IProcessController{
     private final ProcessService processService;
 
     @GetMapping
-    public ResponseEntity<List<Process>> list() throws Exception {
+    public ResponseEntity<List<ProcessDTO>> list() throws Exception {
         return new ResponseEntity<>(processService.list(), HttpStatus.OK);
     }
 
@@ -40,8 +41,9 @@ public class ProcessController implements IProcessController{
     }
 
     @PutMapping("/{idProcess}")
-    public ResponseEntity<ProcessDTO> update(@NotNull @PathVariable("idProcess") Integer idProcess, @Valid @RequestBody ProcessCreateDTO processCreateDTO) throws Exception {
-        return new ResponseEntity<>(this.processService.update(idProcess, processCreateDTO), HttpStatus.OK);
+    public ResponseEntity<ProcessDTO> update(@NotNull @PathVariable("idProcess") Integer idProcess,
+                                             @Valid @RequestBody ProcessUpdateDTO processUpdateDTO) throws Exception {
+        return new ResponseEntity<>(this.processService.update(idProcess, processUpdateDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{idProcess}")

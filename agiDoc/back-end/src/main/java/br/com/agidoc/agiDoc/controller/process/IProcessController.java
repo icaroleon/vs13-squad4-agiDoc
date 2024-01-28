@@ -2,6 +2,7 @@ package br.com.agidoc.agiDoc.controller.process;
 
 import br.com.agidoc.agiDoc.dto.process.ProcessCreateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
+import br.com.agidoc.agiDoc.dto.process.ProcessUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +26,7 @@ public interface IProcessController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception")
             }
     )
-    ResponseEntity<List<Process>> list() throws Exception;
+    ResponseEntity<List<ProcessDTO>> list() throws Exception;
 
     @Operation(summary = "Find Process by ID", description = "Retrieve a single process by its ID")
     @ApiResponses(
@@ -57,7 +58,7 @@ public interface IProcessController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception")
             }
     )
-    ResponseEntity<ProcessDTO> update(@PathVariable Integer idProcess, @Valid @RequestBody ProcessCreateDTO processCreateDto) throws Exception;
+    ResponseEntity<ProcessDTO> update(@NotNull @PathVariable Integer idProcess, @Valid @RequestBody ProcessUpdateDTO processUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete Process", description = "Delete a process from the database using its ID")
     @ApiResponses(
