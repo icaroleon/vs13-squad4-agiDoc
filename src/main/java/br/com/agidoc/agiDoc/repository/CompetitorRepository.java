@@ -6,16 +6,14 @@ import br.com.agidoc.agiDoc.model.address.Address;
 import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@RequiredArgsConstructor
 public class CompetitorRepository implements IRepository<Integer, Competitor> {
-    public CompetitorRepository() {
-    }
-
-    public CompetitorRepository(ArrayList<Competitor> competitors) {
-    }
+    private final DBConnection dbConnection;
 
     @Override
     public Integer getNextId(Connection con) throws SQLException {
@@ -36,7 +34,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
             competitor.setId(nextId);
@@ -74,7 +72,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
             Statement stmt = con.createStatement();
 
             String sqlSelect = """
@@ -138,7 +136,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
     public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql = "DELETE FROM COMPETITORS WHERE ID_COMPETITOR = ?";
 
@@ -164,7 +162,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlUpdate = """
                 UPDATE COMPETITORS SET
@@ -198,7 +196,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlSelect = """
                     SELECT * FROM COMPETITORS C
@@ -259,7 +257,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlInsert = """
                         INSERT INTO PROCESSES_COMPETITORS (ID_PROCESS, ID_COMPETITOR, IS_ENABLED)
@@ -292,7 +290,7 @@ public class CompetitorRepository implements IRepository<Integer, Competitor> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlDelete = "DELETE FROM PROCESSES_COMPETITORS WHERE ID_COMPETITOR = ? AND ID_PROCESS = ?";
 

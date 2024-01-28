@@ -6,14 +6,17 @@ import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.document.Document;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 @Repository
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class DocumentRepository implements IRepository<Integer, Document> {
+    private final DBConnection dbConnection;
+
     public Integer getNextId(Connection con) throws SQLException {
         String sql = "SELECT SEQ_DOCUMENTS.nextval mysequence from DUAL";
 
@@ -47,7 +50,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
             Integer associationNextId = this.getAssociationNextId(con);
@@ -105,7 +108,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
             Statement stmt = con.createStatement();
 
             String sqlSelect = "SELECT * FROM DOCUMENTS";
@@ -157,7 +160,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlUpdate = "UPDATE DOCUMENTS SET EXPIRATION_DATE = ? WHERE ID_DOCUMENT = ?";
 
@@ -181,7 +184,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
     public void delete(Integer idDocument) throws Exception {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql1 = "DELETE FROM DOCUMENTS_ASSOCIATIONS WHERE ID_DOCUMENT = ?";
 
@@ -220,7 +223,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlSelect = "SELECT * FROM DOCUMENTS WHERE ID_DOCUMENT = ?";
 
@@ -256,7 +259,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlUpdate = "UPDATE DOCUMENTS SET IS_SIGNED = ?, ID_SIGNATURE = ? WHERE ID_DOCUMENT = ?";
 
@@ -284,7 +287,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sqlFindById = """
                     SELECT *

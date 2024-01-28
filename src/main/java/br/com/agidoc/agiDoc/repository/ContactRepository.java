@@ -13,8 +13,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 @Repository
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ContactRepository implements IRepository<Integer, Contact> {
+    private final DBConnection dbConnection;
     public Integer getNextId(Connection connection) throws DatabaseException {
         try {
             String sql = "SELECT SEQ_CONTACTS.NEXTVAL MY_SEQUENCE FROM DUAL";
@@ -48,7 +49,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     public Contact create(Contact contact) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
             Integer associationNextId = this.getAssociationNextId(con);
@@ -108,7 +109,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     public Contact update(Integer id, Contact contact) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE CONTACTS SET");
@@ -152,7 +153,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql1 = "DELETE FROM CONTACTS_ASSOCIATIONS WHERE ID_CONTACT = ?";
 
@@ -188,7 +189,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
         ArrayList<Contact> contacts = new ArrayList<>();
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql1 = "SELECT * FROM CONTACTS";
 

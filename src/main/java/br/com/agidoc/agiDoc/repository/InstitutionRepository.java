@@ -6,11 +6,15 @@ import br.com.agidoc.agiDoc.model.address.Address;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
 import br.com.agidoc.agiDoc.model.institution.Institution;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@RequiredArgsConstructor
 public class InstitutionRepository implements IRepository<Integer, Institution> {
+    private final DBConnection dbConnection;
+
     @Override
     public Integer getNextId(Connection con) throws SQLException {
         String sql = "SELECT SEQ_INSTITUTIONS.nextval mysequence from DUAL";
@@ -29,7 +33,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
             institution.setId(nextId);
@@ -64,7 +68,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
     public Institution update(Integer id, Institution institution) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE INSTITUTIONS SET ");
@@ -99,7 +103,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
     public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql = "DELETE FROM INSTITUTIONS WHERE id_process = ?";
 
@@ -127,7 +131,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
         ArrayList<Institution> institutions = new ArrayList<>();
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = """
@@ -191,7 +195,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
     public Institution get(int id) throws SQLException {
         Connection con = null;
         try{
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql = """
                     SELECT * FROM INSTITUTIONS I

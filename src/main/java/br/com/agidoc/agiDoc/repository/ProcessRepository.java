@@ -5,6 +5,7 @@ import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -12,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class ProcessRepository implements IRepository<Integer, Process> {
+    private final DBConnection dbConnection;
 
     @Override
     public Integer getNextId(Connection connection) throws SQLException {
@@ -32,7 +35,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
 
             Integer nextId = this.getNextId(con);
@@ -70,7 +73,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         List<Process> returnValue = new ArrayList<>();
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE ID_PROCESS = ?");
 
@@ -92,7 +95,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         List<Process> returnValue = new ArrayList<>();
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE PROCESS_NUMBER = ?");
 
@@ -135,7 +138,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT * FROM PROCESSES";
@@ -168,7 +171,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
     public Process update(Integer id, Process process) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql = "UPDATE PROCESSES SET " +
                     " title = ?," +
@@ -203,7 +206,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
     public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = dbConnection.getConnection();
 
             String sql = "DELETE FROM PROCESSES WHERE id_process = ?";
 
