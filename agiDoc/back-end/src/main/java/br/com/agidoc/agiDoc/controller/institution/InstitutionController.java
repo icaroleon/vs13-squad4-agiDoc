@@ -9,10 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 @RestController
 @Validated
@@ -21,37 +20,40 @@ import java.util.ArrayList;
 @Tag(name = "Institution", description = "CRUD of institutions")
 @RequestMapping("/institution")
 public class InstitutionController implements IInstitutionController{
-    private InstitutionService institutionService;
-    @GetMapping
+    private final InstitutionService institutionService;
+    @PostMapping()
     @Override
-    public ResponseEntity<InstitutionDTO> create(InstitutionCreateDTO institutionCreateDTO) throws Exception {
+    public ResponseEntity<InstitutionDTO> create(@Valid @RequestBody InstitutionCreateDTO institutionCreateDTO) throws Exception {
         log.info("Creating Institution.");
         ResponseEntity<InstitutionDTO> responseEntity = new ResponseEntity<>(this.institutionService.create(institutionCreateDTO), HttpStatus.CREATED);
-        log.info("Institution created.");
+        log.info("Institution created success.");
         return responseEntity;
     }
 
     @Override
-    public ResponseEntity<InstitutionDTO> update(Integer idInstitution, InstitutionCreateDTO institutionCreateDTO) throws Exception {
+    @PutMapping("{idInstitution}")
+    public ResponseEntity<InstitutionDTO> update(@PathVariable("idInstitution") Integer idInstitution, @Valid @RequestBody InstitutionCreateDTO institutionCreateDTO) throws Exception {
         log.info("Updating Institution.");
         ResponseEntity<InstitutionDTO> responseEntity = new ResponseEntity<>(this.institutionService.update(idInstitution, institutionCreateDTO), HttpStatus.OK);
-        log.info("Institution updated.");
+        log.info("Institution updated success.");
         return responseEntity;
     }
 
+    @GetMapping
     @Override
     public ResponseEntity<ArrayList<InstitutionDTO>> listAll() throws Exception {
         log.info("listing all institutions.");
         ResponseEntity<ArrayList<InstitutionDTO>> responseEntity = new ResponseEntity<>(this.institutionService.listAll(), HttpStatus.OK);
-        log.info("listed all institutions.");
+        log.info("listed all institutions success.");
         return responseEntity;
     }
 
+    @DeleteMapping("{idInstitution}")
     @Override
-    public ResponseEntity<Void> delete(Integer idInstitution) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable("idInstitution") Integer idInstitution) throws Exception {
         log.info("Deleting institution.");
         this.institutionService.delete(idInstitution);
-        log.info("Institution deleted.");
+        log.info("Institution deleted success.");
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

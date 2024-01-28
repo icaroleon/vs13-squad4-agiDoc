@@ -15,7 +15,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InstitutionDTO {
-    private Integer idInstitution;
+    private Integer id;
     private String companyName;
     private String cnpj;
     private Address address;
@@ -37,6 +37,6 @@ public class InstitutionDTO {
                 this.companyName,
                 this.address,
                 this.contact
-        ).replace("Null", "não informado.");
+        ).replace("null", "não informado.");
     }
 }

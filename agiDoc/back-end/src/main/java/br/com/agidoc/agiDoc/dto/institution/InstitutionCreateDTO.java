@@ -15,7 +15,7 @@ public class InstitutionCreateDTO {
     @Size(max = 100)
     @Schema(required = true, description = "Nome da instituição", example = "JuisBrasil")
     private String companyName;
-    private Integer idInstitution;
+    private Integer id;
     @NotBlank
     @Size(min = 14, max = 14)
     @Schema(required = true, description = "Cadastro Nacional da Pessoa Jurídica", example = "11111111111111")
