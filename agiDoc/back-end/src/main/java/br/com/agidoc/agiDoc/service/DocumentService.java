@@ -23,7 +23,7 @@ public class DocumentService {
     private final ObjectMapper objectMapper;
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDTO) throws Exception {
-        Process process = processService.findById(idProcess);
+        Process process = processService.findProcessById(idProcess);
         Document document = objectMapper.convertValue(documentCreateDTO, Document.class);
         document = documentRepository.create(document);
 
@@ -65,7 +65,7 @@ public class DocumentService {
     public DocumentDTO findDocByIdAndConvertedToDto(Integer idDocument) throws Exception {
 
         Document document = documentRepository.findById(idDocument);
-        Process process = processService.findById(document.getProcessId());
+        Process process = processService.findProcessById(document.getProcessId());
 
         DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
 

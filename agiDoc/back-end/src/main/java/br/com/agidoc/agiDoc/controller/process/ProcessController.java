@@ -2,6 +2,8 @@ package br.com.agidoc.agiDoc.controller.process;
 
 import br.com.agidoc.agiDoc.dto.process.ProcessCreateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
+import br.com.agidoc.agiDoc.exception.DatabaseException;
+import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.service.ProcessService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,22 +20,22 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Validated
-public class ProcessController {
+public class ProcessController implements IProcessController{
 
     private final ProcessService processService;
 
     @GetMapping
-    public ResponseEntity<List<ProcessDTO>> list() throws Exception {
-        return new ResponseEntity<>(this.processService.list(), HttpStatus.OK);
+    public ResponseEntity<List<Process>> list() throws Exception {
+        return new ResponseEntity<>(processService.list(), HttpStatus.OK);
     }
 
     @GetMapping("/{idProcess}")
     public ResponseEntity<ProcessDTO> findById(@NotNull @PathVariable("idProcess") Integer idProcess) throws Exception {
-        return new ResponseEntity<>(this.processService.findById(idProcess), HttpStatus.OK);
+        return new ResponseEntity<>(this.processService.findProcessByIdAndReturnDTO(idProcess), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ProcessDTO> create(@Valid @RequestBody ProcessCreateDTO processCreateDto) {
+    public ResponseEntity<ProcessDTO> create(@Valid @RequestBody ProcessCreateDTO processCreateDto) throws Exception {
         return new ResponseEntity<>(this.processService.create(processCreateDto), HttpStatus.OK);
     }
 

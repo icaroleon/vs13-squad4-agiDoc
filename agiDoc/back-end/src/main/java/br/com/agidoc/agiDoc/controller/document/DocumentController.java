@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Validated
-public class DocumentController {
+public class DocumentController implements IDocumentController {
     private final DocumentService documentService;
 
     @GetMapping
