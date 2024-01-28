@@ -2,14 +2,17 @@ package br.com.agidoc.agiDoc.repository;
 
 import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
+import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProcessRepository implements IRepository<Integer, Process>{
+@Repository
+public class ProcessRepository implements IRepository<Integer, Process> {
 
     @Override
     public Integer getNextId(Connection connection) throws SQLException {
@@ -32,22 +35,21 @@ public class ProcessRepository implements IRepository<Integer, Process>{
             con = DBConnection.getConnection();
 
 
-
             Integer nextId = this.getNextId(con);
-            process.setId(nextId);
+            process.setProcessId(nextId);
 
             String sql = "INSERT INTO PROCESSES\n" + "(ID_PROCESS, PROCESS_NUMBER, TITLE, DESCRIPTION, STATUS, ID_INSTITUTION)\n" + "VALUES(?, ?, ?, ?, ?, ?)\n";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, process.getId());
+            stmt.setInt(1, process.getProcessId());
             stmt.setString(2, process.getProcessNumber());
             stmt.setString(3, process.getTitle());
             stmt.setString(4, process.getDescription());
             stmt.setInt(5, process.getProcessStatus().getType());
             stmt.setInt(6, process.getInstitutionId());
 
-            int res = stmt.executeUpdate();
+            int res = (stmt.executeUpdate());
             System.out.println("adicionarProcess.res= " + res);
             return process;
         } catch (SQLException e) {
@@ -74,13 +76,18 @@ public class ProcessRepository implements IRepository<Integer, Process>{
 
             query.setInt(1, id);
 
-            return resultProcess(con, returnValue, query).get(0);
+            List<Process> result = resultProcess(con, returnValue, query);
+            if (!result.isEmpty()) {
+                return result.get(0);
+            }
+            throw new RegraDeNegocioException("Nenhum processo com o id fornecido foi encontrado.");
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getCause());
         }
     }
 
-    public Process searchProcess(String processNumber) throws DatabaseException {
+    public Process searchProcess(String processNumber) throws Exception {
         Connection con = null;
         List<Process> returnValue = new ArrayList<>();
 
@@ -97,11 +104,11 @@ public class ProcessRepository implements IRepository<Integer, Process>{
         }
     }
 
-    private List<Process> resultProcess(Connection con, List<Process> returnValue, PreparedStatement query) throws DatabaseException {
+    private List<Process> resultProcess(Connection con, List<Process> returnValue, PreparedStatement query) throws Exception {
         try (ResultSet res = query.executeQuery()) {
             while (res.next()) {
                 Process process = new Process();
-                process.setId(res.getInt("id_process"));
+                process.setProcessId(res.getInt("id_process"));
                 process.setProcessNumber(res.getString("process_number"));
                 process.setTitle(res.getString("title"));
                 process.setDescription(res.getString("description"));
@@ -109,7 +116,7 @@ public class ProcessRepository implements IRepository<Integer, Process>{
                 returnValue.add(process);
             }
         } catch (SQLException e) {
-            throw new DatabaseException(e.getCause());
+            throw new RegraDeNegocioException("Nenhum processo com o id fornecido foi encontrado.");
         } finally {
             try {
                 if (con != null) {
@@ -137,7 +144,7 @@ public class ProcessRepository implements IRepository<Integer, Process>{
 
             while (res.next()) {
                 Process process = new Process();
-                process.setId(res.getInt("id_process"));
+                process.setProcessId(res.getInt("id_process"));
                 process.setProcessNumber(res.getString("process_number"));
                 process.setTitle(res.getString("title"));
                 process.setDescription(res.getString("description"));
@@ -163,19 +170,18 @@ public class ProcessRepository implements IRepository<Integer, Process>{
         try {
             con = DBConnection.getConnection();
 
-            StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE PROCESSES SET ");
-            sql.append(" title = ?,");
-            sql.append(" description = ?,");
-            sql.append(" status = ?");
-            sql.append(" WHERE id_process = ?");
+            String sql = "UPDATE PROCESSES SET " +
+                    " title = ?," +
+                    " description = ?," +
+                    " status = ?" +
+                    " WHERE id_process = ?";
 
-            PreparedStatement stmt = con.prepareStatement(sql.toString());
+            PreparedStatement stmt = con.prepareStatement(sql);
 
             stmt.setString(1, process.getTitle());
             stmt.setString(2, process.getDescription());
             stmt.setInt(3, process.getProcessStatus().getType());
-            stmt.setInt(4, process.getId());
+            stmt.setInt(4, process.getProcessId());
 
             int res = stmt.executeUpdate();
             System.out.println("editarPessoa.res=" + res);
