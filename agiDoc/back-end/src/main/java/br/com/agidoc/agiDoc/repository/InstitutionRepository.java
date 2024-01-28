@@ -6,10 +6,14 @@ import br.com.agidoc.agiDoc.model.address.Address;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
 import br.com.agidoc.agiDoc.model.institution.Institution;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@Repository
+@NoArgsConstructor
 public class InstitutionRepository implements IRepository<Integer, Institution> {
     @Override
     public Integer getNextId(Connection con) throws SQLException {
@@ -68,9 +72,9 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE INSTITUTIONS SET ");
-            sql.append(" cnpj = ?, ");
-            sql.append(" company_name = ? ");
-            sql.append(" WHERE id_institution = ? ");
+            sql.append(" CNPJ = ?, ");
+            sql.append(" COMPANY_NAME = ? ");
+            sql.append(" WHERE ID_INSTITUTION = ? ");
 
             PreparedStatement stmt = con.prepareStatement(sql.toString());
 
@@ -101,7 +105,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
         try {
             con = DBConnection.getConnection();
 
-            String sql = "DELETE FROM INSTITUTIONS WHERE id_process = ?";
+            String sql = "DELETE FROM INSTITUTIONS WHERE ID_INSTITUTION = ?";
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
@@ -146,9 +150,9 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
                 Address address = new Address();
                 Contact contact = new Contact();
 
-                institution.setId(res.getInt("id_institution"));
-                institution.setCnpj(res.getString("cnpj"));
-                institution.setCompanyName(res.getString("company_name"));
+                institution.setId(res.getInt("ID_INSTITUTION"));
+                institution.setCnpj(res.getString("CNPJ"));
+                institution.setCompanyName(res.getString("COMPANY_NAME"));
 
 
                 //TODO: implementar a classe address
@@ -214,9 +218,9 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
             if (res.next()){
 
 
-                institution.setId(res.getInt("id_institution"));
-                institution.setCnpj(res.getString("cnpj"));
-                institution.setCompanyName(res.getString("company_name"));
+                institution.setId(res.getInt("ID_INSTITUTION"));
+                institution.setCnpj(res.getString("CNPJ"));
+                institution.setCompanyName(res.getString("COMPANY_NAME"));
 
                 address.setId(res.getInt("ID_ADDRESS"));
                 address.setStreet(res.getString("STREET"));
