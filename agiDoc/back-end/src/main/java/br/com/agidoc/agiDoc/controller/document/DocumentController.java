@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Validated
-public class DocumentController {
+public class DocumentController implements IDocumentController {
     private final DocumentService documentService;
 
     @GetMapping
@@ -29,17 +29,17 @@ public class DocumentController {
     }
 
     @GetMapping("/{idDocument}")
-    public ResponseEntity<DocumentDTO> findById(@PathVariable("idDocument") Integer idDocument) throws Exception {
+    public ResponseEntity<DocumentDTO> findById(@NotNull @PathVariable("idDocument") Integer idDocument) throws Exception {
         return new ResponseEntity<>(this.documentService.findDocByIdAndConvertedToDto(idDocument), HttpStatus.OK);
     }
 
-    @PostMapping({"/{idProcess}/process"})
+    @PostMapping("/{idProcess}/process")
     public ResponseEntity<DocumentDTO> create(@NotNull @PathVariable("idProcess") Integer idProcess, @Valid @RequestBody DocumentCreateDTO documentCreateDTO) throws Exception {
         return new ResponseEntity<>(this.documentService.create(idProcess, documentCreateDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{idDocument}")
-    public ResponseEntity<DocumentDTO> update(@PathVariable("idDocument") Integer idDocument, @RequestBody DocumentCreateDTO documentCreateDTO) throws Exception {
+    public ResponseEntity<DocumentDTO> update(@NotNull @PathVariable("idDocument") Integer idDocument, @Valid @RequestBody DocumentCreateDTO documentCreateDTO) throws Exception {
         return new ResponseEntity<>(this.documentService.update(idDocument, documentCreateDTO), HttpStatus.OK);
     }
 
