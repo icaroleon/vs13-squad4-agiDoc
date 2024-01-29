@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +24,17 @@ public class DocumentService {
     private final ProcessRepository processRepository;
     private final ProcessService processService;
     private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDTO) throws Exception {
         Process process = processService.findProcessById(idProcess);
         Document document = objectMapper.convertValue(documentCreateDTO, Document.class);
         document = documentRepository.create(document);
 
-        return findDocByIdAndConvertedToDto(document.getId());
+        DocumentDTO documentDTO = findDocByIdAndConvertedToDto(document.getId());
+//        this.emailService.sendEmail(documentDTO, "createDocument");
+
+        return documentDTO;
     }
 
     public List<DocumentDTO> list() throws Exception {

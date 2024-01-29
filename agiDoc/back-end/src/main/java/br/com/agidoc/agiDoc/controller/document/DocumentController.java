@@ -5,6 +5,7 @@ import br.com.agidoc.agiDoc.dto.document.DocumentCreateDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentUpdateInfosDTO;
 import br.com.agidoc.agiDoc.service.DocumentService;
+import br.com.agidoc.agiDoc.service.EmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,5 +66,11 @@ public class DocumentController implements IDocumentController {
                     .body ("Failed to sign the document:" + e.getMessage());
         }
     }
+
+//    @GetMapping("/email")
+//    public String email() throws Exception {
+//        emailService.sendEmail();
+//        return "E-mail enviado!";
+//    }
 
 }
