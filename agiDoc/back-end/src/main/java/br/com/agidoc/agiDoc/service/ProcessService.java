@@ -52,6 +52,7 @@ public class ProcessService {
     public ProcessDTO update(Integer idProcess, ProcessUpdateDTO processCreateDTO) throws Exception {
         Process process = objectMapper.convertValue(processCreateDTO, Process.class);
         process = processRepository.update(idProcess, process);
+        process.setProcessId(idProcess);
 
 
         return objectMapper.convertValue(process, ProcessDTO.class);

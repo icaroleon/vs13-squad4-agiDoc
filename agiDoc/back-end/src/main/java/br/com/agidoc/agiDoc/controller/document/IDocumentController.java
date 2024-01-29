@@ -2,9 +2,7 @@ package br.com.agidoc.agiDoc.controller.document;
 
 import br.com.agidoc.agiDoc.dto.document.DocumentCreateDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
-import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
-import br.com.agidoc.agiDoc.exception.DatabaseException;
-import br.com.agidoc.agiDoc.model.document.Document;
+import br.com.agidoc.agiDoc.dto.document.DocumentUpdateInfosDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -57,7 +55,7 @@ public interface IDocumentController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<DocumentDTO> update(@NotNull @PathVariable("idDocument") Integer idDocument, @Valid @RequestBody DocumentCreateDTO documentCreateDTO) throws Exception;
+    ResponseEntity<DocumentDTO> update(@NotNull @PathVariable("idDocument") Integer idDocument, @Valid @RequestBody DocumentUpdateInfosDTO documentUpdateInfosDTO) throws Exception;
 
     @Operation(summary = "Delete Document", description = "Delete a document from the database using its ID")
     @ApiResponses(
@@ -68,5 +66,5 @@ public interface IDocumentController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<Void> delete(@PathVariable("idDocument") Integer idDocument) throws Exception;
+    ResponseEntity<String> delete(@PathVariable("idDocument") Integer idDocument) throws Exception;
 }

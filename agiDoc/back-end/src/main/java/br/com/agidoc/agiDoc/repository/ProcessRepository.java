@@ -65,7 +65,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         }
     }
 
-    public Process getProcessById(Integer id) throws Exception {
+    public Process getProcessById(Integer idProcess) throws Exception {
         Connection con = null;
         List<Process> returnValue = new ArrayList<>();
 
@@ -74,13 +74,13 @@ public class ProcessRepository implements IRepository<Integer, Process> {
 
             PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE ID_PROCESS = ?");
 
-            query.setInt(1, id);
+            query.setInt(1, idProcess);
 
             List<Process> result = resultProcess(con, returnValue, query);
             if (!result.isEmpty()) {
                 return result.get(0);
             }
-            throw new RegraDeNegocioException("Nenhum processo com o id fornecido foi encontrado.");
+            throw new RegraDeNegocioException("No process found with ID = " + idProcess);
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getCause());
@@ -187,7 +187,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
             if (rowsAffected > 0) {
                 return process;
             } else {
-                throw new RegraDeNegocioException("No document found with ID = " + idProcess);
+                throw new RegraDeNegocioException("No process found with ID = " + idProcess);
             }
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
@@ -217,7 +217,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
             int rowsAffected  = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                throw new RegraDeNegocioException("Documento excluído com sucesso.");
+                System.out.println("Processo removido com SUCESSO");
             } else {
                 throw new RegraDeNegocioException("No process found with ID = " + idProcess);
             }
