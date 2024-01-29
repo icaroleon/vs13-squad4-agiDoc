@@ -22,6 +22,7 @@ public class ProcessService {
 
     private final ProcessRepository processRepository;
     private ObjectMapper objectMapper;
+    private  final EmailService emailService;
 
     public ProcessDTO findProcessByIdAndReturnDTO(Integer idProcess) throws Exception {
         Process process = processRepository.getProcessById(idProcess);
@@ -46,7 +47,10 @@ public class ProcessService {
     public ProcessDTO create(@Valid ProcessCreateDTO processCreateDto) throws Exception {
         Process process = objectMapper.convertValue(processCreateDto, Process.class);
         process = processRepository.create(process);
-        return objectMapper.convertValue(process, ProcessDTO.class);
+
+        ProcessDTO processDTO = objectMapper.convertValue(process, ProcessDTO.class);
+        emailService.sendEmail(processDTO, "createProcess");
+        return  processDTO;
     }
 
     public ProcessDTO update(Integer idProcess, ProcessUpdateDTO processCreateDTO) throws Exception {
@@ -54,8 +58,9 @@ public class ProcessService {
         process = processRepository.update(idProcess, process);
         process.setProcessId(idProcess);
 
-
-        return objectMapper.convertValue(process, ProcessDTO.class);
+        ProcessDTO processDTO = objectMapper.convertValue(process, ProcessDTO.class);
+        emailService.sendEmail(processDTO, "updateProcess");
+        return  processDTO;
     }
 
     public void delete(Integer idProcess) throws Exception {

@@ -32,7 +32,7 @@ public class DocumentService {
         document = documentRepository.create(document);
 
         DocumentDTO documentDTO = findDocByIdAndConvertedToDto(document.getId());
-//        this.emailService.sendEmail(documentDTO, "createDocument");
+        this.emailService.sendEmail(documentDTO, "createDocument");
 
         return documentDTO;
     }

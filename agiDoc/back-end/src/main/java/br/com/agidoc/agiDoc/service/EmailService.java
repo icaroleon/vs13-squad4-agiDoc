@@ -111,14 +111,14 @@ public class EmailService {
             template = fmConfiguration.getTemplate("email-template-" + methodCaller + ".ftl");
         }
 
-        if (methodCaller.equals("createProcess") || methodCaller.equals("updateEndereco")) {
+        if (methodCaller.equals("createProcess") || methodCaller.equals("updateProcess")) {
             ProcessDTO processDTO = (ProcessDTO) t;
             dados.put("processNumber", processDTO.getProcessNumber());
             dados.put("title", processDTO.getTitle());
             dados.put("description", processDTO.getDescription());
             dados.put("processStatus", processDTO.getProcessStatus());
             dados.put("institutionId", processDTO.getInstitutionId());
-
+            template = fmConfiguration.getTemplate("email-template-" + methodCaller + ".ftl");
         }
 
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);

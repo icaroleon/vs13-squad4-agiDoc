@@ -19,11 +19,15 @@
                         </div>
 
                         <div style="font-size: 24px; color: #555100;">
-                            <br> Sending Email using Spring Boot with <b>FreeMarker
-                            template !!!</b> <br>
+                            <br> Seu processo foi atualizado! </b> <br>
                         </div>
                         <div>
-                            <br>"Sharing the knowledge is biggest learning" <br> <br>
+                            <br>Estas são as novas informações: <br> <br>
+                            <br> <br> <b>ID do Documento: ${idDocument}</b>
+                            <br> <br> <b>Protocolo: ${protocol}</b>
+                            <br> <br> <b>Data de Expiração: ${expirationDate}</b>
+                            <br> <br> <b>Arquivo: ${file}</b>
+                            <br> <br> <b>Associado: ${associated}</b>
                             <br> <br> <b>Número do Processo: ${processNumber}</b>
                             <br> <br> <b>Título: ${title}</b>
                             <br> <br> <b>Descrição: ${description}</b>
