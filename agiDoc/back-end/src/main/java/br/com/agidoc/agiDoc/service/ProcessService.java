@@ -22,7 +22,7 @@ public class ProcessService {
 
     private final ProcessRepository processRepository;
     private ObjectMapper objectMapper;
-    private  final EmailService emailService;
+    private  final ProcessAndDocumentsEmailService emailService;
 
     public ProcessDTO findProcessByIdAndReturnDTO(Integer idProcess) throws Exception {
         Process process = processRepository.getProcessById(idProcess);

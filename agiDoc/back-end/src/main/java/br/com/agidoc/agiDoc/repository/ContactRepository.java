@@ -1,6 +1,7 @@
 package br.com.agidoc.agiDoc.repository;
 
 import br.com.agidoc.agiDoc.database.DBConnection;
+import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.contact.Contact;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Repository
 @NoArgsConstructor
@@ -237,5 +239,40 @@ public class ContactRepository implements IRepository<Integer, Contact> {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Contact get(Integer idContact) throws Exception{
+        ArrayList<Contact> list = list();
+        for(Contact contact : list){
+            if(contact.getId().equals(idContact)){
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    public Integer getByIdInstitution(Integer idInstitution) throws Exception{
+        Connection con = null;
+        try{
+            con = DBConnection.getConnection();
+            String sqlContactAssociation = "SELECT ID_CONTACT FROM CONTACTS_ASSOCIATIONS WHERE ID_INSTITUTION = " + idInstitution;
+            Statement stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery(sqlContactAssociation);
+            while(res.next()){
+                return res.getInt("ID_CONTACT");
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

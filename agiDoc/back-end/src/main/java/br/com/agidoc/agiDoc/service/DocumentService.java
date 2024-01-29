@@ -24,7 +24,7 @@ public class DocumentService {
     private final ProcessRepository processRepository;
     private final ProcessService processService;
     private final ObjectMapper objectMapper;
-    private final EmailService emailService;
+    private final ProcessAndDocumentsEmailService emailService;
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDTO) throws Exception {
         Process process = processService.findProcessById(idProcess);
