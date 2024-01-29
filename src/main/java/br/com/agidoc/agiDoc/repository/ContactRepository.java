@@ -1,6 +1,7 @@
 package br.com.agidoc.agiDoc.repository;
 
 import br.com.agidoc.agiDoc.database.DBConnection;
+import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.contact.Contact;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 public class ContactRepository implements IRepository<Integer, Contact> {
     private final DBConnection dbConnection;
+
     public Integer getNextId(Connection connection) throws DatabaseException {
         try {
             String sql = "SELECT SEQ_CONTACTS.NEXTVAL MY_SEQUENCE FROM DUAL";
@@ -49,7 +52,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     public Contact create(Contact contact) throws DatabaseException {
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
             Integer associationNextId = this.getAssociationNextId(con);
@@ -109,7 +112,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     public Contact update(Integer id, Contact contact) throws DatabaseException {
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE CONTACTS SET");
@@ -153,7 +156,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
     public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
 
             String sql1 = "DELETE FROM CONTACTS_ASSOCIATIONS WHERE ID_CONTACT = ?";
 
@@ -189,7 +192,7 @@ public class ContactRepository implements IRepository<Integer, Contact> {
         ArrayList<Contact> contacts = new ArrayList<>();
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
 
             String sql1 = "SELECT * FROM CONTACTS";
 
@@ -238,5 +241,40 @@ public class ContactRepository implements IRepository<Integer, Contact> {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Contact get(Integer idContact) throws Exception{
+        ArrayList<Contact> list = list();
+        for(Contact contact : list){
+            if(contact.getId().equals(idContact)){
+                return contact;
+            }
+        }
+        return null;
+    }
+
+    public Integer getByIdInstitution(Integer idInstitution) throws Exception{
+        Connection con = null;
+        try{
+            con = this.dbConnection.getConnection();
+            String sqlContactAssociation = "SELECT ID_CONTACT FROM CONTACTS_ASSOCIATIONS WHERE ID_INSTITUTION = " + idInstitution;
+            Statement stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery(sqlContactAssociation);
+            while(res.next()){
+                return res.getInt("ID_CONTACT");
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getCause());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

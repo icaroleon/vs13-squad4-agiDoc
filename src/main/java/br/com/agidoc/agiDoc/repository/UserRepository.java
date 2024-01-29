@@ -40,7 +40,7 @@ public class UserRepository implements IRepository<Integer, User> {
     public User create(User user) throws Exception {
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
             Integer nextId = this.getNextId(con);
             user.setIdUser(nextId);
 
@@ -84,7 +84,7 @@ public class UserRepository implements IRepository<Integer, User> {
         Connection con = null;
 
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
             User userToUpdate = getUserById(id);
 
             String checkSql = "SELECT COUNT(*) FROM USERS WHERE ID_USER = ?";
@@ -144,7 +144,7 @@ public class UserRepository implements IRepository<Integer, User> {
         Connection con = null;
 
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
 
             String checkSql = "SELECT COUNT(*) FROM USERS WHERE ID_USER = ?";
             PreparedStatement checkStmt = con.prepareStatement(checkSql);
@@ -180,7 +180,7 @@ public class UserRepository implements IRepository<Integer, User> {
         ArrayList<User> users = new ArrayList<>();
         Connection con = null;
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT U.*, D.NAME AS NAME_DEPARTMENT " +
@@ -212,7 +212,7 @@ public class UserRepository implements IRepository<Integer, User> {
         Connection con = null;
 
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
 
             String sql =  "SELECT U.*, D.NAME AS NAME_DEPARTMENT " +
                     "FROM USERS U " +
@@ -254,7 +254,7 @@ public class UserRepository implements IRepository<Integer, User> {
         Connection con = null;
 
         try {
-            con = dbConnection.getConnection();
+            con = this.dbConnection.getConnection();
 
             String sql =  """
                     SELECT U.*, D.NAME AS NAME_DEPARTMENT

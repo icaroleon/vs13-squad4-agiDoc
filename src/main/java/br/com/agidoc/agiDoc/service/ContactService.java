@@ -43,4 +43,8 @@ public class ContactService {
     public void delete(Integer id) throws Exception {
         this.contactRepository.delete(id);
     }
+
+    public Integer getByIdInstitution(Integer idInstitution) throws Exception{
+        return this.contactRepository.getByIdInstitution(idInstitution);
+    }
 }
