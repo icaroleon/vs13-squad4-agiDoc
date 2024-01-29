@@ -65,7 +65,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         }
     }
 
-    public Process getProcessById(Integer id) throws Exception {
+    public Process getProcessById(Integer idProcess) throws Exception {
         Connection con = null;
         List<Process> returnValue = new ArrayList<>();
 
@@ -74,13 +74,13 @@ public class ProcessRepository implements IRepository<Integer, Process> {
 
             PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE ID_PROCESS = ?");
 
-            query.setInt(1, id);
+            query.setInt(1, idProcess);
 
             List<Process> result = resultProcess(con, returnValue, query);
             if (!result.isEmpty()) {
                 return result.get(0);
             }
-            throw new RegraDeNegocioException("Nenhum processo com o id fornecido foi encontrado.");
+            throw new RegraDeNegocioException("No process found with ID = " + idProcess);
 
         } catch (SQLException e) {
             throw new RuntimeException(e.getCause());
@@ -165,7 +165,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         return processes;
     }
 
-    public Process update(Integer id, Process process) throws DatabaseException {
+    public Process update(Integer idProcess, Process process) throws Exception {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -181,12 +181,14 @@ public class ProcessRepository implements IRepository<Integer, Process> {
             stmt.setString(1, process.getTitle());
             stmt.setString(2, process.getDescription());
             stmt.setInt(3, process.getProcessStatus().getType());
-            stmt.setInt(4, process.getProcessId());
+            stmt.setInt(4, idProcess);
 
-            int res = stmt.executeUpdate();
-            System.out.println("editarPessoa.res=" + res);
-
-            return process;
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return process;
+            } else {
+                throw new RegraDeNegocioException("No process found with ID = " + idProcess);
+            }
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {
@@ -200,7 +202,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         }
     }
 
-    public void delete(Integer id) throws DatabaseException {
+    public void delete(Integer idProcess) throws Exception {
         Connection con = null;
         try {
             con = DBConnection.getConnection();
@@ -209,11 +211,16 @@ public class ProcessRepository implements IRepository<Integer, Process> {
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, id);
+            stmt.setInt(1, idProcess);
 
             // Executa-se a consulta
-            int res = stmt.executeUpdate();
-            System.out.println("removerPessoaPorId.res=" + res);
+            int rowsAffected  = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Processo removido com SUCESSO");
+            } else {
+                throw new RegraDeNegocioException("No process found with ID = " + idProcess);
+            }
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
         } finally {

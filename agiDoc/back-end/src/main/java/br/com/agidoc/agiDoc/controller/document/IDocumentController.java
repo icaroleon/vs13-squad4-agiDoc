@@ -1,16 +1,18 @@
 package br.com.agidoc.agiDoc.controller.document;
 
+import br.com.agidoc.agiDoc.dto.document.DocumentCreateDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
-import br.com.agidoc.agiDoc.exception.DatabaseException;
-import br.com.agidoc.agiDoc.model.document.Document;
+import br.com.agidoc.agiDoc.dto.document.DocumentUpdateInfosDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface IDocumentController {
@@ -22,7 +24,17 @@ public interface IDocumentController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<DocumentDTO> list() throws Exception;
+    ResponseEntity<List<DocumentDTO>> list() throws Exception ;
+
+    @Operation(summary = "Find Process by ID", description = "Retrieve a single process by its ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Successful retrieval of the process"),
+                    @ApiResponse(responseCode = "404", description = "Process with the given ID not found"),
+                    @ApiResponse(responseCode = "500", description = "Unhandled exception")
+            }
+    )
+    ResponseEntity<DocumentDTO> findById(@NotNull @PathVariable("idProcess") Integer idProcess) throws Exception;
 
     @Operation(summary = "Create Document", description = "Create a new document in the database")
     @ApiResponses(
@@ -32,7 +44,7 @@ public interface IDocumentController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    Document create(@Valid @RequestBody Document document) throws DatabaseException;
+    ResponseEntity<DocumentDTO> create(@NotNull @PathVariable("idProcess") Integer idProcess, @Valid @RequestBody DocumentCreateDTO documentCreateDTO) throws Exception;
 
     @Operation(summary = "Update Document", description = "Update an existing document with a given ID")
     @ApiResponses(
@@ -43,7 +55,7 @@ public interface IDocumentController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    Document update(@PathVariable Integer id, @RequestBody Document document) throws DatabaseException;
+    ResponseEntity<DocumentDTO> update(@NotNull @PathVariable("idDocument") Integer idDocument, @Valid @RequestBody DocumentUpdateInfosDTO documentUpdateInfosDTO) throws Exception;
 
     @Operation(summary = "Delete Document", description = "Delete a document from the database using its ID")
     @ApiResponses(
@@ -54,5 +66,5 @@ public interface IDocumentController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    void delete(@PathVariable Integer id) throws DatabaseException;
+    ResponseEntity<String> delete(@PathVariable("idDocument") Integer idDocument) throws Exception;
 }

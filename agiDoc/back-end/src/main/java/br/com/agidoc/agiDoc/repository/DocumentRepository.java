@@ -199,7 +199,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
             int rowsAffected  = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                throw new RegraDeNegocioException("Documento excluído com sucesso.");
+                System.out.println("Document removido com SUCESSO");
             } else {
                 throw new RegraDeNegocioException("No document found with ID = " + idDocument);
             }
@@ -252,7 +252,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         }
     }
 
-    public boolean sign(Integer id, Integer signatureId) throws DatabaseException {
+    public boolean sign(Integer idDocument, Integer userId) throws Exception {
         Connection con = null;
 
         try {
@@ -263,14 +263,14 @@ public class DocumentRepository implements IRepository<Integer, Document> {
             PreparedStatement stmt = con.prepareStatement(sqlUpdate);
 
             stmt.setInt(1, 1);
-            stmt.setInt(2, signatureId);
-            stmt.setInt(3, id);
+            stmt.setInt(2, userId);
+            stmt.setInt(3, idDocument);
 
             int res = stmt.executeUpdate();
 
             return res > 0;
         } catch (SQLException e) {
-            throw new DatabaseException(e.getCause());
+            throw new RegraDeNegocioException("Failed to sign the document:" + idDocument);
         } finally {
             try {
                 if (con != null) con.close();

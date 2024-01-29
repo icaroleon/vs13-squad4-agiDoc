@@ -16,7 +16,8 @@ import lombok.NoArgsConstructor;
 public class Process implements IProcess {
     private Integer processId;
     private String processNumber = UUID.randomUUID().toString().substring(0, 6);
-    private String title, description;
+    private String title;
+    private String description;
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
     private Competitor contracted;
     private ArrayList<Competitor> competitors;
