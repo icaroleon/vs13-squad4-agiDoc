@@ -1,5 +1,8 @@
 package br.com.agidoc.agiDoc.controller.institution;
 
+import br.com.agidoc.agiDoc.dto.address.AddressCreateDTO;
+import br.com.agidoc.agiDoc.dto.contact.ContactCreateDTO;
+import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
 import br.com.agidoc.agiDoc.dto.institution.InstitutionCreateDTO;
 import br.com.agidoc.agiDoc.dto.institution.InstitutionDTO;
 import br.com.agidoc.agiDoc.model.institution.Institution;
@@ -23,7 +26,8 @@ public interface IInstitutionController {
                     @ApiResponse(responseCode = "500", description = "An exception was thrown.")
             }
     )
-    public ResponseEntity<InstitutionDTO> create(@Valid @RequestBody InstitutionCreateDTO institutionCreateDTO) throws Exception;
+    public ResponseEntity<InstitutionDTO> create(
+    @Valid @RequestBody InstitutionCreateDTO institutionCreateDTO) throws Exception;
 
     @Operation(summary = "Update institution.", description = "Update a institution in database")
     @ApiResponses(
@@ -55,4 +59,5 @@ public interface IInstitutionController {
             }
     )
     public ResponseEntity<Void> delete(@PathVariable("idInstitution") Integer idInstitution) throws Exception;
+
 }

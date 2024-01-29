@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Institution extends AbstractJuridical {
 
-    private int id;
+    private Integer id;
     private ArrayList<Process> processes;
 
 
@@ -46,7 +46,7 @@ public class Institution extends AbstractJuridical {
         ).replace("Null", "não informado.");
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
