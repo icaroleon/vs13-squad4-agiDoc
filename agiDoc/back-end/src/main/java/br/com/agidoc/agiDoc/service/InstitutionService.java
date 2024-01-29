@@ -23,6 +23,7 @@ import java.util.List;
 public class InstitutionService {
     private final InstitutionRepository institutionRepository;
     private final ContactService contactService;
+    private final EmailService emailService;
     private final ObjectMapper objectMapper;
 
     public InstitutionDTO create(InstitutionCreateDTO institutionCreateDTO) throws Exception{
@@ -37,6 +38,8 @@ public class InstitutionService {
             ContactDTO contactDTO = this.contactService.create(Associated.INSTITUTION, institutionCreateDTO.getContactCreateDTO());
 
             institutionDTO.setContact(this.objectMapper.convertValue(contactDTO, Contact.class));
+
+            this.emailService.sendEmail(institutionDTO, 1);
             return institutionDTO;
         }catch(Exception erro){
             throw new DatabaseException(new Throwable("Ocorreu um erro ao tentar criar á instituição."
@@ -57,6 +60,7 @@ public class InstitutionService {
             institutionDTO.setId(idInstitution);
             institutionDTO.getContact().setId(idContact);
 
+            this.emailService.sendEmail(institutionDTO, 2);
             return institutionDTO;
         }catch(Exception erro){
             throw new DatabaseException(new Throwable("Ocorreu um erro ao tentar atualizar á instituição."
@@ -82,9 +86,16 @@ public class InstitutionService {
 
     public void delete(Integer idInstitution) throws Exception{
         try{
+            List<Institution> list = this.institutionRepository.list();
+            for(Institution institution : list){
+                if(institution.getId().equals(idInstitution)){
+                    InstitutionDTO institutionDTO = this.objectMapper.convertValue(institution, InstitutionDTO.class);
+                    this.emailService.sendEmail(institutionDTO, 3);
+                    break;
+                }
+            }
             this.contactService.delete(this.contactService.getByIdInstitution(idInstitution));
             this.institutionRepository.delete(idInstitution);
-
         }catch(Exception erro){
             throw new DatabaseException(
                     new Throwable("Ocorreu um erro ao tentar deletar á instituição."

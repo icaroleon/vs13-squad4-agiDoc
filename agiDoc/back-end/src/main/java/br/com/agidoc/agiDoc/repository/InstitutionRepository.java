@@ -206,6 +206,7 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
             con = DBConnection.getConnection();
             Statement stmt = con.createStatement();
             Statement stmtTwo = con.createStatement();
+            Statement stmtThree = con.createStatement();
 
             String sql = "SELECT * FROM INSTITUTIONS";
 
@@ -218,20 +219,13 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
                 institution.setCnpj(resSimples.getString("CNPJ"));
                 institution.setCompanyName(resSimples.getString("COMPANY_NAME"));
 
-                institutions.add(institution);
-            }
-            sql = """
-                    SELECT * FROM INSTITUTIONS I
-                    JOIN CONTACTS_ASSOCIATIONS CA ON I.ID_INSTITUTION  = CA.ID_INSTITUTION 
-                    JOIN CONTACTS CO ON CA.ID_CONTACT = CO.ID_CONTACT
-                    JOIN ADDRESSES_ASSOCIATIONS AA ON I.ID_INSTITUTION  = AA.ID_INSTITUTION 
-                    JOIN ADDRESSES A ON AA.ID_ADDRESS = A.ID_ADDRESS
-                   """;
-            ResultSet resComposto = stmtTwo.executeQuery(sql);
-            while(resComposto.next()){
-                Institution institutionReference = null;
-                try{
-                    institutionReference = institutions.get(resComposto.getInt("ID_INSTITUTION") - 1);
+                sql =
+                    "SELECT * FROM ADDRESSES WHERE ID_INSTITUTION = "
+                    + resSimples.getInt("ID_INSTITUTION");
+
+                ResultSet resComposto = stmtTwo.executeQuery(sql);
+
+                while(resComposto.next()){
                     Address address = new Address();
                     Contact contact = new Contact();
 
@@ -244,18 +238,24 @@ public class InstitutionRepository implements IRepository<Integer, Institution> 
                     address.setState(resComposto.getString("STATE"));
                     address.setZipCode(resComposto.getString("ZIP_CODE"));
 
-                    institutionReference.setAddress(address);
+                    institution.setAddress(address);
 
-                    contact.setId(resComposto.getInt("ID_CONTACT"));
-                    contact.setName(resComposto.getString("NAME"));
-                    contact.setEmail(resComposto.getString("EMAIL"));
-                    contact.setPhone(resComposto.getString("PHONE"));
-                    contact.setPhoneType(ContactPhoneType.ofType(resComposto.getInt("PHONE_TYPE")));
+                    sql = "SELECT * FROM CONTACTS_ASSOCIATIONS CA JOIN CONTACTS c ON c.ID_CONTACT = CA.ID_CONTACT AND CA.ID_INSTITUTION = "
+                    + resSimples.getInt("ID_INSTITUTION");
 
-                    institutionReference.setContact(contact);
-                }catch (IndexOutOfBoundsException erro){
-                    erro.printStackTrace();
+                    ResultSet restThree = stmtThree.executeQuery(sql);
+
+                    while(restThree.next()){
+                        contact.setId(restThree.getInt("ID_CONTACT"));
+                        contact.setName(restThree.getString("NAME"));
+                        contact.setEmail(restThree.getString("EMAIL"));
+                        contact.setPhone(restThree.getString("PHONE"));
+                        contact.setPhoneType(ContactPhoneType.ofType(restThree.getInt("PHONE_TYPE")));
+
+                        institution.setContact(contact);
+                    }
                 }
+                institutions.add(institution);
             }
         } catch (SQLException e) {
             throw new DatabaseException(e.getCause());
