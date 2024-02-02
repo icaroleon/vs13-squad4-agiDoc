@@ -1,22 +1,48 @@
 package br.com.agidoc.agiDoc.model.user;
+import java.util.Set;
 import java.util.UUID;
 import br.com.agidoc.agiDoc.model.department.Department;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Entity(name = "USERS")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     UUID uuid = UUID.randomUUID();
 
-    private int idUser;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USERS")
+    @SequenceGenerator(name = "SEQ_USERS", sequenceName = "seq_users", allocationSize = 1)
+    @Column(name = "id_user")
+    private Integer idUser;
+
+    @Column(name = "registration")
     private String registration =  uuid.toString().substring(0, 6);
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "user")
     private String user;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
     private String role = "admin";
+
+    @Column(name = "position")
     private String position;
-    private Department department = new Department();
+
+    @Column(name = "id_department")
+    private Integer idDepartment;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_department", insertable = false, updatable = false)
+//    private Department department;
+
 }
