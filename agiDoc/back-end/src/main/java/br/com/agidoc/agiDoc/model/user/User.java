@@ -1,7 +1,8 @@
 package br.com.agidoc.agiDoc.model.user;
-import java.util.Set;
+
 import java.util.UUID;
-import br.com.agidoc.agiDoc.model.department.Department;
+
+import br.com.agidoc.agiDoc.model.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -32,14 +33,21 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "role")
-    private String role = "admin";
+    private Role role;
 
     @Column(name = "position")
     private String position;
 
     @Column(name = "id_department")
     private Integer idDepartment;
+
+    @Column(name = "status")
+    private Status status;
+
+    @Column(name = "email")
+    private String email;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "id_department", insertable = false, updatable = false)

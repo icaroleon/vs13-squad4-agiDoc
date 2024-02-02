@@ -1,12 +1,12 @@
 package br.com.agidoc.agiDoc.service;
 
-import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
 import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
 import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
+import br.com.agidoc.agiDoc.model.Status;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,33 +41,42 @@ public class UserService {
     public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception {
         User userToUpdate = returnUserById(id);
 
+        userToUpdate.setIdUser(id);
         userToUpdate.setName(userUpdateDTO.getName());
         userToUpdate.setPassword(userUpdateDTO.getPassword());
         userToUpdate.setRole(userUpdateDTO.getRole());
         userToUpdate.setPosition(userUpdateDTO.getPosition());
+        userToUpdate.setStatus(Status.ATIVO);
 
         return returnDTO(userRepository.save(userToUpdate));
     }
 
     public void delete(Integer id) throws Exception {
-        User userToDelete =returnUserById(id);
-        userRepository.delete(userToDelete);
+        User user = returnUserById(id);
+
+        user.setStatus(Status.INATIVO);
+        user.setIdUser(null);
     }
 
-    public boolean login(UserLoginDTO userLoginDTO) {
-        String username = userLoginDTO.getUsername();
+    public boolean login(UserLoginDTO userLoginDTO) throws RegraDeNegocioException {
+        String username = userLoginDTO.getUser();
         String password = userLoginDTO.getPassword();
 
         User user = userRepository.findUserByUser(username);
 
-        if(user == null) {
-           new RegraDeNegocioException("User not found");
-        }
-        if (!user.getPassword().equals(password)) {
-            new RegraDeNegocioException("Username or password is incorrect.");
+        if(user.getStatus().ordinal() == 1) {
+            throw new RegraDeNegocioException("User not found.");
         }
 
-        return user.getPassword().equals(password);
+        if(user.getUser() == null) {
+           throw new RegraDeNegocioException("User not found.");
+        }
+
+        if (!user.getPassword().equals(password)) {
+            throw new RegraDeNegocioException("Username or password is incorrect.");
+        }
+
+        return true;
     }
 
     public User convertToEntity(UserCreateDTO dto) {
