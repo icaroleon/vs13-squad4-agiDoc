@@ -1,6 +1,8 @@
 package br.com.agidoc.agiDoc.dto.user;
 
+import br.com.agidoc.agiDoc.model.Status;
 import br.com.agidoc.agiDoc.model.department.Department;
+import br.com.agidoc.agiDoc.model.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,12 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    private int idUser;
+    private Integer idUser;
     private String registration;
     private String name;
     private String user;
     private String password;
-    private String role;
+    private Role role;
     private String position;
-    private Department department;
+    private Integer idDepartment;
+    private Status status;
+    private String email;
 }

@@ -15,10 +15,10 @@ public class UserLoginDTO {
     @Schema(required = true, example = "joaosilva123")
     @NotBlank
     @Size(max = 100)
-    String username;
+    private String user;
 
     @Schema(required = true, example = "senhajoao3352")
     @NotBlank
     @Size(max = 100)
-    String password;
+    private String password;
 }
