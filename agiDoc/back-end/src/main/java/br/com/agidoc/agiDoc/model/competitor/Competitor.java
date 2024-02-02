@@ -1,24 +1,24 @@
 package br.com.agidoc.agiDoc.model.competitor;
 
-import br.com.agidoc.agiDoc.model.address.Address;
-import br.com.agidoc.agiDoc.model.contact.Contact;
-import br.com.agidoc.agiDoc.model.document.Document;
-import br.com.agidoc.agiDoc.model.juridical.AbstractJuridical;
-import br.com.agidoc.agiDoc.model.process.Process;
-import br.com.agidoc.agiDoc.model.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
-import java.util.ArrayList;
+import javax.persistence.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Competitor extends AbstractJuridical {
-    private int id;
-    private int isContracted;
-    private ArrayList<Process> processes;
-    private ArrayList<Document> documents;
-    private int processId;
+@Getter
+@Setter
+@Entity(name = "COMPETITORS")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class Competitor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_COMPETITORS")
+    @SequenceGenerator(name = "SEQ_COMPETITORS", sequenceName = "seq_competitors", allocationSize = 1)
+    @Column(name = "id_competitors")
+    private Integer idCompetitor;
+
+    @Column(name = "company_name")
+    private String companyName;
+
+    @Column(name = "cnpj")
+    private String cnpj;
 }

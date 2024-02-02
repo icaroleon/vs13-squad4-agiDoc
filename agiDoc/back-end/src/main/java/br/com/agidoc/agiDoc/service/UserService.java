@@ -23,42 +23,63 @@ public class UserService {
     private final ObjectMapper objectMapper;
 
     public UserDTO create(UserCreateDTO userCreateDTO) throws Exception {
-        User user = this.objectMapper.convertValue(userCreateDTO, User.class);
+        User user = convertToEntity(userCreateDTO);
 
-        user = this.userRepository.create(user);
-
-        return this.objectMapper.convertValue(user, UserDTO.class);
+        return returnDTO(userRepository.save(user));
     }
 
     public UserDTO getById(Integer id) throws Exception {
-        User user = this.userRepository.getUserById(id);
+        User user = userRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("User not found"));
 
-        return this.objectMapper.convertValue(user, UserDTO.class);
+        return returnDTO(user);
     }
 
     public List<UserDTO> list() throws DatabaseException {
-        return this.userRepository.list().stream().map(user -> this.objectMapper.convertValue(user, UserDTO.class)).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(this::returnDTO).collect(Collectors.toList());
     }
 
     public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception {
-        User user = this.userRepository.getUserById(id);
+        User userToUpdate = returnUserById(id);
 
-        this.objectMapper.updateValue(user, userUpdateDTO);
-        user = this.userRepository.update(id, user);
+        userToUpdate.setName(userUpdateDTO.getName());
+        userToUpdate.setPassword(userUpdateDTO.getPassword());
+        userToUpdate.setRole(userUpdateDTO.getRole());
+        userToUpdate.setPosition(userUpdateDTO.getPosition());
 
-        return this.objectMapper.convertValue(user, UserDTO.class);
+        return returnDTO(userRepository.save(userToUpdate));
     }
 
     public void delete(Integer id) throws Exception {
-        this.userRepository.delete(id);
+        User userToDelete =returnUserById(id);
+        userRepository.delete(userToDelete);
     }
 
-    public boolean login(UserLoginDTO userLoginDTO) throws DatabaseException, RegraDeNegocioException {
+    public boolean login(UserLoginDTO userLoginDTO) {
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();
 
-        User user = this.userRepository.getUserByUsername(username);
+        User user = userRepository.findUserByUser(username);
+
+        if(user == null) {
+           new RegraDeNegocioException("User not found");
+        }
+        if (!user.getPassword().equals(password)) {
+            new RegraDeNegocioException("Username or password is incorrect.");
+        }
 
         return user.getPassword().equals(password);
+    }
+
+    public User convertToEntity(UserCreateDTO dto) {
+        return objectMapper.convertValue(dto, User.class);
+    }
+
+    public UserDTO returnDTO(User entity) {
+        return objectMapper.convertValue(entity, UserDTO.class);
+    }
+
+    public User returnUserById(Integer id) throws Exception {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada"));
     }
 }
