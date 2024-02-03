@@ -7,13 +7,13 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity(name = "COMPETITORS")
+@Entity(name = "competitors")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Competitor {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_COMPETITORS")
     @SequenceGenerator(name = "SEQ_COMPETITORS", sequenceName = "seq_competitors", allocationSize = 1)
-    @Column(name = "id_competitors")
+    @Column(name = "id_competitor")
     private Integer idCompetitor;
 
     @Column(name = "company_name")

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import br.com.agidoc.agiDoc.model.Associated;
+import br.com.agidoc.agiDoc.model.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,11 +37,14 @@ public class Document {
     @Column(name = "is_signed")
     private boolean signed;
 
-    @Column(name = "file")
-    private String file;
+    //@Column(name = "file")
+    //private String file;
 
 //    private Associated associated;
 //
 //    @Column(name = "process_number")
 //    private Integer processId;
+
+    //@Column(name="id_signature")
+    //private User user;
 }
