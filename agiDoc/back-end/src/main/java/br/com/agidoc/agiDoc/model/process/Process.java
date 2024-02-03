@@ -15,8 +15,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity(name = "processes")
-public class Process implements IProcess {
+@Entity(name = "PROCESSES")
+public class Process {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PROCESSES")
