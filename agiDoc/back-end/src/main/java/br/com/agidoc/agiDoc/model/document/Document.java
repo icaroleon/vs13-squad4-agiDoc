@@ -1,5 +1,6 @@
 package br.com.agidoc.agiDoc.model.document;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
@@ -27,7 +28,7 @@ import javax.validation.constraints.NotBlank;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "documentId")
-public class Document {
+public class Document implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DOCUMENTS")
@@ -51,8 +52,8 @@ public class Document {
 
 //    private Associated associated;
 //
-    @OneToMany(mappedBy = "document")
-    private Set<DocumentAssociation> processes;
+    @ManyToOne
+    private Process process;
 
     //@Column(name="id_signature")
     //private User user;
@@ -68,5 +69,16 @@ public class Document {
     @Override
     public int hashCode() {
         return Objects.hash(documentId);
+    }
+
+    @ManyToOne(optional = false)
+    private Process processes;
+
+    public Process getProcesses() {
+        return processes;
+    }
+
+    public void setProcesses(Process processes) {
+        this.processes = processes;
     }
 }

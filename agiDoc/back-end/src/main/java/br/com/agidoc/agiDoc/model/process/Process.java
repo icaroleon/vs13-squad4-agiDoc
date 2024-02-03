@@ -1,5 +1,6 @@
 package br.com.agidoc.agiDoc.model.process;
 
+import java.io.Serializable;
 import java.util.*;
 
 import br.com.agidoc.agiDoc.model.competitor.Competitor;
@@ -22,7 +23,7 @@ import javax.persistence.*;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "processId")
-public class Process {
+public class Process implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PROCESSES")
@@ -48,14 +49,14 @@ public class Process {
 
 //    private ArrayList<Competitor> competitors;
 //
-    @OneToMany(mappedBy = "process",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-            )
-    private Set<DocumentAssociation> documents;
+    @OneToMany(cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JoinTable(name = "documents_associations", joinColumns = {@JoinColumn(name = "id_process", referencedColumnName = "id_process")},
+            inverseJoinColumns = {@JoinColumn(name = "id_document", referencedColumnName = "ID_DOCUMENT")})
+    private Set<Document> documents;
 
     @Column(name = "id_institution")
-    private Integer institutionId = 1;
+    private Integer institutionId = 9;
 
     public boolean chooseContractor(Competitor competitor) {
         //this.contracted = competitor;

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final ProcessRepository processRepository;
-    private final DocumentAssociationRepository daRepository;
+    //private final DocumentAssociationRepository daRepository;
     private final ObjectMapper objectMapper;
 
     public List<DocumentDTO> list() throws DatabaseException {
@@ -51,19 +51,8 @@ public class DocumentService {
 
         Document document = convertToEntity(documentCreateDto);
         documentRepository.save(document);
-        DocumentAssociation documentAssociation = new DocumentAssociation();
-        DocumentsAssociationsPk pk = new DocumentsAssociationsPk();
 
-        pk.setDocumentId(document.getDocumentId());
-        pk.setProcessId(process.getProcessId());
-
-        documentAssociation.setId(pk);
-        documentAssociation.setProcess(process);
-        documentAssociation.setDocument(document);
-
-        daRepository.save(documentAssociation);
-
-        process.getDocuments().add(documentAssociation);
+        process.getDocuments().add(document);
         processRepository.save(process);
 
         document = documentRepository.save(document);
