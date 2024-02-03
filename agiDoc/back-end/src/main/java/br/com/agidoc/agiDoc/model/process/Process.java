@@ -1,10 +1,12 @@
 package br.com.agidoc.agiDoc.model.process;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.document.Document;
+import br.com.agidoc.agiDoc.model.pk.DocumentAssociation;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +17,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity(name = "PROCESSES")
+@Entity
+@Table(name = "PROCESSES")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "processId")
 public class Process {
 
     @Id
@@ -42,10 +48,14 @@ public class Process {
 
 //    private ArrayList<Competitor> competitors;
 //
-//    private ArrayList<Document> documents;
+    @OneToMany(mappedBy = "process",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+            )
+    private Set<DocumentAssociation> documents;
 
     @Column(name = "id_institution")
-    private Integer institutionId;
+    private Integer institutionId = 1;
 
     public boolean chooseContractor(Competitor competitor) {
         //this.contracted = competitor;
@@ -59,6 +69,20 @@ public class Process {
 
 //        this.competitors.add(competitor);
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) System.out.println("aqui");
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Process process = (Process) o;
+        return Objects.equals(processId, process.processId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(processId);
     }
 
 }

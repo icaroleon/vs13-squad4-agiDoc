@@ -44,7 +44,7 @@ public class ProcessService {
         return convertToDTO(process);
     }
 
-    public ProcessDTO create(@Valid ProcessCreateDTO processCreateDto) throws Exception {
+    public ProcessDTO create(ProcessCreateDTO processCreateDto) throws Exception {
         Process process = convertToEntity(processCreateDto);
         process = processRepository.save(process);
         return convertToDTO(process);

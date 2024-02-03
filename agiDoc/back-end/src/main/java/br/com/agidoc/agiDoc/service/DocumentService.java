@@ -8,7 +8,10 @@ import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.document.Document;
+import br.com.agidoc.agiDoc.model.pk.DocumentAssociation;
+import br.com.agidoc.agiDoc.model.pk.DocumentsAssociationsPk;
 import br.com.agidoc.agiDoc.model.process.Process;
+import br.com.agidoc.agiDoc.repository.DocumentAssociationRepository;
 import br.com.agidoc.agiDoc.repository.DocumentRepository;
 import br.com.agidoc.agiDoc.repository.ProcessRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final ProcessRepository processRepository;
+    private final DocumentAssociationRepository daRepository;
     private final ObjectMapper objectMapper;
 
     public List<DocumentDTO> list() throws DatabaseException {
@@ -42,11 +46,26 @@ public class DocumentService {
     }
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDto) throws Exception {
-        processRepository.findById(idProcess)
+        Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
         Document document = convertToEntity(documentCreateDto);
-        document.setProcessId(idProcess);
+        documentRepository.save(document);
+        DocumentAssociation documentAssociation = new DocumentAssociation();
+        DocumentsAssociationsPk pk = new DocumentsAssociationsPk();
+
+        pk.setDocumentId(document.getDocumentId());
+        pk.setProcessId(process.getProcessId());
+
+        documentAssociation.setId(pk);
+        documentAssociation.setProcess(process);
+        documentAssociation.setDocument(document);
+
+        daRepository.save(documentAssociation);
+
+        process.getDocuments().add(documentAssociation);
+        processRepository.save(process);
+
         document = documentRepository.save(document);
         return convertToDTO(document);
     }
