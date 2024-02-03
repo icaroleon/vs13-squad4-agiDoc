@@ -8,6 +8,7 @@ import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
+import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
 import br.com.agidoc.agiDoc.model.user.User;
@@ -66,7 +67,7 @@ public class ProcessService {
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
-        switch (statusWanted){
+        switch (statusWanted) {
             case 1:
                 process.setProcessStatus(ProcessStatus.IN_PROGRESS);
             case 2:
@@ -82,7 +83,16 @@ public class ProcessService {
         processRepository.save(process);
     }
 
-    public Process convertToEntity(Object dto) {
+    public Process addDocumentToProcess(Integer idProcess, Document document) throws RegraDeNegocioException {
+        Process process = processRepository.findById(idProcess)
+                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
+
+        process.getDocuments().add(document);
+
+        return processRepository.save(process);
+    }
+
+    private Process convertToEntity(Object dto) {
         return objectMapper.convertValue(dto, Process.class);
     }
 

@@ -29,8 +29,9 @@ import java.util.stream.Collectors;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final ProcessRepository processRepository;
-    //private final DocumentAssociationRepository daRepository;
+    private final DocumentAssociationRepository daRepository;
     private final ObjectMapper objectMapper;
+    private final ProcessService processService;
 
     public List<DocumentDTO> list() throws DatabaseException {
         List<Document> documentsList = documentRepository.findAll();
@@ -46,16 +47,29 @@ public class DocumentService {
     }
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDto) throws Exception {
-        Process process = processRepository.findById(idProcess)
-                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
+//        Process process = processRepository.findById(idProcess)
+//                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
+        DocumentsAssociationsPk pk = new DocumentsAssociationsPk();
+        DocumentAssociation da = new DocumentAssociation();
 
         Document document = convertToEntity(documentCreateDto);
-        documentRepository.save(document);
-
-        process.getDocuments().add(document);
-        processRepository.save(process);
 
         document = documentRepository.save(document);
+
+//        pk.setDocumentId(document.getDocumentId());
+
+        Process process = processService.addDocumentToProcess(idProcess, document);
+//        pk.setProcessId(idProcess);
+
+        da.setDocumentId(document.getDocumentId());
+        da.setProcessId(process.getProcessId());
+        daRepository.save(da);
+
+//        da.setDocumentsAssociationId(pk);
+//        da.setDocument(document);
+//        da.setProcess(process);
+//        daRepository.save(da);
+
         return convertToDTO(document);
     }
 

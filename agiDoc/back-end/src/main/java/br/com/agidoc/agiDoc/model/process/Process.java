@@ -8,22 +8,21 @@ import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.pk.DocumentAssociation;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "PROCESSES")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "processId")
-public class Process implements Serializable {
+public class Process {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PROCESSES")
@@ -49,10 +48,10 @@ public class Process implements Serializable {
 
 //    private ArrayList<Competitor> competitors;
 //
-    @OneToMany(cascade = CascadeType.ALL,
+    @OneToMany(mappedBy = "processes",
             orphanRemoval = true)
-    @JoinTable(name = "documents_associations", joinColumns = {@JoinColumn(name = "id_process", referencedColumnName = "id_process")},
-            inverseJoinColumns = {@JoinColumn(name = "id_document", referencedColumnName = "ID_DOCUMENT")})
+    //@JoinTable(name = "documents_associations", joinColumns = {@JoinColumn(name = "id_process", referencedColumnName = "id_process")},
+            //inverseJoinColumns = {@JoinColumn(name = "id_document", referencedColumnName = "id_document")})
     private Set<Document> documents;
 
     @Column(name = "id_institution")
@@ -71,10 +70,9 @@ public class Process implements Serializable {
 //        this.competitors.add(competitor);
         return true;
     }
-
+//
     @Override
     public boolean equals(Object o) {
-        if(o == null) System.out.println("aqui");
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Process process = (Process) o;

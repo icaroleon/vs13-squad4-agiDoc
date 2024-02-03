@@ -13,14 +13,13 @@ import br.com.agidoc.agiDoc.model.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -36,12 +35,11 @@ public class Document implements Serializable {
     @Column(name = "id_document")
     private Integer documentId;
 
-    @NotBlank
     @Column(name = "protocol")
     private String protocol = UUID.randomUUID().toString().substring(0, 6);
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @Column(name = "expiration_date")
+    @Column(name = "EXPIRATION_DATE")
     private LocalDate expirationDate;
 
     @Column(name = "is_signed")
@@ -52,11 +50,14 @@ public class Document implements Serializable {
 
 //    private Associated associated;
 //
-    @ManyToOne
-    private Process process;
 
     //@Column(name="id_signature")
     //private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinTable(name = "documents_associations", joinColumns = {@JoinColumn(name = "id_document", referencedColumnName = "id_document")},
+            inverseJoinColumns = {@JoinColumn(name = "id_process", referencedColumnName = "id_process")})
+    private Process processes;
 
     @Override
     public boolean equals(Object o) {
@@ -69,16 +70,5 @@ public class Document implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(documentId);
-    }
-
-    @ManyToOne(optional = false)
-    private Process processes;
-
-    public Process getProcesses() {
-        return processes;
-    }
-
-    public void setProcesses(Process processes) {
-        this.processes = processes;
     }
 }
