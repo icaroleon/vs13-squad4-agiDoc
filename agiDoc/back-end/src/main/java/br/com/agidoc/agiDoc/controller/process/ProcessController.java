@@ -21,7 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Validated
-public class ProcessController implements IProcessController{
+//TODO IMPLEMENTAR PROCESS CONTROLLER
+public class ProcessController{
 
     private final ProcessService processService;
 
@@ -32,7 +33,7 @@ public class ProcessController implements IProcessController{
 
     @GetMapping("/{idProcess}")
     public ResponseEntity<ProcessDTO> findById(@NotNull @PathVariable("idProcess") Integer idProcess) throws Exception {
-        return new ResponseEntity<>(this.processService.findProcessByIdAndReturnDTO(idProcess), HttpStatus.OK);
+        return new ResponseEntity<>(processService.findById(idProcess), HttpStatus.OK);
     }
 
     @PostMapping
@@ -46,11 +47,11 @@ public class ProcessController implements IProcessController{
         return new ResponseEntity<>(this.processService.update(idProcess, processUpdateDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{idProcess}")
-    public ResponseEntity<Void> delete(@NotNull @PathVariable("idProcess") Integer idProcess) throws Exception {
-        this.processService.delete(idProcess);
+    @PutMapping("/{idProcess}/{status}")
+    public ResponseEntity<Void> setStatus(@NotNull @PathVariable("idProcess") Integer idProcess,
+                                              @NotNull @PathVariable("status") Integer statusWanted) throws Exception {
+        this.processService.setStatus(idProcess, statusWanted);
         return ResponseEntity.ok().build();
     }
-
 }
 

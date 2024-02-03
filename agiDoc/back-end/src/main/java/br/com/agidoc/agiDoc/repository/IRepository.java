@@ -1,6 +1,7 @@
 package br.com.agidoc.agiDoc.repository;
 
 import br.com.agidoc.agiDoc.exception.DatabaseException;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
