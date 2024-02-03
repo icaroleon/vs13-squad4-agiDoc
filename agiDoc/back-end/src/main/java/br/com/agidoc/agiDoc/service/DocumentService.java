@@ -1,84 +1,93 @@
 package br.com.agidoc.agiDoc.service;
 
+
 import br.com.agidoc.agiDoc.dto.document.DocumentCreateDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
-import br.com.agidoc.agiDoc.dto.document.DocumentUpdateInfosDTO;
+import br.com.agidoc.agiDoc.dto.document.DocumentUpdateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
+import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.repository.DocumentRepository;
 import br.com.agidoc.agiDoc.repository.ProcessRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final ProcessRepository processRepository;
-    private final ProcessService processService;
     private final ObjectMapper objectMapper;
 
-    public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDTO) throws Exception {
-        Process process = processService.findProcessById(idProcess);
-        Document document = objectMapper.convertValue(documentCreateDTO, Document.class);
-        document = documentRepository.create(document);
+    public List<DocumentDTO> list() throws DatabaseException {
+        List<Document> documentsList = documentRepository.findAll();
 
-        return findDocByIdAndConvertedToDto(document.getId());
+        return convertListToDTO(documentsList);
     }
 
-    public List<DocumentDTO> list() throws Exception {
-        ArrayList<Document> documentsList = documentRepository.list();
-        ArrayList<Process> processList = processRepository.list();
+    public DocumentDTO findById(Integer idDocument) throws RegraDeNegocioException {
+        Document document = documentRepository.findById(idDocument)
+                .orElseThrow(() -> new RegraDeNegocioException("Document not found with the provided ID"));
 
-        ArrayList<DocumentDTO> documentsDtoList = new ArrayList<>();
-        for (Document document : documentsList) {
-            DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
-            for (Process process : processList) {
-                if (process.getProcessId().equals(document.getProcessId())) {
-                    ProcessDTO processDTO = objectMapper.convertValue(process, ProcessDTO.class);
-                    documentDTO.setProcessDTO(processDTO);
-                }
-            }
-            documentsDtoList.add(documentDTO);
-        }
-        return documentsDtoList;
+        return convertToDTO(document);
     }
 
-        public DocumentDTO update(Integer idDocument, DocumentUpdateInfosDTO documentUpdateInfosDTO) throws Exception {
+    public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDto) throws Exception {
+        processRepository.findById(idProcess)
+                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
-        Document document = objectMapper.convertValue(documentUpdateInfosDTO, Document.class);
-        documentRepository.update(idDocument, document);
-        DocumentDTO documentDTO = this.findDocByIdAndConvertedToDto(idDocument);
-
-        return documentDTO;
+        Document document = convertToEntity(documentCreateDto);
+        document.setProcessId(idProcess);
+        document = documentRepository.save(document);
+        return convertToDTO(document);
     }
 
-    public void delete(Integer id) throws Exception {
-        documentRepository.delete(id);
-        //TODO RETORNAR METODO BOOILEAN EM VEZ DE EXCEPTION
+    public DocumentDTO update(Integer idDocument, DocumentUpdateDTO documentUpdateDateDTO) throws Exception {
+
+        Document document = documentRepository.findById(idDocument)
+                .orElseThrow(() -> new RegraDeNegocioException("Document not found with the provided ID"));
+
+        document.setFile(documentUpdateDateDTO.getFile());
+        documentRepository.save(document);
+
+        return convertToDTO(document);
     }
+
+//    public void delete(Integer id) throws Exception {
+//        documentRepository.delete(id);
+//        //TODO decidir se haverá essa possibilidade
+//    }
 
     public DocumentDTO sign(Integer idDocument, Integer userId) throws Exception {
-        boolean signature =  documentRepository.sign(idDocument, userId);
+        Document document = documentRepository.findById(idDocument)
+                .orElseThrow(() -> new RegraDeNegocioException("Document not found with the provided ID"));
 
-        return findDocByIdAndConvertedToDto(idDocument);
+        document.setSigned(true);
+        documentRepository.save(document);
+
+        return convertToDTO(document);
     }
 
-    public DocumentDTO findDocByIdAndConvertedToDto(Integer idDocument) throws Exception {
+    private List<DocumentDTO> convertListToDTO(List<Document> processList) {
+        return processList.stream()
+                .map(document -> objectMapper.convertValue(document, DocumentDTO.class))
+                .collect(Collectors.toList());
+    }
 
-        Document document = documentRepository.findById(idDocument);
-        Process process = processService.findProcessById(document.getProcessId());
+    private Document convertToEntity(DocumentCreateDTO documentCreateDTO) {
+        return objectMapper.convertValue(documentCreateDTO, Document.class);
+    }
 
-        DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
-        ProcessDTO processDTO = objectMapper.convertValue(process, ProcessDTO.class);
-        documentDTO.setProcessDTO(processDTO);
-
-        return documentDTO;
+    private DocumentDTO convertToDTO(Document entity) {
+        return objectMapper.convertValue(entity, DocumentDTO.class);
     }
 }

@@ -9,15 +9,18 @@ import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.CompetitorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 public class CompetitorService {
     private final CompetitorRepository competitorRepository;

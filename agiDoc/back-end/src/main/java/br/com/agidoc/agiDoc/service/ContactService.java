@@ -7,9 +7,11 @@ import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.repository.ContactRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
