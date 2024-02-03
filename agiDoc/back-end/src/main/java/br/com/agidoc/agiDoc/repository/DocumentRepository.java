@@ -8,13 +8,25 @@ import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.document.Document;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
+
+    @Query(value = """
+            SELECT * FROM DOCUMENTS d
+            JOIN DOCUMENTS_ASSOCIATIONS da ON d.ID_DOCUMENT = da.ID_DOCUMENT WHERE da.ID_PROCESS = :idProcess
+            """, nativeQuery = true)
+    //d.ID_DOCUMENT, d.PROTOCOL, d.EXPIRATION_DATE, d.IS_SIGNED, d."FILE", d.ID_SIGNATURE TODO mudar para
+    public List<Document> findAllDocumentsByProcessId(@Param("idProcess") Integer idProcess);
+
+
 
 //    public Integer getNextId(Connection con) throws SQLException {
 //        String sql = "SELECT SEQ_DOCUMENTS.nextval mysequence from DUAL";
