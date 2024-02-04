@@ -24,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
-    public UserDTO create(UserCreateDTO userCreateDTO) throws Exception {
+    public UserDTO create(UserCreateDTO userCreateDTO) throws RegraDeNegocioException {
         User user = convertToEntity(userCreateDTO);
 
         return returnDTO(userRepository.save(user));
@@ -40,24 +40,28 @@ public class UserService {
         return userRepository.findAll().stream().map(this::returnDTO).collect(Collectors.toList());
     }
 
-    public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws Exception {
+    public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws RegraDeNegocioException {
         User userToUpdate = returnUserById(id);
 
-        userToUpdate.setIdUser(id);
-        userToUpdate.setName(userUpdateDTO.getName());
-        userToUpdate.setPassword(userUpdateDTO.getPassword());
-        userToUpdate.setRole(userUpdateDTO.getRole());
-        userToUpdate.setPosition(userUpdateDTO.getPosition());
-        userToUpdate.setStatus(Status.ATIVO);
-
-        return returnDTO(userRepository.save(userToUpdate));
+        if (userToUpdate.getStatus().ordinal() == 0) {
+            userToUpdate.setIdUser(userToUpdate.getIdUser());
+            userToUpdate.setName(userUpdateDTO.getName());
+            userToUpdate.setPassword(userUpdateDTO.getPassword());
+            userToUpdate.setRole(userUpdateDTO.getRole());
+            userToUpdate.setPosition(userUpdateDTO.getPosition());
+            userToUpdate.setStatus(userToUpdate.getStatus());
+            return returnDTO(userRepository.save(userToUpdate));
+        } else {
+            new RegraDeNegocioException("Usuário não existe");
+            return null;
+        }
     }
 
-    public void delete(Integer id) throws Exception {
+    public void delete(Integer id) throws RegraDeNegocioException {
         User user = returnUserById(id);
 
-        user.setStatus(Status.INATIVO);
-        user.setIdUser(null);
+        user.setStatus(Status.INACTIVE);
+        user.setUser(null);
     }
 
     public boolean login(UserLoginDTO userLoginDTO) throws RegraDeNegocioException {
@@ -81,7 +85,7 @@ public class UserService {
         return true;
     }
 
-    public User convertToEntity(UserCreateDTO dto) {
+    public User convertToEntity(UserCreateDTO dto) throws RegraDeNegocioException {
         return objectMapper.convertValue(dto, User.class);
     }
 
@@ -89,7 +93,7 @@ public class UserService {
         return objectMapper.convertValue(entity, UserDTO.class);
     }
 
-    public User returnUserById(Integer id) throws Exception {
+    public User returnUserById(Integer id) throws RegraDeNegocioException{
         return userRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada"));
     }

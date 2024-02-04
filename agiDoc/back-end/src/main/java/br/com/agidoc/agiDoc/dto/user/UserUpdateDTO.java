@@ -34,7 +34,7 @@ public class UserUpdateDTO {
     @Size(max = 100)
     private String position;
 
-    @Schema(required = true, example = "0 = INATIVO, 1 = ATIVO")
+    @Schema(required = true, example = "0 = INACTIVE, 1 = ATIVO")
     @NotNull
     private Status status;
 

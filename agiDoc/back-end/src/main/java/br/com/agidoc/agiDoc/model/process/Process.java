@@ -40,6 +40,10 @@ public class Process {
 
     @Column(name = "status")
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
+    private Company contracted;
+    private ArrayList<Company> companies;
+    private ArrayList<Document> documents;
+    private Integer institutionId = 1;
 
 //    @Column(name = "id_contracted")
 //    private Competitor contracted;
@@ -61,17 +65,17 @@ public class Process {
     @Column(name = "ID_COMPANY")
     private Integer companyId = 1;
 
-    public boolean chooseContractor(Competitor competitor) {
-        //this.contracted = competitor;
+    public boolean chooseContractor(Company company) {
+        this.contracted = company;
 
         return true;
     }
 
-    public boolean subscribe(Competitor competitor) {
-        if (competitor == null)
+    public boolean subscribe(Company company) {
+        if (company == null)
             return false;
 
-//        this.competitors.add(competitor);
+        this.companies.add(company);
         return true;
     }
 //
