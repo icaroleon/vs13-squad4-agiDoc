@@ -55,7 +55,7 @@ public class Document implements Serializable {
     //@Column(name="id_signature")
     //private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinTable(name = "documents_associations", joinColumns = {@JoinColumn(name = "id_document", referencedColumnName = "id_document")},
             inverseJoinColumns = {@JoinColumn(name = "id_process", referencedColumnName = "id_process")})
     private Process processes;

@@ -30,7 +30,7 @@ public class Process {
     @Column(name = "id_process")
     private Integer processId;
 
-    @Column(name = "process_number")
+    @Column(name = "PROCESS_NUMBER")
     private String processNumber = UUID.randomUUID().toString().substring(0, 6);
 
     @Column(name = "title")

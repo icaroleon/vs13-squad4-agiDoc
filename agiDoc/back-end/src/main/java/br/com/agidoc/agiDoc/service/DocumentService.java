@@ -3,6 +3,7 @@ package br.com.agidoc.agiDoc.service;
 
 import br.com.agidoc.agiDoc.dto.document.DocumentCreateDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
+import br.com.agidoc.agiDoc.dto.document.DocumentListDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentUpdateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
@@ -29,8 +30,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DocumentService {
     private final DocumentRepository documentRepository;
-    private final ProcessRepository processRepository;
     private final DocumentAssociationRepository daRepository;
+    private final ProcessRepository processRepository;
     private final ObjectMapper objectMapper;
     private final ProcessService processService;
 
@@ -40,26 +41,38 @@ public class DocumentService {
         return convertListToDTO(documentsList);
     }
 
-    public DocumentDTO findById(Integer idDocument) throws RegraDeNegocioException {
-        Document document = documentRepository.findById(idDocument)
+    public DocumentListDTO findById(Integer idDocument) throws RegraDeNegocioException {
+        Document documentInfos = documentRepository.returnAllInfosByDocumentId(idDocument)
                 .orElseThrow(() -> new RegraDeNegocioException("Document not found with the provided ID"));
 
-        return convertToDTO(document);
+        DocumentDTO documentDTO = convertToDTO(documentInfos);
+
+        DocumentListDTO documentListDTO = new DocumentListDTO();
+        documentListDTO.setDocument(documentDTO);
+        documentListDTO.setProcessId(documentInfos.getProcesses().getProcessId());
+        documentListDTO.setProcessId(documentInfos.getProcesses().getProcessId());
+        documentListDTO.setProcessNumber(documentInfos.getProcesses().getProcessNumber());
+        documentListDTO.setTitle(documentInfos.getProcesses().getTitle());
+        documentListDTO.setDescription(documentInfos.getProcesses().getDescription());
+        documentListDTO.setProcessStatus(documentInfos.getProcesses().getProcessStatus());
+
+        return documentListDTO;
     }
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDto) throws Exception {
-//        Process process = processRepository.findById(idProcess)
-//                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
-        DocumentsAssociationsPk pk = new DocumentsAssociationsPk();
+        processRepository.findById(idProcess)
+                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
+
+//        DocumentsAssociationsPk pk = new DocumentsAssociationsPk();
         DocumentAssociation da = new DocumentAssociation();
 
         Document document = convertToEntity(documentCreateDto);
+        Process process = processService.addDocumentToProcess(idProcess, document);
 
         document = documentRepository.save(document);
 
 //        pk.setDocumentId(document.getDocumentId());
 
-        Process process = processService.addDocumentToProcess(idProcess, document);
 //        pk.setProcessId(idProcess);
 
         da.setDocumentId(document.getDocumentId());
@@ -100,8 +113,8 @@ public class DocumentService {
         return convertToDTO(document);
     }
 
-    public List<DocumentDTO> convertListToDTO(List<Document> processList) {
-        return processList.stream()
+    public List<DocumentDTO> convertListToDTO(List<Document> documentsList) {
+        return documentsList.stream()
                 .map(document -> objectMapper.convertValue(document, DocumentDTO.class))
                 .collect(Collectors.toList());
     }

@@ -20,8 +20,8 @@ public class ProcessDTO {
     private Integer processId;
     private String processNumber = UUID.randomUUID().toString().substring(0, 6);
     private String title, description;
-    private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
-    private Integer institutionId = 1;
+    private ProcessStatus processStatus;
+    private Integer institutionId;
 
     private List<DocumentDTO> documentDTOS;
 }

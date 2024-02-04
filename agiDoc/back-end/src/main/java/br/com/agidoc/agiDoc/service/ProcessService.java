@@ -52,7 +52,7 @@ public class ProcessService {
         List<DocumentDTO> documentDTOList = documentList.stream()
                 .map(document -> {
                     DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
-                    documentDTO.setProcessId(processDTO.getProcessId());
+//                    documentDTO.setProcessId(processDTO.getProcessId());
                     return documentDTO;
                 })
                 .collect(Collectors.toList());
