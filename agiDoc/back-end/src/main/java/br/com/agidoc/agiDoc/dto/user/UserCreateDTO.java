@@ -39,9 +39,9 @@ public class UserCreateDTO {
     @Size(max = 100)
     private String position;
 
-    @Schema(required = true, example = "0 = ATIVO, 1 = INATIVO")
+    @Schema(required = true, example = "0 = ATIVO, 1 = INACTIVE")
     @NotNull
-    private Status status = Status.ATIVO;
+    private Status status = Status.ACTIVE;
 
     @Schema(required = true, example = "fulano@email.com")
     @NotBlank
