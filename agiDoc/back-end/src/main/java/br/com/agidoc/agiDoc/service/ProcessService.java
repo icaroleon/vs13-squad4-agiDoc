@@ -49,8 +49,12 @@ public class ProcessService {
 
         List<Document> documentList = documentRepository.findAllDocumentsByProcessId(idProcess);
 
-        List<DocumentDTO> documentDTOList =    documentList.stream()
-                .map(document -> objectMapper.convertValue(document, DocumentDTO.class))
+        List<DocumentDTO> documentDTOList = documentList.stream()
+                .map(document -> {
+                    DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
+                    documentDTO.setProcessId(processDTO.getProcessId());
+                    return documentDTO;
+                })
                 .collect(Collectors.toList());
 
         processDTO.setDocumentDTOS(documentDTOList);

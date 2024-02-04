@@ -32,7 +32,7 @@ public class Document implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DOCUMENTS")
     @SequenceGenerator(name = "SEQ_DOCUMENTS", sequenceName = "SEQ_DOCUMENTS", allocationSize = 1)
-    @Column(name = "id_document")
+    @Column(name = "ID_DOCUMENT")
     private Integer documentId;
 
     @Column(name = "protocol")
@@ -45,11 +45,12 @@ public class Document implements Serializable {
     @Column(name = "is_signed")
     private boolean signed;
 
-    //@Column(name = "file")
-    //private String file;
+//    @Column(name = "ATTACHMENT")
+//    private String attachment;
 
+//    @Column(name = "file")
 //    private Associated associated;
-//
+
 
     //@Column(name="id_signature")
     //private User user;
