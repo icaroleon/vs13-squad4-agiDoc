@@ -14,13 +14,11 @@ import java.time.LocalDate;
 @Data
 public class DocumentDTO {
 
-    private Integer id;
+    private Integer documentId;
     private String protocol;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate expirationDate;
     private boolean signed;
     private String file;
-    private Associated associated;
-    private ProcessDTO processDTO;
 }

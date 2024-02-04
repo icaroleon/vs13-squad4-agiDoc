@@ -1,19 +1,43 @@
 package br.com.agidoc.agiDoc.repository;
 
 import br.com.agidoc.agiDoc.database.DBConnection;
+import br.com.agidoc.agiDoc.dto.document.DocumentListDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.document.Document;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
+
+    @Query(value = """
+                    SELECT * FROM DOCUMENTS d
+                    JOIN DOCUMENTS_ASSOCIATIONS da ON d.ID_DOCUMENT = da.ID_DOCUMENT WHERE da.ID_PROCESS = :idProcess
+            """, nativeQuery = true)
+        //d.ID_DOCUMENT, d.PROTOCOL, d.EXPIRATION_DATE, d.IS_SIGNED, d."FILE", d.ID_SIGNATURE TODO mudar para
+    List<Document> findAllDocumentsByProcessId(@Param("idProcess") Integer idProcess);
+
+
+    @Query(value = """
+                SELECT d.ID_DOCUMENT, d.PROTOCOL, d.EXPIRATION_DATE, d.IS_SIGNED, p.ID_PROCESS, p.PROCESS_NUMBER,
+                    p.TITLE, p.DESCRIPTION, p.STATUS, p.ID_INSTITUTION
+                FROM DOCUMENTS d
+                JOIN DOCUMENTS_ASSOCIATIONS da ON d.ID_DOCUMENT = da.ID_DOCUMENT
+                JOIN PROCESSES p ON da.id_process = p.id_process
+                WHERE da.ID_DOCUMENT = :idDocument
+            """, nativeQuery = true)
+    Optional<Document> returnAllInfosByDocumentId(@Param("idDocument") Integer idDocument);
+
 
 //    public Integer getNextId(Connection con) throws SQLException {
 //        String sql = "SELECT SEQ_DOCUMENTS.nextval mysequence from DUAL";

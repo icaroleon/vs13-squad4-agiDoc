@@ -4,13 +4,16 @@ import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessCreateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessUpdateDTO;
+import br.com.agidoc.agiDoc.dto.process.ProcessesDocumentsDTO;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
+import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
 import br.com.agidoc.agiDoc.model.user.User;
+import br.com.agidoc.agiDoc.repository.DocumentRepository;
 import br.com.agidoc.agiDoc.repository.ProcessRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -30,6 +33,7 @@ public class ProcessService {
 
     private final ProcessRepository processRepository;
     private ObjectMapper objectMapper;
+    private final DocumentRepository documentRepository;
 
     public List<ProcessDTO> list() throws DatabaseException {
         List<Process> processesList = processRepository.findAll();
@@ -41,10 +45,24 @@ public class ProcessService {
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
-        return convertToDTO(process);
+        ProcessDTO processDTO = convertToDTO(process);
+
+        List<Document> documentList = documentRepository.findAllDocumentsByProcessId(idProcess);
+
+        List<DocumentDTO> documentDTOList = documentList.stream()
+                .map(document -> {
+                    DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
+//                    documentDTO.setProcessId(processDTO.getProcessId());
+                    return documentDTO;
+                })
+                .collect(Collectors.toList());
+
+        processDTO.setDocumentDTOS(documentDTOList);
+
+        return processDTO;
     }
 
-    public ProcessDTO create(@Valid ProcessCreateDTO processCreateDto) throws Exception {
+    public ProcessDTO create(ProcessCreateDTO processCreateDto) throws Exception {
         Process process = convertToEntity(processCreateDto);
         process = processRepository.save(process);
         return convertToDTO(process);
@@ -66,7 +84,7 @@ public class ProcessService {
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
-        switch (statusWanted){
+        switch (statusWanted) {
             case 1:
                 process.setProcessStatus(ProcessStatus.IN_PROGRESS);
             case 2:
@@ -82,7 +100,16 @@ public class ProcessService {
         processRepository.save(process);
     }
 
-    public Process convertToEntity(Object dto) {
+    public Process addDocumentToProcess(Integer idProcess, Document document) throws RegraDeNegocioException {
+        Process process = processRepository.findById(idProcess)
+                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
+
+        process.getDocuments().add(document);
+
+        return processRepository.save(process);
+    }
+
+    private Process convertToEntity(Object dto) {
         return objectMapper.convertValue(dto, Process.class);
     }
 
