@@ -31,4 +31,8 @@ public class DocumentDTO {
     private String file;
     private Associated associated;
     private ProcessDTO processDTO;
+
+    public Integer getProcessDTO(ProcessDTO processDTO) {
+        return this.processDTO.getProcessId();
+    }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProcessesDocumentsDTO extends ProcessDTO{
+public class ProcessesDocumentsDTO extends ProcessDTO {
 
     public List<Document> documentsList;
 }

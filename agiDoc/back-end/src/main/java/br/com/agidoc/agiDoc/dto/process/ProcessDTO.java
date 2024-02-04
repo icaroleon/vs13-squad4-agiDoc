@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -22,5 +23,5 @@ public class ProcessDTO {
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
     private Integer institutionId = 1;
 
-    private DocumentDTO documentDTO;
+    private List<DocumentDTO> documentDTOS;
 }

@@ -45,13 +45,17 @@ public class ProcessService {
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
-        ProcessesDocumentsDTO processesDocumentsDTO = new ProcessesDocumentsDTO();
+        ProcessDTO processDTO = convertToDTO(process);
 
         List<Document> documentList = documentRepository.findAllDocumentsByProcessId(idProcess);
 
-        processesDocumentsDTO.setDocumentsList(documentList);
+        List<DocumentDTO> documentDTOList =    documentList.stream()
+                .map(document -> objectMapper.convertValue(document, DocumentDTO.class))
+                .collect(Collectors.toList());
 
-        return processesDocumentsDTO;
+        processDTO.setDocumentDTOS(documentDTOList);
+
+        return processDTO;
     }
 
     public ProcessDTO create(ProcessCreateDTO processCreateDto) throws Exception {

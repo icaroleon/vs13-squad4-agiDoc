@@ -3,6 +3,7 @@ package br.com.agidoc.agiDoc.controller.process;
 import br.com.agidoc.agiDoc.dto.process.ProcessCreateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessUpdateDTO;
+import br.com.agidoc.agiDoc.dto.process.ProcessesDocumentsDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.service.ProcessService;

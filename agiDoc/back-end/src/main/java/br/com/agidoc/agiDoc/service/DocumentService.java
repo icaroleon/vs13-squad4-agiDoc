@@ -17,6 +17,7 @@ import br.com.agidoc.agiDoc.repository.ProcessRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -99,7 +100,7 @@ public class DocumentService {
         return convertToDTO(document);
     }
 
-    private List<DocumentDTO> convertListToDTO(List<Document> processList) {
+    public List<DocumentDTO> convertListToDTO(List<Document> processList) {
         return processList.stream()
                 .map(document -> objectMapper.convertValue(document, DocumentDTO.class))
                 .collect(Collectors.toList());
