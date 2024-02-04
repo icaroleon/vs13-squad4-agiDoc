@@ -10,6 +10,8 @@ import br.com.agidoc.agiDoc.model.Status;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

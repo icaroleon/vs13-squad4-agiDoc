@@ -5,7 +5,8 @@ public enum ProcessStatus {
     IN_PROGRESS(1),
     COMPLETED(2),
     SUSPENDED(3),
-    ARCHIVED(4);
+    ARCHIVED(4),
+    INACTIVE(5);
 
     private final Integer type;
 
