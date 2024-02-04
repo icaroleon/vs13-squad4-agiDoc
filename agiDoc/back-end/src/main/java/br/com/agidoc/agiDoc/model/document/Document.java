@@ -1,22 +1,19 @@
 package br.com.agidoc.agiDoc.model.document;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-
-import br.com.agidoc.agiDoc.model.Associated;
-import br.com.agidoc.agiDoc.model.pk.DocumentAssociation;
 import br.com.agidoc.agiDoc.model.process.Process;
-import br.com.agidoc.agiDoc.model.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -32,7 +29,7 @@ public class Document implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_DOCUMENTS")
     @SequenceGenerator(name = "SEQ_DOCUMENTS", sequenceName = "SEQ_DOCUMENTS", allocationSize = 1)
-    @Column(name = "ID_DOCUMENT")
+    @Column(name = "ID_DOCUMENT", nullable = false)
     private Integer documentId;
 
     @Column(name = "protocol")
@@ -42,11 +39,18 @@ public class Document implements Serializable {
     @Column(name = "EXPIRATION_DATE")
     private LocalDate expirationDate;
 
-    @Column(name = "is_signed")
+    @Column(name = "is_signed", nullable = false)
     private boolean signed;
 
-//    @Column(name = "ATTACHMENT")
-//    private String attachment;
+    @Column(name = "ATTACHMENT")
+    private String attachment;
+
+//    @ManyToOne
+////    @JoinTable(name = "DOCUMENTS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_DOCUMENT",
+////            referencedColumnName = "ID_DOCUMENT")},
+////            inverseJoinColumns = {@JoinColumn(name = "ID_DOCUMENT",
+////                    referencedColumnName = "ID_PROCESS")})
+//    private Process process;
 
 //    @Column(name = "file")
 //    private Associated associated;
@@ -54,11 +58,6 @@ public class Document implements Serializable {
 
     //@Column(name="id_signature")
     //private User user;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinTable(name = "documents_associations", joinColumns = {@JoinColumn(name = "id_document", referencedColumnName = "id_document")},
-            inverseJoinColumns = {@JoinColumn(name = "id_process", referencedColumnName = "id_process")})
-    private Process processes;
 
     @Override
     public boolean equals(Object o) {

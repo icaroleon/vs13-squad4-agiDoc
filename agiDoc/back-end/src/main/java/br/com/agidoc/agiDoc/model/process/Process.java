@@ -1,12 +1,11 @@
 package br.com.agidoc.agiDoc.model.process;
 
-import java.io.Serializable;
 import java.util.*;
 
 import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.document.Document;
-import br.com.agidoc.agiDoc.model.pk.DocumentAssociation;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
@@ -48,14 +47,19 @@ public class Process {
 
 //    private ArrayList<Competitor> competitors;
 //
-    @OneToMany(mappedBy = "processes",
-            orphanRemoval = true)
-    //@JoinTable(name = "documents_associations", joinColumns = {@JoinColumn(name = "id_process", referencedColumnName = "id_process")},
-            //inverseJoinColumns = {@JoinColumn(name = "id_document", referencedColumnName = "id_document")})
-    private Set<Document> documents;
+    @JsonIgnore
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch=FetchType.LAZY)
+    @JoinTable(name = "DOCUMENTS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_PROCESS",
+            referencedColumnName = "ID_PROCESS")},
+            inverseJoinColumns = {@JoinColumn(name = "ID_DOCUMENT",
+            referencedColumnName = "ID_DOCUMENT")})
+    private Set<Document> documents = new HashSet<>();
 
-    @Column(name = "id_institution")
-    private Integer institutionId = 9;
+    @Column(name = "ID_COMPANY")
+    private Integer companyId = 1;
 
     public boolean chooseContractor(Competitor competitor) {
         //this.contracted = competitor;
