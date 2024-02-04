@@ -1,12 +1,11 @@
 package br.com.agidoc.agiDoc.service;
 
-import br.com.agidoc.agiDoc.dto.institution.InstitutionDTO;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
+import br.com.agidoc.agiDoc.model.company.Company;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    public void sendEmail(InstitutionDTO institutionDTO, Integer identificadorTemplate) throws Exception {
+    public void sendEmail(Object object, Integer identificadorTemplate) throws Exception {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         String subject = "Aviso";
         if(identificadorTemplate == 2){
@@ -38,9 +37,9 @@ public class EmailService {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(from);
-            mimeMessageHelper.setTo(institutionDTO.getContact().getEmail());
+//            mimeMessageHelper.setTo(object.getContact().getEmail());
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(getContentFromTemplate(institutionDTO, identificadorTemplate), true);
+            mimeMessageHelper.setText(getContentFromTemplate(object, identificadorTemplate), true);
 
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
@@ -48,11 +47,11 @@ public class EmailService {
         }
     }
 
-    public String getContentFromTemplate(InstitutionDTO institutionDTO, Integer identificadorTemplate) throws IOException, TemplateException {
+    public String getContentFromTemplate(Object object, Integer identificadorTemplate) throws IOException, TemplateException {
         Map<String, Object> dados = new HashMap<>();
 
 
-        dados.put("nome", (Object) institutionDTO.getCompanyName());
+        dados.put("nome", ("teste"));
         dados.put("email", (Object) from);
         String html = null;
         if(identificadorTemplate == 1){

@@ -46,13 +46,13 @@ public class CompanyService {
 
     public List<CompanyDTO> listByStatusActive() throws DatabaseException {
         log.info("Listando empresas pelo status ativo...");
-        return companyRepository.findAllByStatus_Active().stream().map(this::returnDTO)
+        return companyRepository.findAllByStatus(Status.ACTIVE).stream().map(this::returnDTO)
                 .collect(Collectors.toList());
     }
 
     public List<CompanyDTO> listByStatusInactive() throws DatabaseException {
         log.info("Listando empresas pelo status inativo...");
-        return companyRepository.findAllByStatus_Inactive().stream().map(this::returnDTO)
+        return companyRepository.findAllByStatus(Status.INACTIVE).stream().map(this::returnDTO)
                 .collect(Collectors.toList());
     }
 

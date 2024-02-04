@@ -2,6 +2,7 @@ package br.com.agidoc.agiDoc.model.process;
 
 import java.util.*;
 
+import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.document.Document;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -40,10 +41,19 @@ public class Process {
 
     @Column(name = "status")
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
-    private Company contracted;
-    private ArrayList<Company> companies;
-    private ArrayList<Document> documents;
+
+//    @ManyToOne
+//    @JoinColumn(name = "")
+//    private Company contracted;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_COMPANY")
+    private Company company;
+
     private Integer institutionId = 1;
+
+//    @OneToMany
+//    private List<Company> subscribers;
 
 //    @Column(name = "id_contracted")
 //    private Competitor contracted;
@@ -62,22 +72,23 @@ public class Process {
             referencedColumnName = "ID_DOCUMENT")})
     private Set<Document> documents = new HashSet<>();
 
-    @Column(name = "ID_COMPANY")
-    private Integer companyId = 1;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_company", insertable = false, updatable = false)
+    private Process companyId;
 
-    public boolean chooseContractor(Company company) {
-        this.contracted = company;
+//    public boolean chooseContractor(Company company) {
+//        this.contracted = company;
+//
+//        return true;
+//    }
 
-        return true;
-    }
-
-    public boolean subscribe(Company company) {
-        if (company == null)
-            return false;
-
-        this.companies.add(company);
-        return true;
-    }
+//    public boolean subscribe(Company company) {
+//        if (company == null)
+//            return false;
+//
+//        this.company.add(company);
+//        return true;
+//    }
 //
     @Override
     public boolean equals(Object o) {

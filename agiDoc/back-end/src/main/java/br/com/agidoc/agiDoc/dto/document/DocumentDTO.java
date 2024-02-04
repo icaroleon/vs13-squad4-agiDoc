@@ -21,4 +21,5 @@ public class DocumentDTO {
     private LocalDate expirationDate;
     private boolean signed;
     private String file;
+    private Integer processId;
 }
