@@ -32,7 +32,7 @@ public class CompanyService {
 
     public CompanyDTO getById(Integer id) throws RegraDeNegocioException {
         Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("Competitor not found"));
+                .orElseThrow(() -> new RegraDeNegocioException("Company not found"));
         log.info("Listando empresa por id...");
 
         return returnDTO(company);
