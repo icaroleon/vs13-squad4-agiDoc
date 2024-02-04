@@ -1,6 +1,6 @@
 package br.com.agidoc.agiDoc.repository;
 
-import br.com.agidoc.agiDoc.database.DBConnection;
+import br.com.agidoc.agiDoc.config.OpenApiConfig;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Associated;
@@ -47,7 +47,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             Integer nextId = this.getNextId(con);
             Integer associationNextId = this.getAssociationNextId(con);
@@ -105,7 +105,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
             Statement stmt = con.createStatement();
 
             String sqlSelect = "SELECT * FROM DOCUMENTS";
@@ -157,7 +157,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             String sqlUpdate = "UPDATE DOCUMENTS SET EXPIRATION_DATE = ? WHERE ID_DOCUMENT = ?";
 
@@ -181,7 +181,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
     public void delete(Integer idDocument) throws Exception {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             String sql1 = "DELETE FROM DOCUMENTS_ASSOCIATIONS WHERE ID_DOCUMENT = ?";
 
@@ -220,7 +220,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             String sqlSelect = "SELECT * FROM DOCUMENTS WHERE ID_DOCUMENT = ?";
 
@@ -256,7 +256,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             String sqlUpdate = "UPDATE DOCUMENTS SET IS_SIGNED = ?, ID_SIGNATURE = ? WHERE ID_DOCUMENT = ?";
 
@@ -284,7 +284,7 @@ public class DocumentRepository implements IRepository<Integer, Document> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             String sqlFindById = """
                     SELECT *

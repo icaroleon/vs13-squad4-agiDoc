@@ -1,6 +1,6 @@
 package br.com.agidoc.agiDoc.repository;
 
-import br.com.agidoc.agiDoc.database.DBConnection;
+import br.com.agidoc.agiDoc.config.OpenApiConfig;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.process.Process;
@@ -32,7 +32,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
 
             Integer nextId = this.getNextId(con);
@@ -70,7 +70,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         List<Process> returnValue = new ArrayList<>();
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE ID_PROCESS = ?");
 
@@ -92,7 +92,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         List<Process> returnValue = new ArrayList<>();
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             PreparedStatement query = con.prepareStatement("SELECT * FROM PROCESSES WHERE PROCESS_NUMBER = ?");
 
@@ -135,7 +135,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
         Connection con = null;
 
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
             Statement stmt = con.createStatement();
 
             String sql = "SELECT * FROM PROCESSES";
@@ -168,7 +168,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
     public Process update(Integer idProcess, Process process) throws Exception {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             String sql = "UPDATE PROCESSES SET " +
                     " title = ?," +
@@ -205,7 +205,7 @@ public class ProcessRepository implements IRepository<Integer, Process> {
     public void delete(Integer idProcess) throws Exception {
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
+            con = OpenApiConfig.getConnection();
 
             String sql = "DELETE FROM PROCESSES WHERE id_process = ?";
 

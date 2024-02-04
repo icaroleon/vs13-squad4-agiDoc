@@ -3,7 +3,7 @@ package br.com.agidoc.agiDoc.model.process;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import br.com.agidoc.agiDoc.model.competitor.Competitor;
+import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.document.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,22 +19,22 @@ public class Process implements IProcess {
     private String title;
     private String description;
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
-    private Competitor contracted;
-    private ArrayList<Competitor> competitors;
+    private Company contracted;
+    private ArrayList<Company> companies;
     private ArrayList<Document> documents;
     private Integer institutionId = 1;
 
-    public boolean chooseContractor(Competitor competitor) {
-        this.contracted = competitor;
+    public boolean chooseContractor(Company company) {
+        this.contracted = company;
 
         return true;
     }
 
-    public boolean subscribe(Competitor competitor) {
-        if (competitor == null)
+    public boolean subscribe(Company company) {
+        if (company == null)
             return false;
 
-        this.competitors.add(competitor);
+        this.companies.add(company);
         return true;
     }
 

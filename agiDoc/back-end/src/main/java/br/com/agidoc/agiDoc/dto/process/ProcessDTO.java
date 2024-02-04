@@ -1,13 +1,10 @@
 package br.com.agidoc.agiDoc.dto.process;
 
-import br.com.agidoc.agiDoc.model.competitor.Competitor;
-import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @Data
