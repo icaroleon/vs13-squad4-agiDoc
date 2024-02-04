@@ -1,12 +1,6 @@
 package br.com.agidoc.agiDoc.repository;
 
-import br.com.agidoc.agiDoc.database.DBConnection;
-import br.com.agidoc.agiDoc.dto.document.DocumentListDTO;
-import br.com.agidoc.agiDoc.exception.DatabaseException;
-import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
-import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.document.Document;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

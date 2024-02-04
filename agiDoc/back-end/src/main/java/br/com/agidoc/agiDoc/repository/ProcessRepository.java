@@ -1,6 +1,5 @@
 package br.com.agidoc.agiDoc.repository;
 
-import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.process.Process;
@@ -13,28 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProcessRepository implements IRepository<Integer, Process> {
-
-    @Override
-    public Integer getNextId(Connection connection) throws SQLException {
-        String sql = "SELECT SEQ_PROCESSES.nextval mysequence from DUAL";
-
-        Statement stmt = connection.createStatement();
-        ResultSet res = stmt.executeQuery(sql);
-
-        if (res.next()) {
-            return res.getInt("mysequence");
-        }
-        return null;
-    }
-
-    @Override
-    public Process create(Process process) throws DatabaseException {
-        Connection con = null;
-
-        try {
-            con = OpenApiConfig.getConnection();
-
 public interface ProcessRepository extends JpaRepository<Process, Integer> {
 
 
