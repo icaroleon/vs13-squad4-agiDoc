@@ -5,7 +5,6 @@ import br.com.agidoc.agiDoc.dto.competitor.CompetitorDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public interface CompetitorDocumentation {
+public interface ICompetitorController {
     @Operation(summary = "Criar competidores", description = "Cria um competidor no banco de dados")
     @ApiResponses(
             value = {

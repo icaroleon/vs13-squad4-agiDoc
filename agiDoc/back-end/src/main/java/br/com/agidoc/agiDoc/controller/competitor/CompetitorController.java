@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/competitor")
 @Validated
 @Slf4j
-public class CompetitorController {
+public class CompetitorController implements ICompetitorController {
     private final CompetitorService competitorService;
 
     @PostMapping
