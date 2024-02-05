@@ -43,11 +43,6 @@ public class UserUpdateDTO {
     @Schema(required = true, example = "fulano@email.com")
     @NotNull
     private String email;
-
-
-    @NotBlank
-    @Schema(required = true, example = "AA2AC")
-    private String registration;
     
 
     @Schema(required = true, example = "SECRETARIA_EDUCACAO = 0, SECRETARIA_FAZENDA = 1, SECRETARIA_SAUDE = 2, SECRETARIA_ACAO_SOCIAL = 3")

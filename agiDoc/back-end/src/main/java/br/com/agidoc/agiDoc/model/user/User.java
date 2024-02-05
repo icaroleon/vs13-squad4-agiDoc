@@ -34,7 +34,7 @@ public class User {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "permission")
-    private Permission role;
+    private Permission permission;
 
 
     @Column(name = "position")
