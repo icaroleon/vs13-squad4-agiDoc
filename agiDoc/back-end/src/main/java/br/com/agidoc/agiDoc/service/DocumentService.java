@@ -98,7 +98,8 @@ public class DocumentService {
         Document document = documentRepository.findById(idDocument)
                 .orElseThrow(() -> new RegraDeNegocioException("Document not found with the provided ID"));
 
-        //document.setFile(documentUpdateDateDTO.getFile());
+//        document.setAttachment(documentUpdateDateDTO.getFile());
+        document.setExpirationDate(documentUpdateDateDTO.getExpirationDate());
         documentRepository.save(document);
 
         return convertToDTO(document);
