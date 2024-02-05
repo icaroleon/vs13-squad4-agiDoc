@@ -44,12 +44,12 @@ public class DocumentService {
 
         DocumentListDTO documentListDTO = new DocumentListDTO();
         documentListDTO.setDocument(documentDTO);
-//        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
-//        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
-//        documentListDTO.setProcessNumber(documentInfos.getProcess().getProcessNumber());
-//        documentListDTO.setTitle(documentInfos.getProcess().getTitle());
-//        documentListDTO.setDescription(documentInfos.getProcess().getDescription());
-//        documentListDTO.setProcessStatus(documentInfos.getProcess().getProcessStatus());
+        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
+        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
+        documentListDTO.setProcessNumber(documentInfos.getProcess().getProcessNumber());
+        documentListDTO.setTitle(documentInfos.getProcess().getTitle());
+        documentListDTO.setDescription(documentInfos.getProcess().getDescription());
+        documentListDTO.setProcessStatus(documentInfos.getProcess().getProcessStatus());
 
         return documentListDTO;
     }

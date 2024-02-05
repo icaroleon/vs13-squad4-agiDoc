@@ -25,8 +25,7 @@ public interface DocumentRepository extends JpaRepository<Document, Integer> {
 
 
     @Query(value = """
-                SELECT d.ID_DOCUMENT, d.PROTOCOL, d.EXPIRATION_DATE, d.IS_SIGNED, p.ID_PROCESS, p.PROCESS_NUMBER,
-                    p.TITLE, p.DESCRIPTION, p.STATUS, p.ID_COMPANY
+                SELECT *
                 FROM DOCUMENTS d
                 JOIN DOCUMENTS_ASSOCIATIONS da ON d.ID_DOCUMENT = da.ID_DOCUMENT
                 JOIN PROCESSES p ON da.id_process = p.id_process
