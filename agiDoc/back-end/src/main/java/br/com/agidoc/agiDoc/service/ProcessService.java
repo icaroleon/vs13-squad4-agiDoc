@@ -9,12 +9,15 @@ import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
+import br.com.agidoc.agiDoc.model.associations.pk.documentsWithProcesses.documentsWithProcessesAssociation.CompanyWithProcessesAssociation;
+import br.com.agidoc.agiDoc.model.associations.pk.documentsWithProcesses.documentsWithProcessesAssociation.CompanyWithProcessesAssociationPK;
 import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.CompanyRepository;
+import br.com.agidoc.agiDoc.repository.CompanyWithProcessesAssociationRepository;
 import br.com.agidoc.agiDoc.repository.DocumentRepository;
 import br.com.agidoc.agiDoc.repository.ProcessRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +41,7 @@ public class ProcessService {
     private ObjectMapper objectMapper;
     private final DocumentRepository documentRepository;
     private final CompanyRepository companyRepository;
+    private final CompanyWithProcessesAssociationRepository companyWithProcessesAssociationRepository;
 
     public List<ProcessDTO> list() throws DatabaseException {
         List<Process> processesList = processRepository.findAll();
@@ -53,34 +57,47 @@ public class ProcessService {
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
-//        ProcessDTO processDTO = convertToDTO(process);
+        ProcessDTO processDTO = convertToDTO(process);
 
-//        List<Document> documentList = documentRepository.findAllDocumentsByProcessId(idProcess);
-//
-//        List<DocumentDTO> documentDTOList = documentList.stream()
-//                .map(document -> {
-//                    DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
-////                    documentDTO.setProcessId(processDTO.getProcessId());
-//                    return documentDTO;
-//                })
-//                .collect(Collectors.toList());
-//
-//        processDTO.setDocumentDTOS(documentDTOList);
+        List<Document> documentList = documentRepository.findAllDocumentsByProcessId(idProcess);
 
-        return convertToDTO(process);
+        List<DocumentDTO> documentDTOList = documentList.stream()
+                .map(document -> {
+                    DocumentDTO documentDTO = objectMapper.convertValue(document, DocumentDTO.class);
+//                    documentDTO.setProcessId(processDTO.getProcessId());
+                    return documentDTO;
+                })
+                .collect(Collectors.toList());
+
+        processDTO.setDocumentDTOS(documentDTOList);
+
+        return processDTO;
     }
 
     public ProcessDTO create(Integer idCompany, ProcessCreateDTO processCreateDto) throws Exception {
         Company company = companyRepository.findById(idCompany)
                 .orElseThrow(() -> new RegraDeNegocioException("Company not found with the provided ID"));
 
-        Process process = convertToEntity(processCreateDto);
-        process.setCompany(company);
-        process = processRepository.save(process);
-        company.getProcess().add(process);
-        ProcessDTO processDTO =  convertToDTO(process);
+        CompanyWithProcessesAssociationPK pk = new CompanyWithProcessesAssociationPK();
+        CompanyWithProcessesAssociation companyWithProcessesAssociation = new CompanyWithProcessesAssociation();
 
-        processDTO.setCompany(company);
+        Process process = convertToEntity(processCreateDto);
+
+        Process savedProcess = processRepository.save(process);
+
+        company.getProcess().add(savedProcess);
+
+        companyRepository.save(company);
+
+        pk.setProcessId(savedProcess.getProcessId());
+        pk.setCompanyId(company.getIdCompany());
+
+        companyWithProcessesAssociation.setProcessesAssociationPK(pk);
+
+        companyWithProcessesAssociationRepository.save(companyWithProcessesAssociation);
+
+        ProcessDTO processDTO = convertToDTO(savedProcess);
+
         return processDTO;
     }
 
@@ -113,8 +130,6 @@ public class ProcessService {
             case 3:
                 process.setProcessStatus(ProcessStatus.ARCHIVED);
                 break;
-//            case 4:
-//                process.setProcessStatus(ProcessStatus.INACTIVE);
         }
         processRepository.save(process);
 

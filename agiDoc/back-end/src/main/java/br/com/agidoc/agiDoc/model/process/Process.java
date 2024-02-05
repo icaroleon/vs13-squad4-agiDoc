@@ -42,7 +42,11 @@ public class Process {
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_COMPANY", referencedColumnName = "ID_COMPANY")
+    @JoinTable(name = "PROCESS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_PROCESS",
+            referencedColumnName = "ID_PROCESS")},
+            inverseJoinColumns = {@JoinColumn(name = "ID_COMPANY",
+                    referencedColumnName = "ID_COMPANY")})
+//    @JoinColumn(name = "ID_COMPANY", referencedColumnName = "ID_COMPANY")
     private Company company;
 
 //    @JsonIgnore
