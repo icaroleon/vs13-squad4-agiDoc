@@ -2,6 +2,7 @@ package br.com.agidoc.agiDoc.controller.pageable;
 
 import br.com.agidoc.agiDoc.model.document.Document;
 
+import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.service.PageableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,13 +25,13 @@ public class PageableController {
     @GetMapping("/documents")
     public ResponseEntity<Page<Document>> listPageableDocuments(@RequestParam(defaultValue = "0") Integer requestPage, @RequestParam(defaultValue = "10") Integer pageSize) {
         Pageable pageable = PageRequest.of(requestPage, pageSize);
-        Page<Document> all = pageableService.findAllDocuments(pageable);
+        Page all = pageableService.findAllDocuments(pageable);
         return ResponseEntity.ok(all);
     }
 
     @GetMapping("/list-ordered-pageable/documents")
     public ResponseEntity<Page<Document>> listPageExpirationDateDocuments(@PageableDefault(size = 10, page = 10, sort = {"expirationDate"}) Pageable pageable) {
-        Page<Document> all = pageableService.findAllDocuments(pageable);
+        Page all = pageableService.findAllDocuments(pageable);
         return ResponseEntity.ok(all);
     }
 
@@ -43,21 +44,34 @@ public class PageableController {
 
     @GetMapping("/list-ordered-pageable/users")
     public ResponseEntity<Page<Document>> listPageableOrderedUsers(@PageableDefault(size = 10, page = 10, sort = {"name"}) Pageable pageable) {
-        Page<Document> all = pageableService.findAllUsers(pageable);
+        Page all = pageableService.findAllUsers(pageable);
         return ResponseEntity.ok(all);
     }
 
     @GetMapping("/list-pageable-actives/users")
     public ResponseEntity<Page<Document>> listPageableActiveUsers(@RequestParam(defaultValue = "0") Integer requestPage, @RequestParam(defaultValue = "10") Integer pageSize) {
         Pageable pageable = PageRequest.of(requestPage, pageSize);
-        Page<Document> all = pageableService.findAllActivesUsers(pageable);
+        Page all = pageableService.findAllActivesUsers(pageable);
         return ResponseEntity.ok(all);
     }
 
     @GetMapping("/list-pageable-inactives/users")
     public ResponseEntity<Page<Document>> listPageableInctiveUsers(@RequestParam(defaultValue = "0") Integer requestPage, @RequestParam(defaultValue = "10") Integer pageSize) {
         Pageable pageable = PageRequest.of(requestPage, pageSize);
-        Page<Document> all = pageableService.findAllInactiveUsers(pageable);
+        Page all = pageableService.findAllInactiveUsers(pageable);
+        return ResponseEntity.ok(all);
+    }
+
+    @GetMapping("/processes")
+    public ResponseEntity<Page<Process>> listPageableProcess(@RequestParam(defaultValue = "0") Integer requestPage, @RequestParam(defaultValue = "10") Integer pageSize) {
+        Pageable pageable = PageRequest.of(requestPage, pageSize);
+        Page all = pageableService.findAllProcesses(pageable);
+        return ResponseEntity.ok(all);
+    }
+
+    @GetMapping("/list-ordered-pageable/processes")
+    public ResponseEntity<Page<Process>> listPageProcessNumber(@PageableDefault(size = 10, page = 10, sort = {"processNumber"}) Pageable pageable) {
+        Page all = pageableService.findAllProcesses(pageable);
         return ResponseEntity.ok(all);
     }
 
