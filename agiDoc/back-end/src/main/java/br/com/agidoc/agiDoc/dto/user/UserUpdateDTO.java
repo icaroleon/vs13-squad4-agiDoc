@@ -48,13 +48,10 @@ public class UserUpdateDTO {
     @NotBlank
     @Schema(required = true, example = "AA2AC")
     private String registration;
-
-    @NotBlank
-    @Schema(required = true, example = "Alfred")
-    private String user;
-
+    
 
     @Schema(required = true, example = "SECRETARIA_EDUCACAO = 0, SECRETARIA_FAZENDA = 1, SECRETARIA_SAUDE = 2, SECRETARIA_ACAO_SOCIAL = 3")
     @NotNull
     private Department department;
+}
 
