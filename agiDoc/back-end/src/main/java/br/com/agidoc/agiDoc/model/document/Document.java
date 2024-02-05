@@ -4,10 +4,7 @@ import br.com.agidoc.agiDoc.model.Status;
 import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,6 +49,7 @@ public class Document {
     @Column(name = "ATTACHMENT")
     private BlobType attachment = null;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "DOCUMENTS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_DOCUMENT",
             referencedColumnName = "ID_DOCUMENT")},
