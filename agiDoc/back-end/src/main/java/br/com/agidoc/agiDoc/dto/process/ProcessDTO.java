@@ -1,6 +1,8 @@
 package br.com.agidoc.agiDoc.dto.process;
 
+import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
+import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +20,6 @@ public class ProcessDTO{
     private String processNumber = UUID.randomUUID().toString().substring(0, 6);
     private String title, description;
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
-    private Integer institutionId;
-
     private List<DocumentDTO> documentDTOS;
+    private Company company;
 }

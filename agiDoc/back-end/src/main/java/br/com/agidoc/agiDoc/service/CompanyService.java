@@ -10,6 +10,8 @@ import br.com.agidoc.agiDoc.model.company.Company;
 
 import br.com.agidoc.agiDoc.repository.CompanyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 public class CompanyService {
     private final CompanyRepository companyRepository;
     private final ObjectMapper objectMapper;
+
 
     public CompanyDTO create(CompanyCreateDTO companyCreateDTO) throws RegraDeNegocioException, DatabaseException {
         Company company = convertToEntity(companyCreateDTO);
