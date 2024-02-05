@@ -66,7 +66,7 @@ public class CompanyService {
         log.info("Atualizando empresa...");
 
         if (companyToUpdate.getStatus().ordinal() == 0) {
-            companyToUpdate.setIdCompany(companyToUpdate.getIdCompany());
+            companyToUpdate.setCompanyId(companyToUpdate.getCompanyId());
             companyToUpdate.setCnpj(companyUpdateDTO.getCnpj());
             companyToUpdate.setType(companyToUpdate.getType());
             companyToUpdate.setStatus(companyToUpdate.getStatus());

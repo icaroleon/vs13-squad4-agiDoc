@@ -90,7 +90,7 @@ public class ProcessService {
         companyRepository.save(company);
 
         pk.setProcessId(savedProcess.getProcessId());
-        pk.setCompanyId(company.getIdCompany());
+        pk.setCompanyId(company.getCompanyId());
 
         companyWithProcessesAssociation.setProcessesAssociationPK(pk);
 
