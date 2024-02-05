@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanyDTO {
-    private Integer idCompany;
+    private Integer companyId;
 
     private String cnpj;
 

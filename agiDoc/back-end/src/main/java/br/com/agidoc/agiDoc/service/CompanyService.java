@@ -71,11 +71,12 @@ public class CompanyService {
             companyToUpdate.setType(companyToUpdate.getType());
             companyToUpdate.setStatus(companyToUpdate.getStatus());
             companyToUpdate.setCompanyName(companyUpdateDTO.getCompanyName());
-            return returnDTO(companyRepository.save(companyToUpdate));
+            companyRepository.save(companyToUpdate);
         } else {
             new RegraDeNegocioException("Empresa não existe");
             return null;
         }
+        return returnDTO(companyToUpdate);
     }
 
     public void delete(Integer id) throws RegraDeNegocioException {
