@@ -3,15 +3,15 @@ package br.com.agidoc.agiDoc.controller.contact;
 import br.com.agidoc.agiDoc.dto.contact.ContactCreateDTO;
 import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
 import br.com.agidoc.agiDoc.dto.contact.ContactUpdateDTO;
-import br.com.agidoc.agiDoc.model.contact.Contact;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 public interface IContactController {
@@ -22,7 +22,30 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    List<ContactDTO> list() throws Exception;
+    public ResponseEntity<List<ContactDTO>> listAll() throws Exception;
+
+
+    @Operation(summary = "Returns by id.", description = "Returns the specific contact by id.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Returns the contact with that id."),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this feature."),
+                    @ApiResponse(responseCode = "500", description = "An exception was thrown.")
+            }
+    )
+    @GetMapping("/byid")
+    public ResponseEntity<ContactDTO> listOne(@RequestParam("idContact") Integer idContact) throws Exception;
+    @Operation(summary = "Create new contact", description = "Create a new contact and save it to the bank.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Returns the data of the contact that was created."),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this feature."),
+                    @ApiResponse(responseCode = "500", description = "An exception was thrown.")
+            }
+    )
+
+    @PostMapping
+    public ResponseEntity<ContactDTO> create(@RequestParam("idCompany")Integer idCompany, @RequestBody @Valid ContactCreateDTO contactCreateDTO) throws Exception;
 
     @Operation(summary = "Update Contact", description = "Update a contact in database")
     @ApiResponses(
@@ -33,7 +56,7 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ContactDTO update(@PathVariable Integer id, @RequestBody ContactUpdateDTO contactUpdateDTO) throws Exception;
+    public ResponseEntity<ContactDTO> update(@PathVariable Integer id, @RequestBody ContactUpdateDTO contactUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete Contact", description = "Delete a contact in database")
     @ApiResponses(
@@ -43,5 +66,5 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    void delete(@PathVariable Integer id) throws Exception;
+    public ResponseEntity<Void> delete(@RequestParam("idContact") Integer idContact, @RequestParam("idCompany") Integer idCompany) throws Exception;
 }

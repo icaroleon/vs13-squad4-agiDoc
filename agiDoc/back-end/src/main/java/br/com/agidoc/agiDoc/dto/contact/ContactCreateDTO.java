@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 public class ContactCreateDTO {
     @Schema(required = true, example = "Joao Silva")
     @NotBlank
-    @Size(max = 255)
+    @Size(max = 100)
     private String name;
 
     @Schema(required = true, example = "joao.silva@email.com")
@@ -33,8 +33,4 @@ public class ContactCreateDTO {
     @Schema(required = true, example = "0")
     @NotNull
     private ContactPhoneType phoneType;
-
-    @Schema(required = false, example = "4")
-    @NotNull
-    private Integer associatedId;
 }

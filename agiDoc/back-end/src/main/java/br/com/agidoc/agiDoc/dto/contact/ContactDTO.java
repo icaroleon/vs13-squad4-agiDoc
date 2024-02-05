@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactDTO {
-    private Integer id;
+    private Integer idContact;
     private String name;
     private String email;
     private String phone;
     private ContactPhoneType phoneType;
-    private Integer associatedId;
 }
