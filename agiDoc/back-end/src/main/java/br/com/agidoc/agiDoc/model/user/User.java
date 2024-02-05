@@ -12,9 +12,8 @@ import javax.persistence.*;
 @Setter
 @Entity(name = "USERS")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Table(name = "USERS")
 public class User {
-    UUID uuid = UUID.randomUUID();
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USERS")
     @SequenceGenerator(name = "SEQ_USERS", sequenceName = "seq_users", allocationSize = 1)
@@ -22,35 +21,34 @@ public class User {
     private Integer idUser;
 
     @Column(name = "registration")
-    private String registration =  uuid.toString().substring(0, 6);
+    private String registration =  UUID.randomUUID().toString().substring(0, 6);
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "user")
+    @Column(name = "username")
     private String user;
 
     @Column(name = "password")
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "role")
-    private Role role;
+    @Column(name = "permission")
+    private Permission permission;
 
     @Column(name = "position")
     private String position;
 
-    @Column(name = "id_department")
-    private Integer idDepartment;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "department")
+    private Department department;
 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
     private Status status;
 
     @Column(name = "email")
     private String email;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_department", insertable = false, updatable = false)
-//    private Department department;
 
 }
