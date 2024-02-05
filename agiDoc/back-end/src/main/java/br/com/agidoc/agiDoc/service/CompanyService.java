@@ -30,6 +30,7 @@ public class CompanyService {
     public CompanyDTO create(CompanyCreateDTO companyCreateDTO) throws RegraDeNegocioException, DatabaseException {
         Company company = convertToEntity(companyCreateDTO);
         log.info("Criando empresa...");
+        company.setStatus(Status.ACTIVE);
         return returnDTO(companyRepository.save(company));
     }
 
@@ -81,8 +82,9 @@ public class CompanyService {
         Company companyToDelete = returnCompanyId(id);
 
         log.info("Deletando empresa...");
-
         companyToDelete.setStatus(Status.INACTIVE);
+        companyRepository.save(companyToDelete);
+
     }
 
     public Company convertToEntity(CompanyCreateDTO dto) {

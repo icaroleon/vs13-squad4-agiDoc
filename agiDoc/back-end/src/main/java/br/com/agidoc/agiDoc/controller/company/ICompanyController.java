@@ -15,87 +15,87 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface ICompanyController {
-    @Operation(summary = "Criar empresa", description = "Cria uma empresa no banco de dados")
+    @Operation(summary = "Create company", description = "Create a company in the database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Cria um empresa"),
-                    @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                    @ApiResponse(responseCode = "200", description = "Creates a company"),
+                    @ApiResponse(responseCode = "400", description = "Invalid data"),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource"),
+                    @ApiResponse(responseCode = "500", description = "An exception occurred")
             }
     )
     @PostMapping
     ResponseEntity<CompanyDTO> create (@Valid @RequestBody CompanyCreateDTO companyCreateDTO) throws Exception;
 
-    @Operation(summary = "Listar empresa", description = "Lista todas as empresa do banco de dados")
+    @Operation(summary = "List all companies", description = "List all companies from the database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Lista todas as empresas"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "404", description = "Empresas não encontradas"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                    @ApiResponse(responseCode = "200", description = "Lists all companies"),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource"),
+                    @ApiResponse(responseCode = "404", description = "Companies not found"),
+                    @ApiResponse(responseCode = "500", description = "An exception occurred")
             }
     )
     @GetMapping
     ResponseEntity<List<CompanyDTO>> list() throws Exception;
 
-    @Operation(summary = "Listar empresas ativas", description = "Lista todas as empresa ativas no banco de dados")
+    @Operation(summary = "List active companies", description = "List all active companies in the database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Lista todas as empresas ativas"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "404", description = "Empresas não encontradas"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                    @ApiResponse(responseCode = "200", description = "Lists all active companies"),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource"),
+                    @ApiResponse(responseCode = "404", description = "Companies not found"),
+                    @ApiResponse(responseCode = "500", description = "An exception occurred")
             }
     )
     @GetMapping("/actives")
-    public ResponseEntity<List<CompanyDTO>> listAtivos() throws Exception;
+    ResponseEntity<List<CompanyDTO>> listActives() throws Exception;
 
-    @Operation(summary = "Listar empresas inativas", description = "Lista todas as empresa inativas no banco de dados")
+    @Operation(summary = "List inactive companies", description = "List all inactive companies in the database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Lista todas as empresas inativas"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "404", description = "Empresas não encontradas"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                    @ApiResponse(responseCode = "200", description = "Lists all inactive companies"),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource"),
+                    @ApiResponse(responseCode = "404", description = "Companies not found"),
+                    @ApiResponse(responseCode = "500", description = "An exception occurred")
             }
     )
     @GetMapping("/inactives")
-    public ResponseEntity<List<CompanyDTO>> listInativos() throws Exception;
+    ResponseEntity<List<CompanyDTO>> listInactives() throws Exception;
 
-    @Operation(summary = "Listar uma empresa por id", description = "Lista apenas uma empresa do banco de dados")
+    @Operation(summary = "List a company by id", description = "List only one company from the database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Lista uma empresa"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "404", description = "Empresa não encontrada"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                    @ApiResponse(responseCode = "200", description = "Lists a company"),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource"),
+                    @ApiResponse(responseCode = "404", description = "Company not found"),
+                    @ApiResponse(responseCode = "500", description = "An exception occurred")
             }
     )
     @GetMapping("/{idCompany}")
     ResponseEntity<CompanyDTO> getById(@NotNull @PathVariable("idCompany") Integer id) throws Exception;
 
 
-    @Operation(summary = "Atualiza empresa", description = "Atualiza uma empresa no banco de dados")
+    @Operation(summary = "Update company", description = "Update a company in the database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Atualiza uma empresa"),
-                    @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "404", description = "Empresa não encontrado"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                    @ApiResponse(responseCode = "200", description = "Updates a company"),
+                    @ApiResponse(responseCode = "400", description = "Invalid data"),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource"),
+                    @ApiResponse(responseCode = "404", description = "Company not found"),
+                    @ApiResponse(responseCode = "500", description = "An exception occurred")
             }
     )
     @PutMapping("/{idCompany}")
     ResponseEntity<CompanyDTO> update(@NotNull @PathVariable("idCompany") Integer id, @Valid @RequestBody CompanyUpdateDTO companyUpdateDTO) throws Exception;
 
-    @Operation(summary = "Deletar uma empresa por id", description = "Deleta apenas uma empresa do banco de dados")
+    @Operation(summary = "Delete a company by id", description = "Delete only one company from the database")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Deleta uma empresa"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "404", description = "Empresa não encontrada"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+                    @ApiResponse(responseCode = "200", description = "Deletes a company"),
+                    @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource"),
+                    @ApiResponse(responseCode = "404", description = "Company not found"),
+                    @ApiResponse(responseCode = "500", description = "An exception occurred")
             }
     )
     @DeleteMapping("/{idCompany}")

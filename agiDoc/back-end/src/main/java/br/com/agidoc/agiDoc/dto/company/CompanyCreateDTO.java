@@ -27,8 +27,4 @@ public class CompanyCreateDTO {
     @NotNull(message = "Não pode estar nulo")
     @Schema(required = true, example = "0 = INSTITUTION, 1 = COMPETITOR")
     private Type type;
-
-    @NotNull(message = "Não pode estar nulo")
-    @Schema(required = true, example = "0 = ATIVO, 1 = INACTIVE")
-    private Status status = Status.ACTIVE;
 }

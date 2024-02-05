@@ -4,6 +4,7 @@ import br.com.agidoc.agiDoc.dto.company.CompanyCreateDTO;
 import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.company.CompanyUpdateDTO;
 import br.com.agidoc.agiDoc.service.CompanyService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Company", description = "CRUD of company")
 @RequestMapping("/company")
 @Validated
 @Slf4j
@@ -37,13 +39,13 @@ public class CompanyController implements ICompanyController {
     }
 
     @GetMapping("/actives")
-    public ResponseEntity<List<CompanyDTO>> listAtivos() throws Exception {
+    public ResponseEntity<List<CompanyDTO>> listActives() throws Exception {
         log.info("Empresas listadas.");
         return new ResponseEntity<>(companyService.listByStatusActive(), HttpStatus.OK);
     }
 
     @GetMapping("/inactives")
-    public ResponseEntity<List<CompanyDTO>> listInativos() throws Exception {
+    public ResponseEntity<List<CompanyDTO>> listInactives() throws Exception {
         log.info("Empresas listadas.");
         return new ResponseEntity<>(companyService.listByStatusInactive(), HttpStatus.OK);
     }
