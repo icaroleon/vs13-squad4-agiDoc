@@ -1,7 +1,7 @@
 package br.com.agidoc.agiDoc.model.process;
 
-import br.com.agidoc.agiDoc.model.competitor.Competitor;
+import br.com.agidoc.agiDoc.model.company.Company;
 
 public interface IProcess {
-    boolean chooseContractor(Competitor competitor);
+    boolean chooseContractor(Company company);
 }

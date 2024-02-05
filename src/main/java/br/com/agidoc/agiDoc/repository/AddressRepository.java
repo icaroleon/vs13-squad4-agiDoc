@@ -1,17 +1,15 @@
 package br.com.agidoc.agiDoc.repository;
 
+import br.com.agidoc.agiDoc.config.OpenApiConfig;
 import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.address.Address;
-import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-@RequiredArgsConstructor
 public class AddressRepository implements IRepository <Integer, Address> {
-    private final DBConnection dbConnection;
 
     public Integer getNextId(Connection connection) throws DatabaseException {
         try {
@@ -46,7 +44,7 @@ public class AddressRepository implements IRepository <Integer, Address> {
     public Address create(Address address) throws DatabaseException {
         Connection con = null;
         try {
-            con = this.dbConnection.getConnection();
+            con = DBConnection.getConnection();
 
             Integer nextId = this.getNextId(con);
             Integer associationNextId = this.getAssociationNextId(con);
@@ -108,7 +106,7 @@ public class AddressRepository implements IRepository <Integer, Address> {
     public Address update(Integer id, Address address) throws DatabaseException {
         Connection con = null;
         try {
-            con = this.dbConnection.getConnection();
+            con = DBConnection.getConnection();
 
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE ADDRESSES SET");
@@ -158,7 +156,7 @@ public class AddressRepository implements IRepository <Integer, Address> {
     public void delete(Integer id) throws DatabaseException {
         Connection con = null;
         try {
-            con = this.dbConnection.getConnection();
+            con = DBConnection.getConnection();
 
             String sql1 = "DELETE FROM ADDRESSES_ASSOCIATIONS WHERE ID_ADDRESS = ?";
 
@@ -193,7 +191,7 @@ public class AddressRepository implements IRepository <Integer, Address> {
         ArrayList<Address> addresses = new ArrayList<>();
         Connection con = null;
         try {
-            con = this.dbConnection.getConnection();
+            con = DBConnection.getConnection();
 
             String sql1 = "SELECT * FROM ADDRESSES";
 

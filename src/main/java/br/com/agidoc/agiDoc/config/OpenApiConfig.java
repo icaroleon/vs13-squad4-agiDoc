@@ -13,10 +13,13 @@ public class OpenApiConfig {
     public OpenAPI springShopOpenAPI() {
         String securitySchemeName = "bearerAuth";
         return new OpenAPI()
-                .info(new Info().title("AgiDoc API")
-                        .description("AgiDoc API documentação")
-                        .version("v1.0.0")
+                .info(new Info().title("AgiDoc")
+                        .description("AgiDoc Documentation")
+                        .version("v0.1.0")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName));
     }
 }
+
+//a conexão que estava sendo com o DB antes estava expondo os dados, essa nova conexão é a melhor forma para não expor
+// os dados e configurar o Swagger
