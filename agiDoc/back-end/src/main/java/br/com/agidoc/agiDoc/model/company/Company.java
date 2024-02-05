@@ -22,7 +22,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_COMPANY")
     @SequenceGenerator(name = "SEQ_COMPANY", sequenceName = "seq_company", allocationSize = 1)
     @Column(name = "id_company")
-    private Integer idCompany;
+    private Integer companyId;
 
     @Column(name = "cnpj")
     private String cnpj;

@@ -61,5 +61,4 @@ public class Document {
 
     @Column(name = "STATUS")
     private Status status = Status.ACTIVE;
-
 }
