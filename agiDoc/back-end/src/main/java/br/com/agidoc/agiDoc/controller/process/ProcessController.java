@@ -37,9 +37,10 @@ public class ProcessController{
         return new ResponseEntity<>(processService.findById(idProcess), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ProcessDTO> create(@Valid @RequestBody ProcessCreateDTO processCreateDto) throws Exception {
-        return new ResponseEntity<>(this.processService.create(processCreateDto), HttpStatus.OK);
+    @PostMapping("/{idCompany}")
+    public ResponseEntity<ProcessDTO> create(@NotNull @PathVariable ("idCompany") Integer idCompany,
+                                                 @Valid @RequestBody ProcessCreateDTO processCreateDto) throws Exception {
+        return new ResponseEntity<>(this.processService.create(idCompany, processCreateDto), HttpStatus.OK);
     }
 
     @PutMapping("/{idProcess}")
@@ -49,10 +50,9 @@ public class ProcessController{
     }
 
     @PutMapping("/{idProcess}/{status}")
-    public ResponseEntity<Void> setStatus(@NotNull @PathVariable("idProcess") Integer idProcess,
+    public ResponseEntity<ProcessDTO> setStatus(@NotNull @PathVariable("idProcess") Integer idProcess,
                                               @NotNull @PathVariable("status") Integer statusWanted) throws Exception {
-        this.processService.setStatus(idProcess, statusWanted);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(processService.setStatus(idProcess, statusWanted), HttpStatus.OK);
     }
 }
 

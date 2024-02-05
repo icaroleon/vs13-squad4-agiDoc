@@ -2,11 +2,11 @@ package br.com.agidoc.agiDoc.model.process;
 import java.util.Arrays;
 
 public enum ProcessStatus {
-    IN_PROGRESS(1),
-    COMPLETED(2),
-    SUSPENDED(3),
-    ARCHIVED(4),
-    INACTIVE(5);
+    IN_PROGRESS(0),
+    COMPLETED(1),
+    SUSPENDED(2),
+    ARCHIVED(3);
+//    INACTIVE(5);
 
     private final Integer type;
 

@@ -45,30 +45,5 @@ public class Document implements Serializable {
     @Column(name = "ATTACHMENT")
     private String attachment;
 
-//    @ManyToOne
-////    @JoinTable(name = "DOCUMENTS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_DOCUMENT",
-////            referencedColumnName = "ID_DOCUMENT")},
-////            inverseJoinColumns = {@JoinColumn(name = "ID_DOCUMENT",
-////                    referencedColumnName = "ID_PROCESS")})
-//    private Process process;
 
-//    @Column(name = "file")
-//    private Associated associated;
-
-
-    //@Column(name="id_signature")
-    //private User user;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Document document = (Document) o;
-        return Objects.equals(documentId, document.documentId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(documentId);
-    }
 }

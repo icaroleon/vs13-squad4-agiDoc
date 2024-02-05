@@ -7,6 +7,7 @@ import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.document.Document;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
@@ -19,6 +20,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "PROCESSES")
+
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "processId")
@@ -42,25 +44,11 @@ public class Process {
     @Column(name = "status")
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
 
-//    @ManyToOne
-//    @JoinColumn(name = "")
-//    private Company contracted;
-
-    @ManyToOne
-    @JoinColumn(name = "ID_COMPANY")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_COMPANY", referencedColumnName = "ID_COMPANY")
     private Company company;
 
-    private Integer institutionId = 1;
 
-//    @OneToMany
-//    private List<Company> subscribers;
-
-//    @Column(name = "id_contracted")
-//    private Competitor contracted;
-
-
-//    private ArrayList<Competitor> competitors;
-//
     @JsonIgnore
     @OneToMany(
             cascade = CascadeType.ALL,
@@ -72,35 +60,5 @@ public class Process {
             referencedColumnName = "ID_DOCUMENT")})
     private Set<Document> documents = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_company", insertable = false, updatable = false)
-    private Process companyId;
-
-//    public boolean chooseContractor(Company company) {
-//        this.contracted = company;
-//
-//        return true;
-//    }
-
-//    public boolean subscribe(Company company) {
-//        if (company == null)
-//            return false;
-//
-//        this.company.add(company);
-//        return true;
-//    }
-//
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Process process = (Process) o;
-        return Objects.equals(processId, process.processId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(processId);
-    }
 
 }
