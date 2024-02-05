@@ -45,7 +45,7 @@ public class Process {
     @JoinColumn(name = "ID_COMPANY", referencedColumnName = "ID_COMPANY")
     private Company company;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "process", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Document> documents = new HashSet<>();
 }
