@@ -29,9 +29,9 @@ public class ContactController implements IContactController {
     @Override
     public ResponseEntity<List<ContactDTO>> listAll() throws Exception {
         try{
-            log.info(DBConnection.getConnection().toString());
+
             log.info("Searching for all contacts to list.");
-            List<ContactDTO> listAll = this.contactService.listALl();
+            List<ContactDTO> listAll = this.contactService.listAll();
             log.info("All contacts have been successfully listed.");
             return new ResponseEntity<List<ContactDTO>>(listAll, HttpStatus.OK);
         }catch (Exception erro){
@@ -72,7 +72,7 @@ public class ContactController implements IContactController {
     }
 
     @PutMapping()
-    public ResponseEntity<ContactDTO> update(@RequestParam("idContact") Integer idContact, @RequestBody ContactUpdateDTO contactUpdateDTO) throws Exception{
+    public ResponseEntity<ContactDTO> update(@RequestParam("idContact") Integer idContact, @RequestBody @Valid ContactUpdateDTO contactUpdateDTO) throws Exception{
         try{
             log.info("Updating contact.");
             ContactDTO contactDTO = this.contactService.update(idContact, contactUpdateDTO);

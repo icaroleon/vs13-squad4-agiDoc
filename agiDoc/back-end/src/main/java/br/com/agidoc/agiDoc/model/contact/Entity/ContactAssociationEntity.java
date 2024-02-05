@@ -1,14 +1,23 @@
 package br.com.agidoc.agiDoc.model.contact.Entity;
 
-import br.com.agidoc.agiDoc.model.contact.pk.ContactAssociationPk;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
 @Getter
 @Setter
-@Entity(name = "CONTACTS_ASSOCIATIONS")
+@Entity
 @Table(name = "CONTACTS_ASSOCIATIONS")
 public class ContactAssociationEntity {
-    @EmbeddedId
-    private ContactAssociationPk contactAssociationPk;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CONTACTS_ASSOCIATIONS")
+    @SequenceGenerator(name = "SEQ_CONTACTS_ASSOCIATIONS", sequenceName = "SEQ_CONTACTS_ASSOCIATIONS", allocationSize = 1)
+    @Column(name = "id_contact_association")
+    private Integer idContactAssociation;
+
+    @Column(name = "id_contact")
+    private Integer idContact;
+
+    @Column(name = "id_company")
+    private Integer idCompany;
 }

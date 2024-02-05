@@ -30,7 +30,7 @@ public class ContactCreateDTO {
     @Size(max = 50)
     private String phone;
 
-    @Schema(required = true, example = "0")
+    @Schema(required = true, example = "1")
     @NotNull
-    private ContactPhoneType phoneType;
+    private Integer phoneType;
 }

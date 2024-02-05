@@ -31,5 +31,5 @@ public class ContactUpdateDTO {
 
     @Schema(required = true, example = "1")
     @NotNull
-    private ContactPhoneType phoneType;
+    private Integer phoneType;
 }

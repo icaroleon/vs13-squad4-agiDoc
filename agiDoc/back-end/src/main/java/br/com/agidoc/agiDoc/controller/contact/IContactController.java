@@ -56,7 +56,7 @@ public interface IContactController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    public ResponseEntity<ContactDTO> update(@PathVariable Integer id, @RequestBody ContactUpdateDTO contactUpdateDTO) throws Exception;
+    public ResponseEntity<ContactDTO> update(@PathVariable Integer id, @RequestBody @Valid ContactUpdateDTO contactUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete Contact", description = "Delete a contact in database")
     @ApiResponses(

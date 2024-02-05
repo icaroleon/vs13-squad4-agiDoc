@@ -2,6 +2,7 @@ package br.com.agidoc.agiDoc.service;
 
 import br.com.agidoc.agiDoc.dto.contact.*;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
+import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
 import br.com.agidoc.agiDoc.model.contact.Entity.ContactEntity;
 import br.com.agidoc.agiDoc.repository.ContactRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,14 +30,13 @@ public class ContactService {
 
         // Creating contact association with the company:
         ContactAssociationCreateDTO contactAssociationCreateDTO = new ContactAssociationCreateDTO();
-        contactAssociationCreateDTO.getContactAssociationPk().setIdContact(contactDTO.getIdContact());
-        contactAssociationCreateDTO.getContactAssociationPk().setIdCompany(idCompany);
+        contactAssociationCreateDTO.setIdContact(contactDTO.getIdContact());
+        contactAssociationCreateDTO.setIdCompany(idCompany);
         this.contactAssociationService.create(contactAssociationCreateDTO);
-
         return contactDTO;
     }
 
-    public List<ContactDTO> listALl() throws Exception{
+    public List<ContactDTO> listAll() throws Exception{
         List<ContactDTO> listAll = this.contactRepository.findAll().stream().map(this::returnDTO).toList();
         return listAll;
     }
@@ -48,6 +48,9 @@ public class ContactService {
 
     public ContactDTO update(Integer idContact, ContactUpdateDTO contactUpdateDTO) throws Exception{
         ContactEntity contactEnitity = findByIdContact(idContact);
+        contactEnitity.setName(contactUpdateDTO.getName());
+        contactEnitity.setEmail(contactUpdateDTO.getEmail());
+        contactEnitity.setPhoneType(contactUpdateDTO.getPhoneType());
         ContactDTO contactDTO = returnDTO(this.contactRepository.save(contactEnitity));
         return contactDTO;
     }
@@ -58,32 +61,37 @@ public class ContactService {
     }
 
     public ContactEntity returnEntity(Object object) throws Exception{
-        ContactEntity contactEnitity = null;
+
         if(object instanceof ContactCreateDTO){
-            contactEnitity = this.objectMapper.convertValue((ContactCreateDTO) object, ContactEntity.class);
+
+            return this.objectMapper.convertValue((ContactCreateDTO) object, ContactEntity.class);
         }
         else if(object instanceof ContactUpdateDTO){
-            contactEnitity = this.objectMapper.convertValue((ContactUpdateDTO) object, ContactEntity.class);
+            return this.objectMapper.convertValue((ContactUpdateDTO) object, ContactEntity.class);
         }
         else if(object instanceof ContactDTO){
-            contactEnitity = this.objectMapper.convertValue((ContactDTO) object, ContactEntity.class);
+            return this.objectMapper.convertValue((ContactDTO) object, ContactEntity.class);
         }
-        return contactEnitity;
+        return null;
     }
 
     public ContactDTO returnDTO(Object object){
         ContactDTO contactDTO = null;
         if(object instanceof ContactCreateDTO){
             contactDTO = this.objectMapper.convertValue((ContactCreateDTO) object, ContactDTO.class);
+            contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactCreateDTO) object).getPhoneType()));
         }
         else if(object instanceof ContactUpdateDTO){
             contactDTO = this.objectMapper.convertValue((ContactUpdateDTO) object, ContactDTO.class);
+            contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactUpdateDTO) object).getPhoneType()));
         }
         else if(object instanceof ContactEntity){
             contactDTO = this.objectMapper.convertValue((ContactEntity) object,ContactDTO.class);
+            contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactEntity) object).getPhoneType()));
         }
         return contactDTO;
     }
+
     public ContactEntity findByIdContact(Integer idContact) throws Exception{
         Optional<ContactEntity> optional = this.contactRepository.findById(idContact);
         if(optional.isPresent()){

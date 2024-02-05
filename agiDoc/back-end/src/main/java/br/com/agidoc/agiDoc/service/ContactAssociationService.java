@@ -26,27 +26,29 @@ public class ContactAssociationService {
         List<ContactAssociationEntity> list = this.contactAssociationRepository.findAll();
         ContactAssociationEntity contactAssociationEntity = list.stream()
                 .filter(entity ->
-                entity.getContactAssociationPk().getIdContact().equals(idContact) &&
-                entity.getContactAssociationPk().getIdCompany().equals(idCompany)).findFirst().get();
-        this.contactAssociationRepository.delete(contactAssociationEntity);
+                entity.getIdContact().equals(idContact) &&
+                entity.getIdCompany().equals(idCompany)).findFirst().get();
+        if(contactAssociationEntity != null){
+            this.contactAssociationRepository.delete(contactAssociationEntity);
+        }
     }
 
-    public boolean findById(Integer idContact, Integer idCompany) throws Exception{
+    public boolean findByIdContactOrIdCompany(Integer idContact, Integer idCompany) throws Exception{
         List<ContactAssociationEntity> listAll = this.contactAssociationRepository.findAll();
         // Search for the entity by id, either with both ids or with just one, and returns boolean.
         boolean result = false;
         if(idContact != null && idCompany != null){
             result = listAll.stream().anyMatch(entity ->
-                    entity.getContactAssociationPk().getIdContact().equals(idContact) &&
-                    entity.getContactAssociationPk().getIdCompany().equals(idCompany));
+                    entity.getIdContact().equals(idContact) &&
+                    entity.getIdCompany().equals(idCompany));
         }
         else if(idContact != null){
             result = listAll.stream().anyMatch(entity ->
-                    entity.getContactAssociationPk().getIdContact().equals(idContact));
+                    entity.getIdContact().equals(idContact));
         }
         else if(idCompany != null){
             result = listAll.stream().anyMatch(entity ->
-                    entity.getContactAssociationPk().getIdCompany().equals(idCompany));
+                    entity.getIdCompany().equals(idCompany));
 
         }
         return result;

@@ -1,31 +1,29 @@
 package br.com.agidoc.agiDoc.model.contact.Entity;
 
 import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity(name = "CONTACTS")
+@Getter
+@Setter
+@Entity
 @Table(name = "CONTACTS")
 public class ContactEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CONTACTS")
-    @SequenceGenerator(name = "SEQ_CONTACTS", sequenceName = "seq_contacts", allocationSize = 1)
-    @Column(name = "ID_CONTACT")
+    @SequenceGenerator(name = "SEQ_CONTACTS", sequenceName = "SEQ_CONTACTS", allocationSize = 1)
+    @Column(name = "id_contact")
     private Integer idContact;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "EMAIL")
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "PHONE")
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "TYPE")
-    private ContactPhoneType phoneType;
+    @Column(name = "phone_type")
+    private Integer phoneType;
 }
