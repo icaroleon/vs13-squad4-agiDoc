@@ -44,42 +44,62 @@ public class DocumentService {
 
         DocumentListDTO documentListDTO = new DocumentListDTO();
         documentListDTO.setDocument(documentDTO);
-//        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
-//        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
-//        documentListDTO.setProcessNumber(documentInfos.getProcess().getProcessNumber());
-//        documentListDTO.setTitle(documentInfos.getProcess().getTitle());
-//        documentListDTO.setDescription(documentInfos.getProcess().getDescription());
-//        documentListDTO.setProcessStatus(documentInfos.getProcess().getProcessStatus());
+        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
+        documentListDTO.setProcessId(documentInfos.getProcess().getProcessId());
+        documentListDTO.setProcessNumber(documentInfos.getProcess().getProcessNumber());
+        documentListDTO.setTitle(documentInfos.getProcess().getTitle());
+        documentListDTO.setDescription(documentInfos.getProcess().getDescription());
+        documentListDTO.setProcessStatus(documentInfos.getProcess().getProcessStatus());
 
         return documentListDTO;
     }
 
     public DocumentDTO create(Integer idProcess, DocumentCreateDTO documentCreateDto) throws Exception {
-        processRepository.findById(idProcess)
+        // Busca um processo pelo ID fornecido. Lança uma exceção customizada se não encontrado.
+        Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
+        // Cria uma chave primária composta para a associação entre documentos e processos.
         DocumentsWithProcessesAssociationPk pk = new DocumentsWithProcessesAssociationPk();
+        // Cria uma nova instância da entidade que representa a associação entre documentos e processos.
         DocumentsWithProcessesAssociation documentsProcessesAssociation = new DocumentsWithProcessesAssociation();
 
+        // Converte o DTO do documento recebido para a entidade Document.
         Document document = convertToEntity(documentCreateDto);
-        Process process = processService.addDocumentToProcess(idProcess, document);
 
-        document = documentRepository.save(document);
+        // Salva o documento no repositório e retorna a entidade salva.
+        Document savedDocument = documentRepository.save(document);
+        // Adiciona o documento salvo ao conjunto de documentos do processo.
+        process.getDocuments().add(savedDocument);
+        // Salva o processo, o que deve atualizar a coleção de documentos associada ao processo.
+        processRepository.save(process);
 
-//        pk.setDocumentId(document.getDocumentId());
-//        pk.setProcessId(idProcess);
-//
-//        documentsProcessesAssociationRepository.save(documentsProcessesAssociation);
+        // Define os IDs do documento e do processo na chave primária composta da associação.
+        pk.setDocumentId(savedDocument.getDocumentId());
+        pk.setProcessId(process.getProcessId());
 
-        return convertToDTO(document);
+        // Configura a chave primária composta na entidade de associação.
+        documentsProcessesAssociation.setDocumentsAssociationsPk(pk);
+        // Salva a entidade de associação no repositório correspondente.
+        documentsProcessesAssociationRepository.save(documentsProcessesAssociation);
+
+        // Converte o documento salvo para um DTO para ser retornado.
+        DocumentDTO documentDTO = convertToDTO(savedDocument);
+        // Configura o ID do processo no DTO do documento.
+        documentDTO.setProcessId(process.getProcessId());
+
+        // Retorna o DTO do documento.
+        return documentDTO;
     }
+
 
     public DocumentDTO update(Integer idDocument, DocumentUpdateDTO documentUpdateDateDTO) throws Exception {
 
         Document document = documentRepository.findById(idDocument)
                 .orElseThrow(() -> new RegraDeNegocioException("Document not found with the provided ID"));
 
-        //document.setFile(documentUpdateDateDTO.getFile());
+//        document.setAttachment(documentUpdateDateDTO.getFile());
+        document.setExpirationDate(documentUpdateDateDTO.getExpirationDate());
         documentRepository.save(document);
 
         return convertToDTO(document);

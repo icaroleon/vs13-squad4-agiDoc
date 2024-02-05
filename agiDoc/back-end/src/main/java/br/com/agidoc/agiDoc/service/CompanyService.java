@@ -10,6 +10,8 @@ import br.com.agidoc.agiDoc.model.company.Company;
 
 import br.com.agidoc.agiDoc.repository.CompanyRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,9 +26,11 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final ObjectMapper objectMapper;
 
+
     public CompanyDTO create(CompanyCreateDTO companyCreateDTO) throws RegraDeNegocioException, DatabaseException {
         Company company = convertToEntity(companyCreateDTO);
         log.info("Criando empresa...");
+        company.setStatus(Status.ACTIVE);
         return returnDTO(companyRepository.save(company));
     }
 
@@ -62,24 +66,26 @@ public class CompanyService {
         log.info("Atualizando empresa...");
 
         if (companyToUpdate.getStatus().ordinal() == 0) {
-            companyToUpdate.setIdCompany(companyToUpdate.getIdCompany());
+            companyToUpdate.setCompanyId(companyToUpdate.getCompanyId());
             companyToUpdate.setCnpj(companyUpdateDTO.getCnpj());
             companyToUpdate.setType(companyToUpdate.getType());
             companyToUpdate.setStatus(companyToUpdate.getStatus());
             companyToUpdate.setCompanyName(companyUpdateDTO.getCompanyName());
-            return returnDTO(companyRepository.save(companyToUpdate));
+            companyRepository.save(companyToUpdate);
         } else {
             new RegraDeNegocioException("Empresa não existe");
             return null;
         }
+        return returnDTO(companyToUpdate);
     }
 
     public void delete(Integer id) throws RegraDeNegocioException {
         Company companyToDelete = returnCompanyId(id);
 
         log.info("Deletando empresa...");
-
         companyToDelete.setStatus(Status.INACTIVE);
+        companyRepository.save(companyToDelete);
+
     }
 
     public Company convertToEntity(CompanyCreateDTO dto) {

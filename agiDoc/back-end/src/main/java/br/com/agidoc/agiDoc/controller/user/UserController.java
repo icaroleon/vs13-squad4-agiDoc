@@ -1,5 +1,6 @@
 package br.com.agidoc.agiDoc.controller.user;
 
+import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
 import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
@@ -39,6 +40,16 @@ public class UserController implements IUserController{
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getById(@PathVariable Integer id) throws Exception {
         return new ResponseEntity<>(this.userService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/actives")
+    public ResponseEntity<List<UserDTO>> listActives() throws Exception {
+        return new ResponseEntity<>(userService.listByStatusActive(), HttpStatus.OK);
+    }
+
+    @GetMapping("/inactives")
+    public ResponseEntity<List<UserDTO>> listInactives() throws Exception {
+        return new ResponseEntity<>(userService.listByStatusInactive(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

@@ -7,6 +7,7 @@ import br.com.agidoc.agiDoc.dto.document.DocumentListDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentUpdateDTO;
 import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.service.DocumentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RequestMapping("/document")
 @AllArgsConstructor
+@Tag(name = "Document", description = "CRUD of document")
 @RestController
 @Validated
 //TODO IMPLEMENTAR DOCUMENT CONTROLLER

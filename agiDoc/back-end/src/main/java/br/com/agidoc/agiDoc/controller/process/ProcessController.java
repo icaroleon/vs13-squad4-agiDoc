@@ -7,6 +7,7 @@ import br.com.agidoc.agiDoc.dto.process.ProcessesDocumentsDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.service.ProcessService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RequestMapping("/process")
+@Tag(name = "Process", description = "CRUD of process")
 @AllArgsConstructor
 @RestController
 @Validated
@@ -37,9 +39,10 @@ public class ProcessController{
         return new ResponseEntity<>(processService.findById(idProcess), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ProcessDTO> create(@Valid @RequestBody ProcessCreateDTO processCreateDto) throws Exception {
-        return new ResponseEntity<>(this.processService.create(processCreateDto), HttpStatus.OK);
+    @PostMapping("/{idCompany}")
+    public ResponseEntity<ProcessDTO> create(@NotNull @PathVariable ("idCompany") Integer idCompany,
+                                                 @Valid @RequestBody ProcessCreateDTO processCreateDto) throws Exception {
+        return new ResponseEntity<>(this.processService.create(idCompany, processCreateDto), HttpStatus.OK);
     }
 
     @PutMapping("/{idProcess}")
@@ -49,10 +52,9 @@ public class ProcessController{
     }
 
     @PutMapping("/{idProcess}/{status}")
-    public ResponseEntity<Void> setStatus(@NotNull @PathVariable("idProcess") Integer idProcess,
+    public ResponseEntity<ProcessDTO> setStatus(@NotNull @PathVariable("idProcess") Integer idProcess,
                                               @NotNull @PathVariable("status") Integer statusWanted) throws Exception {
-        this.processService.setStatus(idProcess, statusWanted);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(processService.setStatus(idProcess, statusWanted), HttpStatus.OK);
     }
 }
 
