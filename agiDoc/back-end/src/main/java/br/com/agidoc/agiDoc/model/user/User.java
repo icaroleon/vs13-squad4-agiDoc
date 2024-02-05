@@ -34,14 +34,18 @@ public class User {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "permission")
-    private Permission permission;
+
+    private Role role;
+
 
     @Column(name = "position")
     private String position;
 
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "department")
     private Department department;
+
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
@@ -49,6 +53,3 @@ public class User {
 
     @Column(name = "email")
     private String email;
-
-
-}

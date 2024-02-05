@@ -4,34 +4,34 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class AddressCreateDTO {
+public class AddressUpdateDTO {
     @NotBlank
-    @Schema(description = "Rua", example = "Peixoto")
+    @Schema(description = "Sitio", example = "Peixoto")
     private String street;
     @NotBlank
-    @Schema(description = "distrito", example = "Distrito de São Paulo")
+    @Schema(description = "distrito", example = "Distrito do Rio de Janeiro")
     private String district;
     @NotNull
     @Positive
-    @Schema(description = "Número do local", example = "12")
+    @Schema(description = "Número do local", example = "25")
     private Integer num;
     @NotBlank
-    @Schema(description = "Complemento do local", example = "Proximo a praça")
+    @Schema(description = "Complemento do local", example = "Proximo a delegacia")
     private String complement;
     @NotBlank
-    @Schema(description = "CEP", example = "81725172")
+    @Schema(description = "CEP", example = "11729972")
     private String zipCode;
     @NotBlank
-    @Schema(description = "Cidade", example = "São Paulo")
+    @Schema(description = "Cidade", example = "Rio de Janeiro")
     private String city;
     @NotBlank
-    @Schema(description = "Estado", example = "São Paulo")
+    @Schema(description = "Estado", example = "Rio de Janeiro")
     private String state;
 }
