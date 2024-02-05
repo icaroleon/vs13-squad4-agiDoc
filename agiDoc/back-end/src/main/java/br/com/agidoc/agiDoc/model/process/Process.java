@@ -52,4 +52,5 @@ public class Process {
 //    @JsonIgnore
     @OneToMany(mappedBy = "process", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Document> documents = new HashSet<>();
+
 }
