@@ -27,30 +27,26 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "user")
+    @Column(name = "username")
     private String user;
 
     @Column(name = "password")
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "role")
+    @Column(name = "permission")
     private Role role;
 
     @Column(name = "position")
     private String position;
 
-    @Column(name = "id_department")
-    private Integer idDepartment;
+    @Column(name = "department")
+    private Integer department;
 
     @Column(name = "status")
     private Status status;
 
     @Column(name = "email")
     private String email;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_department", insertable = false, updatable = false)
-//    private Department department;
 
 }
