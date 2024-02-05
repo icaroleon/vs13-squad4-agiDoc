@@ -41,6 +41,7 @@ public class Process {
     @Column(name = "status")
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "PROCESS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_PROCESS",
             referencedColumnName = "ID_PROCESS")},
