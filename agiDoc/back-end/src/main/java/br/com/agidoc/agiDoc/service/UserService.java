@@ -1,5 +1,6 @@
 package br.com.agidoc.agiDoc.service;
 
+import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
 import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
@@ -10,8 +11,6 @@ import br.com.agidoc.agiDoc.model.Status;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class UserService {
 
     public UserDTO create(UserCreateDTO userCreateDTO) throws RegraDeNegocioException {
         User user = convertToEntity(userCreateDTO);
-
+        user.setStatus(Status.ACTIVE);
         return returnDTO(userRepository.save(user));
     }
 
@@ -40,16 +39,28 @@ public class UserService {
         return userRepository.findAll().stream().map(this::returnDTO).collect(Collectors.toList());
     }
 
+    public List<UserDTO> listByStatusActive() throws DatabaseException {
+        return userRepository.findUserByStatus(Status.ACTIVE).stream().map(this::returnDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDTO> listByStatusInactive() throws DatabaseException {
+        return userRepository.findUserByStatus(Status.INACTIVE).stream().map(this::returnDTO)
+                .collect(Collectors.toList());
+    }
+
     public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws RegraDeNegocioException {
         User userToUpdate = returnUserById(id);
 
         if (userToUpdate.getStatus().ordinal() == 0) {
             userToUpdate.setIdUser(userToUpdate.getIdUser());
             userToUpdate.setName(userUpdateDTO.getName());
+            userToUpdate.setUser(userToUpdate.getUser());
             userToUpdate.setPassword(userUpdateDTO.getPassword());
-            userToUpdate.setRole(userUpdateDTO.getRole());
+            userToUpdate.setPermission(userUpdateDTO.getPermission());
             userToUpdate.setPosition(userUpdateDTO.getPosition());
             userToUpdate.setStatus(userToUpdate.getStatus());
+            userToUpdate.setDepartment(userToUpdate.getDepartment());
             return returnDTO(userRepository.save(userToUpdate));
         } else {
             new RegraDeNegocioException("Usuário não existe");
@@ -61,7 +72,8 @@ public class UserService {
         User user = returnUserById(id);
 
         user.setStatus(Status.INACTIVE);
-        user.setUser(null);
+
+        userRepository.save(user);
     }
 
     public boolean login(UserLoginDTO userLoginDTO) throws RegraDeNegocioException {

@@ -7,6 +7,7 @@ import br.com.agidoc.agiDoc.dto.process.ProcessesDocumentsDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.service.ProcessService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RequestMapping("/process")
+@Tag(name = "Process", description = "CRUD of process")
 @AllArgsConstructor
 @RestController
 @Validated
