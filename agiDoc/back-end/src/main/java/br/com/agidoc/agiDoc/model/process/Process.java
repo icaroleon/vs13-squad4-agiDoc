@@ -5,10 +5,7 @@ import java.util.*;
 import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.competitor.Competitor;
 import br.com.agidoc.agiDoc.model.document.Document;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,7 +17,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "PROCESSES")
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "processId")
@@ -48,17 +45,7 @@ public class Process {
     @JoinColumn(name = "ID_COMPANY", referencedColumnName = "ID_COMPANY")
     private Company company;
 
-
-    @JsonIgnore
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch=FetchType.LAZY)
-    @JoinTable(name = "DOCUMENTS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_PROCESS",
-            referencedColumnName = "ID_PROCESS")},
-            inverseJoinColumns = {@JoinColumn(name = "ID_DOCUMENT",
-            referencedColumnName = "ID_DOCUMENT")})
+//    @JsonIgnore
+    @OneToMany(mappedBy = "process", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Document> documents = new HashSet<>();
-
-
 }
