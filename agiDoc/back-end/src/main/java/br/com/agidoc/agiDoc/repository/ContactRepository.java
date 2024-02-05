@@ -1,18 +1,16 @@
 package br.com.agidoc.agiDoc.repository;
 
+import br.com.agidoc.agiDoc.config.OpenApiConfig;
 import br.com.agidoc.agiDoc.database.DBConnection;
-import br.com.agidoc.agiDoc.dto.contact.ContactDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.Associated;
 import br.com.agidoc.agiDoc.model.contact.Contact;
 import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 @Repository
 @NoArgsConstructor

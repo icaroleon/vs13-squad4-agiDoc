@@ -1,5 +1,6 @@
 package br.com.agidoc.agiDoc.repository;
 
+import br.com.agidoc.agiDoc.config.OpenApiConfig;
 import br.com.agidoc.agiDoc.database.DBConnection;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.Associated;
