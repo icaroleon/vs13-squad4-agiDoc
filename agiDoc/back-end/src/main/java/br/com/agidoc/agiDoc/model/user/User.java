@@ -21,7 +21,7 @@ public class User {
     private Integer idUser;
 
     @Column(name = "registration")
-    private String registration =  UUID.randomUUID().toString().substring(0, 6);
+    private String registration = UUID.randomUUID().toString().substring(0, 6);
 
     @Column(name = "name")
     private String name;
@@ -34,8 +34,7 @@ public class User {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "permission")
-
-    private Role role;
+    private Permission permission;
 
 
     @Column(name = "position")
@@ -53,3 +52,4 @@ public class User {
 
     @Column(name = "email")
     private String email;
+}
