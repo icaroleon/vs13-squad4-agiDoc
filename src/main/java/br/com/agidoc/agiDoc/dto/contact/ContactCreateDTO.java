@@ -33,8 +33,4 @@ public class ContactCreateDTO {
     @Schema(required = true, example = "0")
     @NotNull
     private ContactPhoneType phoneType;
-
-    @Schema(required = false, example = "4")
-    @NotNull
-    private Integer associatedId;
 }

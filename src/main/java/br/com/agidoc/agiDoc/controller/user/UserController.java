@@ -1,5 +1,6 @@
 package br.com.agidoc.agiDoc.controller.user;
 
+import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
 import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
