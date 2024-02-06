@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,25 +77,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public boolean login(UserLoginDTO userLoginDTO) throws RegraDeNegocioException {
-        String username = userLoginDTO.getUser();
-        String password = userLoginDTO.getPassword();
+    public Optional<User> login(String username, String password) throws RegraDeNegocioException {
 
-        User user = userRepository.findUserByUser(username);
+//        User user = userRepository.findUserByUser(username);
+//
+//        if(user.getStatus().ordinal() == 1) {
+//            throw new RegraDeNegocioException("User not found.");
+//        }
 
-        if(user.getStatus().ordinal() == 1) {
-            throw new RegraDeNegocioException("User not found.");
-        }
-
-        if(user.getUser() == null) {
-           throw new RegraDeNegocioException("User not found.");
-        }
-
-        if (!user.getPassword().equals(password)) {
-            throw new RegraDeNegocioException("Username or password is incorrect.");
-        }
-
-        return true;
+        return userRepository.findUsersByUserAndPassword(username, password);
     }
 
     public User convertToEntity(UserCreateDTO dto) throws RegraDeNegocioException {

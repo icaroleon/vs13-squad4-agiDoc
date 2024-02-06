@@ -99,5 +99,5 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<Void> login(@Valid UserLoginDTO userLoginDTO) throws Exception;
+    String login(@Valid UserLoginDTO userLoginDTO) throws Exception;
 }
