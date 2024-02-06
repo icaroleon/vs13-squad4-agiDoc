@@ -70,7 +70,7 @@ public class UserController implements IUserController{
         if(byUsernameAndPassword.isPresent()) {
             return tokenService.getToken(byUsernameAndPassword.get());
         } else {
-            throw new RegraDeNegocioException("User or password  d is not valid");
+            throw new RegraDeNegocioException("User or password is not valid");
         }
     }
 }
