@@ -9,6 +9,7 @@ import br.com.agidoc.agiDoc.model.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
 
 @Repository
@@ -20,5 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer>{
     List<User> findUserByStatus(Status status);
 
     Page<User> findUsersByStatus(Status status, Pageable pageable);
+
+    Optional<User> findUsersByUserAndPassword(String login, String password);
 
 }

@@ -16,12 +16,12 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCreateDTO {
-    @Schema(required = true, example = "Joao Silva")
+    @Schema(required = true, example = "joaosilva123", deprecated = false)
     @NotBlank
     @Size(max = 100)
     private String name;
 
-    @Schema(required = true, example = "joaosilva123")
+    @Schema(required = true, example = "senhajoao3352", deprecated = false)
     @NotBlank
     @Size(max = 100)
     private String user;

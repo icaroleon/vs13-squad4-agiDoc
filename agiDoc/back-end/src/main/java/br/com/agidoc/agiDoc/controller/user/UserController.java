@@ -8,6 +8,7 @@ import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.user.User;
+import br.com.agidoc.agiDoc.service.TokenService;
 import br.com.agidoc.agiDoc.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Tag(name = "User", description = "CRUD of users")
@@ -26,6 +28,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController implements IUserController{
     private final UserService userService;
+    private final TokenService tokenService;
 
     @PostMapping
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userCreateDTO) throws Exception {
@@ -64,11 +67,12 @@ public class UserController implements IUserController{
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
-        if(this.userService.login(userLoginDTO)){
-            return ResponseEntity.ok().build();
+    public String login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
+        Optional<User> byUsernameAndPassword = userService.login(userLoginDTO.getUser(), userLoginDTO.getPassword());
+        if (byUsernameAndPassword.isPresent()) {
+            return tokenService.getToken(byUsernameAndPassword.get());
+        } else {
+            throw new RegraDeNegocioException("User or password is not valid");
         }
-
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 }
