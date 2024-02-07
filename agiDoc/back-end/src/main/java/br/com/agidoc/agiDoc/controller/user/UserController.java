@@ -14,6 +14,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +34,13 @@ import java.util.Optional;
 public class UserController implements IUserController{
     private final UserService userService;
     private final TokenService tokenService;
+    public final AuthenticationManager authenticationManager;
+    public final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userCreateDTO) throws Exception {
+        String encryptedPassword = passwordEncoder.encode(userCreateDTO.getPassword());
+        userCreateDTO.setPassword(encryptedPassword);
         return new ResponseEntity<>(this.userService.create(userCreateDTO), HttpStatus.CREATED);
     }
 
@@ -66,13 +75,30 @@ public class UserController implements IUserController{
         return ResponseEntity.ok().build();
     }
 
+//    @PostMapping("/login")
+//    public String login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
+//        Optional<User> byUsernameAndPassword = userService.login(userLoginDTO.getUser(), userLoginDTO.getPassword());
+//        if (byUsernameAndPassword.isPresent()) {
+//            return tokenService.getToken(byUsernameAndPassword.get());
+//        } else {
+//            throw new RegraDeNegocioException("User or password is not valid");
+//        }
+//    }
+
     @PostMapping("/login")
     public String login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
-        Optional<User> byUsernameAndPassword = userService.login(userLoginDTO.getUser(), userLoginDTO.getPassword());
-        if (byUsernameAndPassword.isPresent()) {
-            return tokenService.getToken(byUsernameAndPassword.get());
-        } else {
-            throw new RegraDeNegocioException("User or password is not valid");
-        }
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        userLoginDTO.getUser(),
+                        userLoginDTO.getPassword()
+                );
+
+        Authentication authentication =
+                authenticationManager.authenticate(
+                        usernamePasswordAuthenticationToken);
+
+        User usuarioValidado = (User) authentication.getPrincipal();
+
+        return tokenService.generateToken(usuarioValidado);
     }
 }

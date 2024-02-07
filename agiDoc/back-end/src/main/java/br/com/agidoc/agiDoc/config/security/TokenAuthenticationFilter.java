@@ -1,4 +1,4 @@
-package br.com.agidoc.agiDoc.config;
+package br.com.agidoc.agiDoc.config.security;
 
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.user.User;
@@ -26,28 +26,26 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String tokenFromHeader = getTokenFromHeader(request);
-        Optional<User> user = null;
-        try {
-            user = tokenService.isValid(tokenFromHeader);
-        } catch (RegraDeNegocioException e) {
-            throw new RuntimeException(e);
-        }
 
-        authenticate(user);
+        UsernamePasswordAuthenticationToken user = tokenService.isValid(tokenFromHeader);
+        SecurityContextHolder.getContext().setAuthentication(user);
+
+        // Antigo
+        //authenticate(usuario);
 
         filterChain.doFilter(request, response);
     }
 
-    private void authenticate(Optional<User> optionalUsuarioEntity) {
-        if (optionalUsuarioEntity.isPresent()) {
-            User userEntity = optionalUsuarioEntity.get();
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(userEntity.getUser(), userEntity.getPassword(), Collections.emptyList());
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        } else {
-            SecurityContextHolder.getContext().setAuthentication(null);
-        }
-    }
+//    private void authenticate(Optional<UsuarioEntity> optionalUsuarioEntity) {
+//        if (optionalUsuarioEntity.isPresent()) {
+//            UsuarioEntity usuarioEntity = optionalUsuarioEntity.get();
+//            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+//                    new UsernamePasswordAuthenticationToken(usuarioEntity.getLogin(), usuarioEntity.getSenha(), Collections.emptyList());
+//            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+//        } else {
+//            SecurityContextHolder.getContext().setAuthentication(null);
+//        }
+//    }
 
     private String getTokenFromHeader(HttpServletRequest request) {
         String token = request.getHeader("Authorization");

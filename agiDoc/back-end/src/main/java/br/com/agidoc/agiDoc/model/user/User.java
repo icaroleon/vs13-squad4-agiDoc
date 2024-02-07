@@ -1,10 +1,13 @@
 package br.com.agidoc.agiDoc.model.user;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import br.com.agidoc.agiDoc.model.Status;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 
@@ -13,7 +16,7 @@ import javax.persistence.*;
 @Entity(name = "USERS")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "USERS")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USERS")
     @SequenceGenerator(name = "SEQ_USERS", sequenceName = "seq_users", allocationSize = 1)
@@ -36,15 +39,12 @@ public class User {
     @Column(name = "permission")
     private Permission permission;
 
-
     @Column(name = "position")
     private String position;
-
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "department")
     private Department department;
-
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
@@ -52,4 +52,39 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return user;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
