@@ -30,6 +30,10 @@ public class UserService {
         return returnDTO(userRepository.save(user));
     }
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUser(username);
+    }
+
     public UserDTO getById(Integer id) throws Exception {
         User user = userRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("User not found"));
 
@@ -81,7 +85,7 @@ public class UserService {
 
         User user = userRepository.findUserByUser(username);
 
-        if(user.getStatus().ordinal() == 1) {
+        if (user.getStatus().ordinal() == 1) {
             throw new RegraDeNegocioException("User not found.");
         }
 
@@ -96,8 +100,10 @@ public class UserService {
         return objectMapper.convertValue(entity, UserDTO.class);
     }
 
-    public User returnUserById(Integer id) throws RegraDeNegocioException{
+    public User returnUserById(Integer id) throws RegraDeNegocioException {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada"));
     }
+
+
 }
