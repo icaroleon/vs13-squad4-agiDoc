@@ -1,14 +1,12 @@
 package br.com.agidoc.agiDoc.service;
 
 import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
-import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
-import br.com.agidoc.agiDoc.dto.user.UserDTO;
-import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
-import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
+import br.com.agidoc.agiDoc.dto.user.*;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Status;
 import br.com.agidoc.agiDoc.model.user.User;
+import br.com.agidoc.agiDoc.model.user.pk.UserAssociationPK;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +20,26 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserAssociationService userAssociationService;
+    private final CompanyService companyService;
     private final ObjectMapper objectMapper;
 
-    public UserDTO create(UserCreateDTO userCreateDTO) throws RegraDeNegocioException {
-        User user = convertToEntity(userCreateDTO);
-        user.setStatus(Status.ACTIVE);
-        return returnDTO(userRepository.save(user));
+    public UserDTO create(UserCreateDTO userCreateDTO, Integer idCompany) throws RegraDeNegocioException {
+        if(companyService.getById(idCompany) != null){
+            User user = convertToEntity(userCreateDTO);
+            user.setStatus(Status.ACTIVE);
+            UserDTO userDTO = returnDTO(userRepository.save(user));
+            UserAssociationPK userAssociationPK = new UserAssociationPK();
+            userAssociationPK.setIdUser(userDTO.getIdUser());
+            userAssociationPK.setIdCompany(idCompany);
+            UserAssociationCreateDTO userAssociationCreateDTO = new UserAssociationCreateDTO();
+            userAssociationCreateDTO.setUserAssociationPK(userAssociationPK);
+            this.userAssociationService.createAssociation(userAssociationCreateDTO);
+            return userDTO;
+        }
+        else{
+            throw new RegraDeNegocioException("Id company not found/exists.");
+        }
     }
 
     public Optional<User> findByUsername(String username) {

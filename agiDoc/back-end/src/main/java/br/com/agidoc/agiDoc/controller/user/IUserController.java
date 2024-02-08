@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,7 +26,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<UserDTO> create(@Valid UserCreateDTO userCreateDTO) throws Exception;
+    ResponseEntity<UserDTO> create(@RequestParam("Id company") Integer idCompany, @Valid UserCreateDTO userCreateDTO) throws Exception;
 
     @Operation(summary = "List Users", description = "List all users in database")
     @ApiResponses(

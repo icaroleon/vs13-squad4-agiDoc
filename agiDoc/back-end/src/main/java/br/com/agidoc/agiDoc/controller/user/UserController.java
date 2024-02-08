@@ -38,10 +38,10 @@ public class UserController implements IUserController{
     public final PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userCreateDTO) throws Exception {
+    public ResponseEntity<UserDTO> create(@RequestParam("Id company") Integer idCompany, @Valid @RequestBody UserCreateDTO userCreateDTO) throws Exception {
         String encryptedPassword = passwordEncoder.encode(userCreateDTO.getPassword());
         userCreateDTO.setPassword(encryptedPassword);
-        return new ResponseEntity<>(this.userService.create(userCreateDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.userService.create(userCreateDTO, idCompany), HttpStatus.CREATED);
     }
 
     @GetMapping

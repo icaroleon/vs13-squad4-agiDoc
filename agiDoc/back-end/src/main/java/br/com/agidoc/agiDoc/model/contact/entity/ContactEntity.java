@@ -1,6 +1,5 @@
-package br.com.agidoc.agiDoc.model.contact.Entity;
+package br.com.agidoc.agiDoc.model.contact.entity;
 
-import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
 import lombok.*;
 
 import javax.persistence.*;
