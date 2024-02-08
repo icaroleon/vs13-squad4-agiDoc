@@ -2,7 +2,7 @@ package br.com.agidoc.agiDoc.service;
 
 import br.com.agidoc.agiDoc.dto.contact.ContactAssociationCreateDTO;
 import br.com.agidoc.agiDoc.dto.contact.ContactAssociationDTO;
-import br.com.agidoc.agiDoc.model.contact.Entity.ContactAssociationEntity;
+import br.com.agidoc.agiDoc.model.contact.entity.ContactAssociationEntity;
 import br.com.agidoc.agiDoc.repository.ContactAssociationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

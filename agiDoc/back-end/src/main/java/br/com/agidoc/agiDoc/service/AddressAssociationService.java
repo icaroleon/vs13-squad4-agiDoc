@@ -2,9 +2,7 @@ package br.com.agidoc.agiDoc.service;
 
 import br.com.agidoc.agiDoc.dto.address.AddressAssociationCreateDTO;
 import br.com.agidoc.agiDoc.dto.address.AddressAssociationDTO;
-import br.com.agidoc.agiDoc.dto.address.AddressUpdateDTO;
-import br.com.agidoc.agiDoc.model.address.Entity.AddressAssociationEntity;
-import br.com.agidoc.agiDoc.model.contact.Entity.ContactAssociationEntity;
+import br.com.agidoc.agiDoc.model.address.entity.AddressAssociationEntity;
 import br.com.agidoc.agiDoc.repository.AddresseAssociationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

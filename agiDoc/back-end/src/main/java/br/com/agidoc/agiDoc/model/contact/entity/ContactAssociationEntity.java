@@ -1,4 +1,4 @@
-package br.com.agidoc.agiDoc.model.contact.Entity;
+package br.com.agidoc.agiDoc.model.contact.entity;
 
 import lombok.Getter;
 import lombok.Setter;

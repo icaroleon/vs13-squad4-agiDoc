@@ -3,7 +3,7 @@ package br.com.agidoc.agiDoc.service;
 import br.com.agidoc.agiDoc.dto.contact.*;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.contact.ContactPhoneType;
-import br.com.agidoc.agiDoc.model.contact.Entity.ContactEntity;
+import br.com.agidoc.agiDoc.model.contact.entity.ContactEntity;
 import br.com.agidoc.agiDoc.repository.ContactRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

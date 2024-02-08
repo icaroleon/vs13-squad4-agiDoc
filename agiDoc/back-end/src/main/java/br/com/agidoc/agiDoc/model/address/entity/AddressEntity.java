@@ -1,4 +1,4 @@
-package br.com.agidoc.agiDoc.model.address.Entity;
+package br.com.agidoc.agiDoc.model.address.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
