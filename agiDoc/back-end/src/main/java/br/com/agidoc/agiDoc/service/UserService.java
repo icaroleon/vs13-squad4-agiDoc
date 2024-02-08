@@ -1,9 +1,7 @@
 package br.com.agidoc.agiDoc.service;
 
-import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
-import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
 import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
@@ -12,6 +10,7 @@ import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +37,12 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new RegraDeNegocioException("User not found"));
 
         return returnDTO(user);
+    }
+
+    public Optional<User> findByIdAndReturnEntity(Integer id) throws RegraDeNegocioException {
+        Optional<User> user = userRepository.findById(id);
+
+        return user;
     }
 
     public List<UserDTO> list() throws DatabaseException {
@@ -103,6 +108,15 @@ public class UserService {
     public User returnUserById(Integer id) throws RegraDeNegocioException {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada"));
+    }
+
+    public Optional<User> getLoggedUser() throws RegraDeNegocioException {
+        return findByIdAndReturnEntity(getIdLoggedUser());
+    }
+
+    public Integer getIdLoggedUser() {
+        Integer findUserId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        return findUserId;
     }
 
 

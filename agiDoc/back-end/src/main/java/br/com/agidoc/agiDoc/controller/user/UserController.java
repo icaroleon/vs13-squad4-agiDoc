@@ -101,4 +101,9 @@ public class UserController implements IUserController{
 
         return tokenService.generateToken(usuarioValidado);
     }
+
+    @GetMapping("/get-logged-user")
+    public ResponseEntity<Optional<User>> getLoggerUser() throws RegraDeNegocioException {
+        return new ResponseEntity<>(userService.getLoggedUser(), HttpStatus.OK);
+    }
 }
