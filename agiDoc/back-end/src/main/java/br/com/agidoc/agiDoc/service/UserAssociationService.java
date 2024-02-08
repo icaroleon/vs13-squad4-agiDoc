@@ -16,7 +16,8 @@ public class UserAssociationService {
     private final UserAssociationRepository userAssociationRepository;
 
     public void createAssociation(UserAssociationCreateDTO userAssociationCreateDTO) {
-        this.userAssociationRepository.save(returnEntity(userAssociationCreateDTO));
+        UserAssociationEntity userAssociationEntity = returnEntity(userAssociationCreateDTO);
+        this.userAssociationRepository.save(userAssociationEntity);
     }
 
     public void deleteAssociation(Integer idUsuario, Integer idCompany){

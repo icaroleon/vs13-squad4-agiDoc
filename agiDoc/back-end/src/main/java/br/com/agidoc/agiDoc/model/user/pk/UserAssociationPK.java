@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Embeddable
 public class UserAssociationPK implements Serializable {
-    @Column(name = "ID_USUARIO")
+    @Column(name = "ID_USER")
     private Integer idUser;
     @Column(name = "ID_COMPANY")
     private Integer idCompany;
