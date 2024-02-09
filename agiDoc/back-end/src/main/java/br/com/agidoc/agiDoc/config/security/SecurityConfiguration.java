@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
                         .antMatchers("/user/login").permitAll()
-                        .antMatchers(HttpMethod.GET, "/contact/listAll").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.GET, "/contact").hasRole("ADMIN")
                         .antMatchers(HttpMethod.GET, "/user/actives").hasRole("ADMIN")
 //                        .antMatchers(HttpMethod.POST, "/company/**").hasAnyRole("ADMIN", "INSTITUTION")
 //                        .antMatchers(HttpMethod.GET, "/company/**").permitAll()
