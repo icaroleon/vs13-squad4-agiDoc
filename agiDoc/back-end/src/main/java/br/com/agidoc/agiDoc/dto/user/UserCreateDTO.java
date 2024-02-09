@@ -1,8 +1,8 @@
 package br.com.agidoc.agiDoc.dto.user;
 
-import br.com.agidoc.agiDoc.model.Status;
+import br.com.agidoc.agiDoc.model.permission.Permission;
 import br.com.agidoc.agiDoc.model.user.Department;
-import br.com.agidoc.agiDoc.model.user.Permission;
+import br.com.agidoc.agiDoc.model.user.PermissionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,9 +31,12 @@ public class UserCreateDTO {
     @Size(max = 100)
     private String password;
 
+    @NotNull
+    private String permission;
+
     @Schema(required = true, example = "0 = ADMIN, 1 = COMPETITOR, 2 = INSTITUTIONAL_USER")
     @NotNull
-    private Permission permission;
+    private PermissionType permissionType;
 
     @Schema(required = true, example = "Analista de Software")
     @NotBlank
