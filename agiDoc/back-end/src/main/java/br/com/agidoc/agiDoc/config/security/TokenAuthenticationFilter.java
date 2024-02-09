@@ -30,22 +30,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken user = tokenService.isValid(tokenFromHeader);
         SecurityContextHolder.getContext().setAuthentication(user);
 
-        // Antigo
-        //authenticate(usuario);
-
         filterChain.doFilter(request, response);
     }
-
-//    private void authenticate(Optional<UsuarioEntity> optionalUsuarioEntity) {
-//        if (optionalUsuarioEntity.isPresent()) {
-//            UsuarioEntity usuarioEntity = optionalUsuarioEntity.get();
-//            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                    new UsernamePasswordAuthenticationToken(usuarioEntity.getLogin(), usuarioEntity.getSenha(), Collections.emptyList());
-//            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//        } else {
-//            SecurityContextHolder.getContext().setAuthentication(null);
-//        }
-//    }
 
     private String getTokenFromHeader(HttpServletRequest request) {
         String token = request.getHeader("Authorization");

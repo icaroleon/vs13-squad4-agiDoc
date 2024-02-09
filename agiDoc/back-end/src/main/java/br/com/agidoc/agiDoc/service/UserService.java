@@ -15,6 +15,8 @@ import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public class UserService {
     private final PermissionRepository permissionRepository;
 
     public UserDTO create(UserCreateDTO userCreateDTO, Integer idCompany) throws RegraDeNegocioException {
-        if(companyService.getById(idCompany) != null){
+        if (companyService.getById(idCompany) != null) {
             User user = convertToEntity(userCreateDTO);
             user.setStatus(Status.ACTIVE);
 
@@ -46,8 +48,7 @@ public class UserService {
             userAssociationCreateDTO.setUserAssociationPK(userAssociationPK);
             this.userAssociationService.createAssociation(userAssociationCreateDTO);
             return userDTO;
-        }
-        else{
+        } else {
             throw new RegraDeNegocioException("Id company not found/exists.");
         }
     }
@@ -141,6 +142,4 @@ public class UserService {
         Integer findUserId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return findUserId;
     }
-
-
 }

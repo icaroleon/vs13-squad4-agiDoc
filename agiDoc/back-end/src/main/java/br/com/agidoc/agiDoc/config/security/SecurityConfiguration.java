@@ -5,6 +5,7 @@ import br.com.agidoc.agiDoc.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,6 +31,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
                         .antMatchers("/user/login", "/").permitAll()
+//                        .antMatchers(HttpMethod.GET, "/contact").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
