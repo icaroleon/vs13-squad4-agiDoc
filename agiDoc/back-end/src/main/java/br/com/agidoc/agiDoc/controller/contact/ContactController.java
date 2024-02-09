@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Tag(name = "Contact", description = "CRUD of contacts")
+@Tag(name = "contact", description = "CRUD of contacts")
 @RestController
 @Validated
 @RequestMapping("/contact")
@@ -25,8 +25,7 @@ import java.util.List;
 public class ContactController implements IContactController {
     private final ContactService contactService;
 
-    @GetMapping()
-    @Override
+    @GetMapping
     public ResponseEntity<List<ContactDTO>> listAll() throws Exception {
         try{
 

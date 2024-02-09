@@ -30,8 +30,33 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                        .antMatchers("/user/login", "/").permitAll()
-//                        .antMatchers(HttpMethod.GET, "/contact").hasRole("ADMIN")
+                        .antMatchers("/user/login").permitAll()
+                        .antMatchers(HttpMethod.GET, "/contact").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.GET, "/user/actives").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.POST, "/company/**").hasAnyRole("ADMIN", "INSTITUTION")
+//                        .antMatchers(HttpMethod.GET, "/company/**").permitAll()
+//                        .antMatchers(HttpMethod.PUT, "/company/**").hasAnyRole("ADMIN", "INSTITUTION")
+//                        .antMatchers(HttpMethod.DELETE, "/company/**").hasAnyRole("ADMIN", "INSTITUTION")
+//                        // PROCESS
+//                        .antMatchers(HttpMethod.POST, "/process/**").hasAnyRole("ADMIN", "INSTITUTION")
+//                        .antMatchers(HttpMethod.GET, "/process/**").permitAll()
+//                        .antMatchers(HttpMethod.PUT, "/process/**").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.DELETE, "/process/**").hasRole("ADMIN")
+//                        // DOCUMENT
+//                        .antMatchers(HttpMethod.POST, "/document/**").hasAnyRole("ADMIN", "COMPANY")
+//                        .antMatchers(HttpMethod.GET, "/document/**").permitAll()
+//                        .antMatchers(HttpMethod.PUT, "/document/**").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.DELETE, "/document/**").hasRole("ADMIN")
+//                        // USER
+//                        .antMatchers(HttpMethod.POST, "/user/**").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.GET, "/user/**").permitAll()
+//                        .antMatchers(HttpMethod.PUT, "/user/**").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.DELETE, "/user/**").hasRole("ADMIN")
+//                        // ADDRESS/CONTACTS
+//                        .antMatchers(HttpMethod.POST, "/address/**", "/contacts/**").hasAnyRole("ADMIN", "COMPANY")
+//                        .antMatchers(HttpMethod.GET, "/address/**", "/contacts/**").permitAll()
+//                        .antMatchers(HttpMethod.PUT, "/address/**", "/contacts/**").hasRole("ADMIN")
+//                        .antMatchers(HttpMethod.DELETE, "/address/**", "/contacts/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
