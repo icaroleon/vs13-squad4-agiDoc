@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -32,11 +33,11 @@ public class UserCreateDTO {
     private String password;
 
     @NotNull
-    private String permission;
+    private List<String> permission;
 
-    @Schema(required = true, example = "0 = ADMIN, 1 = COMPETITOR, 2 = INSTITUTIONAL_USER")
-    @NotNull
-    private PermissionType permissionType;
+//    @Schema(required = true, example = "0 = ADMIN, 1 = COMPETITOR, 2 = INSTITUTIONAL_USER")
+//    @NotNull
+//    private PermissionType permissionType;
 
     @Schema(required = true, example = "Analista de Software")
     @NotBlank

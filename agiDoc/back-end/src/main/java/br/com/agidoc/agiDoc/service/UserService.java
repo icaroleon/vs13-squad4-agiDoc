@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,9 +38,24 @@ public class UserService {
             User user = convertToEntity(userCreateDTO);
             user.setStatus(Status.ACTIVE);
 
-            Permission permission = permissionRepository.getPermissionByName(userCreateDTO.getPermission())
-                    .orElseThrow(() -> new RegraDeNegocioException("Permission not found"));
-            user.getPermissions().add(permission);
+            if (userCreateDTO.getPermission().size() > 1) {
+                List<String> permissions = userCreateDTO.getPermission().stream()
+                        .map(p -> p.split(","))
+                        .flatMap(Arrays::stream)
+                        .collect(Collectors.toList());
+                for (String permissionName : permissions) {
+                    Permission permission = permissionRepository.getPermissionByName(permissionName.trim())
+                            .orElseThrow(() -> new RegraDeNegocioException("Permission " + permissionName + " not found"));
+                    user.getPermissions().add(permission);
+                }
+            } else {
+                Permission permission = permissionRepository.getPermissionByName
+                        (userCreateDTO.getPermission().get(0))
+                        .orElseThrow(() -> new RegraDeNegocioException("Permission not found"));
+                user.getPermissions().add(permission);
+            }
+
+
             UserDTO userDTO = returnDTO(userRepository.save(user));
             UserAssociationPK userAssociationPK = new UserAssociationPK();
             userAssociationPK.setIdUser(userDTO.getIdUser());
@@ -91,7 +107,7 @@ public class UserService {
             userToUpdate.setName(userUpdateDTO.getName());
             userToUpdate.setUser(userToUpdate.getUser());
             userToUpdate.setPassword(userUpdateDTO.getPassword());
-            userToUpdate.setPermissionType(userUpdateDTO.getPermissionType());
+//            userToUpdate.setPermissionType(userUpdateDTO.getPermissionType());
             userToUpdate.setPosition(userUpdateDTO.getPosition());
             userToUpdate.setStatus(userToUpdate.getStatus());
             userToUpdate.setDepartment(userToUpdate.getDepartment());
