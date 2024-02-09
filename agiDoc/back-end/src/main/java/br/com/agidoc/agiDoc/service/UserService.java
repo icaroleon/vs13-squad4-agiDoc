@@ -7,12 +7,16 @@ import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Status;
+import br.com.agidoc.agiDoc.model.permission.Permission;
+import br.com.agidoc.agiDoc.repository.PermissionRepository;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.model.user.pk.UserAssociationPK;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,11 +30,16 @@ public class UserService {
     private final UserAssociationService userAssociationService;
     private final CompanyService companyService;
     private final ObjectMapper objectMapper;
+    private final PermissionRepository permissionRepository;
 
     public UserDTO create(UserCreateDTO userCreateDTO, Integer idCompany) throws RegraDeNegocioException {
-        if(companyService.getById(idCompany) != null){
+        if (companyService.getById(idCompany) != null) {
             User user = convertToEntity(userCreateDTO);
             user.setStatus(Status.ACTIVE);
+
+            Permission permission = permissionRepository.getPermissionByName(userCreateDTO.getPermission())
+                    .orElseThrow(() -> new RegraDeNegocioException("Permission not found"));
+            user.getPermissions().add(permission);
             UserDTO userDTO = returnDTO(userRepository.save(user));
             UserAssociationPK userAssociationPK = new UserAssociationPK();
             userAssociationPK.setIdUser(userDTO.getIdUser());
@@ -39,8 +48,7 @@ public class UserService {
             userAssociationCreateDTO.setUserAssociationPK(userAssociationPK);
             this.userAssociationService.createAssociation(userAssociationCreateDTO);
             return userDTO;
-        }
-        else{
+        } else {
             throw new RegraDeNegocioException("Id company not found/exists.");
         }
     }
@@ -83,7 +91,7 @@ public class UserService {
             userToUpdate.setName(userUpdateDTO.getName());
             userToUpdate.setUser(userToUpdate.getUser());
             userToUpdate.setPassword(userUpdateDTO.getPassword());
-            userToUpdate.setPermission(userUpdateDTO.getPermission());
+            userToUpdate.setPermissionType(userUpdateDTO.getPermissionType());
             userToUpdate.setPosition(userUpdateDTO.getPosition());
             userToUpdate.setStatus(userToUpdate.getStatus());
             userToUpdate.setDepartment(userToUpdate.getDepartment());
@@ -134,6 +142,4 @@ public class UserService {
         Integer findUserId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return findUserId;
     }
-
-
 }

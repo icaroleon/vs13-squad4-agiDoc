@@ -1,9 +1,13 @@
 package br.com.agidoc.agiDoc.model.user;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import br.com.agidoc.agiDoc.model.Status;
+import br.com.agidoc.agiDoc.model.permission.Permission;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,9 +39,18 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "USER_PERMISSION",
+            joinColumns = @JoinColumn(name = "ID_USER"),
+            inverseJoinColumns = @JoinColumn(name = "ID_PERMISSION")
+    )
+    private Set<Permission> permissions = new HashSet<>();
+
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "permission")
-    private Permission permission;
+    private PermissionType permissionType;
 
     @Column(name = "position")
     private String position;
@@ -55,7 +68,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return permissions;
     }
 
     @Override
