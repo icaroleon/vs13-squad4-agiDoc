@@ -16,7 +16,7 @@ import java.util.Stack;
 public interface UserRepository extends JpaRepository<User, Integer>{
     User findUserByUser(String user);
 
-    User findUserByPermissionType(Integer role);
+//    User findUserByPermissionType(Integer role);
 
     List<User> findUserByStatus(Status status);
 

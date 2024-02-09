@@ -48,9 +48,9 @@ public class User implements UserDetails {
     )
     private Set<Permission> permissions = new HashSet<>();
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "permission")
-    private PermissionType permissionType;
+//    @Enumerated(EnumType.ORDINAL)
+//    @Column(name = "permission")
+//    private PermissionType permissionType;
 
     @Column(name = "position")
     private String position;
