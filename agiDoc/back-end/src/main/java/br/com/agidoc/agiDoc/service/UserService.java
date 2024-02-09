@@ -15,8 +15,7 @@ import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,6 +52,23 @@ public class UserService {
         }
     }
 
+    public Optional<String> updatePassword(UserUpdatePasswordDTO userUpdatePasswordDTO) throws Exception{
+        StandardPasswordEncoder standardPasswordEncoder = new StandardPasswordEncoder();
+        Optional<User> userLogado = getLoggedUser();
+        if(userLogado.get() != null){
+            if(standardPasswordEncoder
+                    .matches(userUpdatePasswordDTO.getOldPassword()
+                    .replace(" ", ""), userLogado.get().getPassword())){
+
+                String newPassword = standardPasswordEncoder.encode(userUpdatePasswordDTO.getNewPassword());
+                userLogado.get().setPassword(newPassword);
+                this.userRepository.save(userLogado.get());
+                return "Password changed successfully.".describeConstable();
+            }
+        }
+        return "Incorrect password.".describeConstable();
+    }
+
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUser(username);
     }
@@ -83,22 +99,26 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDTO update(Integer id, UserUpdateDTO userUpdateDTO) throws RegraDeNegocioException {
-        User userToUpdate = returnUserById(id);
-
+    public UserDTO update(Integer id, String userName,UserUpdateDTO userUpdateDTO) throws RegraDeNegocioException {
+        User userToUpdate = null;
+        if(verifyId(id)){
+            userToUpdate = returnUserById(id);
+        }
+        else if(!userName.replace(" ", "").isEmpty()){
+            userToUpdate = findByName(userName);
+        }
+        if(userToUpdate == null){
+            throw new RegraDeNegocioException("User not found");
+        }
         if (userToUpdate.getStatus().ordinal() == 0) {
             userToUpdate.setIdUser(userToUpdate.getIdUser());
             userToUpdate.setName(userUpdateDTO.getName());
-            userToUpdate.setUser(userToUpdate.getUser());
-            userToUpdate.setPassword(userUpdateDTO.getPassword());
-            userToUpdate.setPermissionType(userUpdateDTO.getPermissionType());
+            userToUpdate.setUser(userUpdateDTO.getUser());
             userToUpdate.setPosition(userUpdateDTO.getPosition());
-            userToUpdate.setStatus(userToUpdate.getStatus());
             userToUpdate.setDepartment(userToUpdate.getDepartment());
             return returnDTO(userRepository.save(userToUpdate));
         } else {
-            new RegraDeNegocioException("Usuário não existe");
-            return null;
+            throw new RegraDeNegocioException("Usuário not exists");
         }
     }
 
@@ -131,7 +151,7 @@ public class UserService {
 
     public User returnUserById(Integer id) throws RegraDeNegocioException {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada"));
+                .orElseThrow(() -> new RegraDeNegocioException("User not found."));
     }
 
     public Optional<User> getLoggedUser() throws RegraDeNegocioException {
@@ -141,5 +161,11 @@ public class UserService {
     public Integer getIdLoggedUser() {
         Integer findUserId = Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return findUserId;
+    }
+    public boolean verifyId(Integer id){
+        return id > 0;
+    }
+    public User findByName(String userName) {
+        return this.userRepository.findUserByUser(userName);
     }
 }

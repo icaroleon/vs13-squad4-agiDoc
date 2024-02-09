@@ -1,12 +1,10 @@
 package br.com.agidoc.agiDoc.controller.user;
 
 import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
-import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
-import br.com.agidoc.agiDoc.dto.user.UserDTO;
-import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
-import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
+import br.com.agidoc.agiDoc.dto.user.*;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
+import br.com.agidoc.agiDoc.model.Status;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.service.TokenService;
 import br.com.agidoc.agiDoc.service.UserService;
@@ -65,8 +63,8 @@ public class UserController implements IUserController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @Valid @RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
-        return new ResponseEntity<>(this.userService.update(id, userUpdateDTO), HttpStatus.OK);
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id, @RequestParam("Name of user") String userName, @Valid @RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
+        return new ResponseEntity<>(this.userService.update(id, userName, userUpdateDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -98,9 +96,20 @@ public class UserController implements IUserController{
                         usernamePasswordAuthenticationToken);
 
         User usuarioValidado = (User) authentication.getPrincipal();
-
-        return tokenService.generateToken(usuarioValidado);
+        if(usuarioValidado.getStatus() == Status.INACTIVE){
+            throw new RegraDeNegocioException("Inactive user on the system.");
+        }
+        else{
+            return tokenService.generateToken(usuarioValidado);
+        }
     }
+
+    @PutMapping("/password")
+    @Override
+    public ResponseEntity<Optional<String>> updatePassword(@RequestBody @Valid UserUpdatePasswordDTO userUpdatePasswordDTO) throws Exception {
+        return new ResponseEntity<Optional<String>>(this.userService.updatePassword(userUpdatePasswordDTO), HttpStatus.OK);
+    }
+
 
     @GetMapping("/get-logged-user")
     public ResponseEntity<Optional<User>> getLoggerUser() throws RegraDeNegocioException {
