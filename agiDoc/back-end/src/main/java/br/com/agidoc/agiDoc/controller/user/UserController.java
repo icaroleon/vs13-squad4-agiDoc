@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@Tag(name = "User", description = "CRUD of users")
+@Tag(name = "user", description = "CRUD of users")
 @RestController
 @Validated
 @RequestMapping("/user")
