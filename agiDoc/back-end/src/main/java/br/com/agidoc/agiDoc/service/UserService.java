@@ -55,7 +55,6 @@ public class UserService {
                 user.getPermissions().add(permission);
             }
 
-
             UserDTO userDTO = returnDTO(userRepository.save(user));
             UserAssociationPK userAssociationPK = new UserAssociationPK();
             userAssociationPK.setIdUser(userDTO.getIdUser());
