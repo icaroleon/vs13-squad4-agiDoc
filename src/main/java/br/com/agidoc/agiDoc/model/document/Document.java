@@ -49,7 +49,7 @@ public class Document {
     @Column(name = "ATTACHMENT")
     private BlobType attachment = null;
 
-    /*@JsonIgnore*/
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "DOCUMENTS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_DOCUMENT",
             referencedColumnName = "ID_DOCUMENT")},

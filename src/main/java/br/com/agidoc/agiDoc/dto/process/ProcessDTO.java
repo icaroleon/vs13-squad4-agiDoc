@@ -4,8 +4,6 @@ import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
 import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +20,6 @@ public class ProcessDTO{
     private String processNumber = UUID.randomUUID().toString().substring(0, 6);
     private String title, description;
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
-
     private List<DocumentDTO> documentDTOS;
-
     private Company company;
 }

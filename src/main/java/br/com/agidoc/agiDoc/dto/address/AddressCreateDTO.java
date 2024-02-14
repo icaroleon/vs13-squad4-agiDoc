@@ -21,7 +21,7 @@ public class AddressCreateDTO {
     @NotNull
     @Positive
     @Schema(description = "Número do local", example = "12")
-    private Integer number;
+    private Integer num;
     @NotBlank
     @Schema(description = "Complemento do local", example = "Proximo a praça")
     private String complement;

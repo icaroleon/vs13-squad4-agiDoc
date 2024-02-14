@@ -1,9 +1,7 @@
 package br.com.agidoc.agiDoc.controller.user;
 
-import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
-import br.com.agidoc.agiDoc.dto.user.UserDTO;
-import br.com.agidoc.agiDoc.dto.user.UserLoginDTO;
-import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
+import br.com.agidoc.agiDoc.dto.user.*;
+import feign.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,9 +9,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserController {
     @Operation(summary = "Create User", description = "Create a user in database")
@@ -24,7 +27,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<UserDTO> create(@Valid UserCreateDTO userCreateDTO) throws Exception;
+    ResponseEntity<UserDTO> create(@RequestParam("Id company") Integer idCompany, @Valid UserCreateDTO userCreateDTO) throws Exception;
 
     @Operation(summary = "List Users", description = "List all users in database")
     @ApiResponses(
@@ -77,7 +80,7 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<UserDTO> update(Integer id, @Valid UserUpdateDTO userUpdateDTO) throws Exception;
+    ResponseEntity<UserDTO> update(Integer id, String userName,@Valid UserUpdateDTO userUpdateDTO) throws Exception;
 
     @Operation(summary = "Delete User", description = "Delete a user in database")
     @ApiResponses(
@@ -99,5 +102,17 @@ public interface IUserController {
                     @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
             }
     )
-    ResponseEntity<Void> login(@Valid UserLoginDTO userLoginDTO) throws Exception;
+    String login(@Valid UserLoginDTO userLoginDTO) throws Exception;
+
+
+    @Operation(summary = "Update User Password", description = "Update a user password in database")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Returns the password change confirmation."),
+                    @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true)), description = "User not found."),
+                    @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(hidden = true)), description = "Wrong data inserted, check the error in response."),
+                    @ApiResponse(responseCode = "500", content = @Content(schema = @Schema(hidden = true)), description = "Unhandled exception.")
+            }
+    )
+    public ResponseEntity<Optional<String>> updatePassword(@RequestBody @Valid UserUpdatePasswordDTO userUpdatePasswordDTO) throws Exception;
 }

@@ -41,7 +41,7 @@ public class Process {
     @Column(name = "status")
     private ProcessStatus processStatus = ProcessStatus.IN_PROGRESS;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "PROCESS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_PROCESS",
             referencedColumnName = "ID_PROCESS")},
@@ -50,7 +50,7 @@ public class Process {
 //    @JoinColumn(name = "ID_COMPANY", referencedColumnName = "ID_COMPANY")
     private Company company;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "process", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Document> documents = new HashSet<>();
 
