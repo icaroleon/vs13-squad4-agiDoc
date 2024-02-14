@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RequestMapping("/process")
-@Tag(name = "Process", description = "CRUD of process")
+@Tag(name = "process", description = "CRUD of process")
 @AllArgsConstructor
 @RestController
 @Validated

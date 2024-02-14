@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "Address", description = "CRUD of address")
+@Tag(name = "address", description = "CRUD of address")
 @Slf4j
 @Validated
 @RequestMapping("/address")

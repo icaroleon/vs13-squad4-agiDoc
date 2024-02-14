@@ -1,4 +1,4 @@
-package br.com.agidoc.agiDoc.config.security;
+package br.com.agidoc.agiDoc.security;
 
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.user.User;

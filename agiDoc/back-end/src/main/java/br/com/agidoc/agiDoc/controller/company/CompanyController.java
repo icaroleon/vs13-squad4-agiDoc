@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Company", description = "CRUD of company")
+@Tag(name = "company", description = "CRUD of company")
 @RequestMapping("/company")
 @Validated
 @Slf4j

@@ -1,4 +1,4 @@
-package br.com.agidoc.agiDoc.config.security;
+package br.com.agidoc.agiDoc.security;
 
 import br.com.agidoc.agiDoc.service.TokenService;
 
@@ -34,16 +34,16 @@ public class SecurityConfiguration {
                         .antMatchers("/user/get-logged-user").permitAll()
                                 .antMatchers(HttpMethod.POST, "/company/**").hasAnyRole("ADMIN_INSTITUTION",
                         "USER_INSTITUTION")
-                        .antMatchers(HttpMethod.GET, "/company/**").hasAnyRole("ADMIN_INSTITUTION")
+                        .antMatchers(HttpMethod.GET, "/company/**").hasRole("ADMIN_INSTITUTION")
                         .antMatchers(HttpMethod.GET, "/company/actives").hasAnyRole("ADMIN_INSTITUTION",
                         "USER_INSTITUTION")
-                        .antMatchers(HttpMethod.PUT, "/company/**").hasAnyRole("ADMIN_INSTITUTION")
-                        .antMatchers(HttpMethod.DELETE, "/company/**").hasAnyRole("ADMIN_INSTITUTION")
+                        .antMatchers(HttpMethod.PUT, "/company/**").hasRole("ADMIN_INSTITUTION")
+                        .antMatchers(HttpMethod.DELETE, "/company/**").hasRole("ADMIN_INSTITUTION")
                         // PROCESS
-                        .antMatchers(HttpMethod.POST, "/process/**").hasAnyRole("ADMIN_INSTITUTION")
+                        .antMatchers(HttpMethod.POST, "/process/**").hasRole("ADMIN_INSTITUTION")
                         .antMatchers(HttpMethod.GET, "/process/**").permitAll()
-                        .antMatchers(HttpMethod.PUT, "/process/**").hasAnyRole("ADMIN_INSTITUTION")
-                        .antMatchers(HttpMethod.DELETE, "/process/**").hasAnyRole("ADMIN_INSTITUTION")
+                        .antMatchers(HttpMethod.PUT, "/process/**").hasRole("ADMIN_INSTITUTION")
+                        .antMatchers(HttpMethod.DELETE, "/process/**").hasRole("ADMIN_INSTITUTION")
                         // DOCUMENT
                         .antMatchers(HttpMethod.POST, "/document/**").hasAnyRole("ADMIN_INSTITUTION",
                         "ADMIN_COMPETITOR", "USER_COMPETITOR", "USER_INSTITUTION")
