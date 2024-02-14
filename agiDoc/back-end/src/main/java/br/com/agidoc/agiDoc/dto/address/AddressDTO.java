@@ -1,17 +1,16 @@
-package br.com.agidoc.agiDoc.model.address;
+package br.com.agidoc.agiDoc.dto.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+@NoArgsConstructor
+public class AddressDTO {
     private Integer id;
     private String street;
     private String district;
-    private Integer number;
+    private Integer num;
     private String complement;
     private String zipCode;
     private String city;

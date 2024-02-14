@@ -14,6 +14,4 @@ public class Contact {
     private String email;
     private String phone;
     private ContactPhoneType phoneType;
-    private Associated associated;
-    private Integer associatedId;
 }
