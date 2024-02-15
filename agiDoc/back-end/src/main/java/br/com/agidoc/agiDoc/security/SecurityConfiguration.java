@@ -30,42 +30,28 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) -> authz
-                                .antMatchers("/user/login").permitAll()
-                        .antMatchers("/user/get-logged-user").permitAll()
-                                .antMatchers(HttpMethod.POST, "/company/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "USER_INSTITUTION")
-                        .antMatchers(HttpMethod.GET, "/company/**").hasRole("ADMIN_INSTITUTION")
-                        .antMatchers(HttpMethod.GET, "/company/actives").hasAnyRole("ADMIN_INSTITUTION",
-                        "USER_INSTITUTION")
-                        .antMatchers(HttpMethod.PUT, "/company/**").hasRole("ADMIN_INSTITUTION")
-                        .antMatchers(HttpMethod.DELETE, "/company/**").hasRole("ADMIN_INSTITUTION")
-                        // PROCESS
-                        .antMatchers(HttpMethod.POST, "/process/**").hasRole("ADMIN_INSTITUTION")
+                        .antMatchers("/user/login", "/user/get-logged-user").permitAll()
+                        .antMatchers(HttpMethod.POST, "/company/**").hasAnyRole("ADMIN_INSTITUTION", "USER_INSTITUTION", "ADMIN_COMPETITOR", "USER_COMPETITOR", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.GET, "/company/**").hasAnyRole("ADMIN_INSTITUTION", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.GET, "/company/actives").hasAnyRole("ADMIN_INSTITUTION", "USER_INSTITUTION", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.PUT, "/company/**").hasAnyRole("ADMIN_INSTITUTION", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/company/**").hasAnyRole("ADMIN_INSTITUTION", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.POST, "/process/**").hasAnyRole("ADMIN_INSTITUTION", "SYSTEM_ADMIN")
                         .antMatchers(HttpMethod.GET, "/process/**").permitAll()
-                        .antMatchers(HttpMethod.PUT, "/process/**").hasRole("ADMIN_INSTITUTION")
-                        .antMatchers(HttpMethod.DELETE, "/process/**").hasRole("ADMIN_INSTITUTION")
-                        // DOCUMENT
-                        .antMatchers(HttpMethod.POST, "/document/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR", "USER_COMPETITOR", "USER_INSTITUTION")
+                        .antMatchers(HttpMethod.PUT, "/process/**").hasAnyRole("ADMIN_INSTITUTION", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/process/**").hasAnyRole("ADMIN_INSTITUTION", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.POST, "/document/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "SYSTEM_ADMIN")
                         .antMatchers(HttpMethod.GET, "/document/**").permitAll()
-                        .antMatchers(HttpMethod.PUT, "/document/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR", "USER_COMPETITOR", "USER_INSTITUTION")
-                        .antMatchers(HttpMethod.DELETE, "/document/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR")
-                        // USER
-                        .antMatchers(HttpMethod.POST, "/user/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR")
-                        .antMatchers(HttpMethod.GET, "/user/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR")
-                        .antMatchers(HttpMethod.PUT, "/user/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR")
-                        .antMatchers(HttpMethod.DELETE, "/user/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR")
-                        // ADDRESS/CONTACTS
-                        .antMatchers("/address", "/contact", "address/**", "/contact/**").hasAnyRole("ADMIN_INSTITUTION",
-                        "ADMIN_COMPETITOR")
+                        .antMatchers(HttpMethod.PUT, "/document/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "USER_COMPETITOR", "USER_INSTITUTION", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/document/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.POST, "/user/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.GET, "/user/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.PUT, "/user/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "SYSTEM_ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/user/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "SYSTEM_ADMIN")
+                        .antMatchers("/address/**", "/contact/**").hasAnyRole("ADMIN_INSTITUTION", "ADMIN_COMPETITOR", "SYSTEM_ADMIN")
                         .antMatchers("/", "/**").hasRole("SYSTEM_ADMIN")
                         .anyRequest().authenticated()
+                        //TODO permissões de pageable
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
 
