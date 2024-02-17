@@ -11,7 +11,6 @@ import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
 import br.com.agidoc.agiDoc.repository.CompanyRepository;
-import br.com.agidoc.agiDoc.repository.CompanyWithProcessesAssociationRepository;
 import br.com.agidoc.agiDoc.repository.DocumentRepository;
 import br.com.agidoc.agiDoc.repository.ProcessRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,14 +34,8 @@ import static org.mockito.Mockito.when;
 @DisplayName("ProcessService - Test")
 //@MockitoSettings(strictness = Strictness.LENIENT)
 class ProcessServiceTest {
-
-    ProcessCreateDTO processCreateDTO;
-    ProcessDTO processDTO;
-    Process process;
-
     @Mock
     Company companyMock = returnCompany();
-
     @Mock
     private ProcessRepository processRepository;
     @Mock
@@ -51,17 +44,8 @@ class ProcessServiceTest {
     private DocumentRepository documentRepository;
     @Mock
     private CompanyRepository companyRepository;
-    @Mock
-    private CompanyWithProcessesAssociationRepository companyWithProcessesAssociationRepository;
     @InjectMocks
     private ProcessService processService;
-
-    private static ProcessCreateDTO returnProcessCreateDTO() {
-        ProcessCreateDTO processCreateDTO = new ProcessCreateDTO(
-                "Licitação de Obra Pública",
-                "Licitação de Obra de Capeamento de Via Pública em Porto Alegre");
-        return processCreateDTO;
-    }
 
     @Test
     public void shouldListSuccessful() throws DatabaseException {
@@ -111,7 +95,7 @@ class ProcessServiceTest {
 
         ProcessDTO processDTOCreated = processService.create(randomId, processCreateDTOMock);
 
-        assertEquals(true, successfullyAdd);
+        assertTrue(successfullyAdd);
         assertEquals(1, companyMock.getProcess().size());
         assertNotNull(processDTOCreated);
         assertEquals(processDTOCreated, processDTOMock);
@@ -136,6 +120,11 @@ class ProcessServiceTest {
         assertEquals(processStatus, newProcessMock.getProcessStatus());
     }
 
+    private static ProcessCreateDTO returnProcessCreateDTO() {
+        return new ProcessCreateDTO(
+                "Licitação de Obra Pública",
+                "Licitação de Obra de Capeamento de Via Pública em Porto Alegre");
+    }
 
     private Process returnProcess() {
         Process process = new Process();
