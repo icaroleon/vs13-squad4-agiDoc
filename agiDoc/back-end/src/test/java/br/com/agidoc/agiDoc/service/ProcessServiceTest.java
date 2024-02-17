@@ -1,7 +1,9 @@
 package br.com.agidoc.agiDoc.service;
 
+import br.com.agidoc.agiDoc.dto.document.DocumentDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessCreateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
+import br.com.agidoc.agiDoc.dto.process.ProcessUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Status;
@@ -22,12 +24,12 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.BeanUtils;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,13 +64,22 @@ class ProcessServiceTest {
     @Test
     public void shouldReturnProcessDTOByHisId() throws RegraDeNegocioException {
         Optional<Process> processMock = Optional.of(returnProcess());
-        List<Document> documentsList = new ArrayList<>();
+
+        Document doc1 = new Document();
+        Document doc2 = new Document();
+        List<Document> documentsList = Arrays.asList(doc1, doc2);
+
+        DocumentDTO docDto1 = new DocumentDTO();
+        DocumentDTO docDto2 = new DocumentDTO();
+
         ProcessDTO processDTOMock = returnProcessDTO();
         Integer randomId = new Random().nextInt();
 
         when(processRepository.findById(randomId)).thenReturn(processMock);
         when(documentRepository.findAllDocumentsByProcessId(randomId))
                 .thenReturn(documentsList);
+        when(objectMapper.convertValue(doc1, DocumentDTO.class)).thenReturn(docDto1);
+        when(objectMapper.convertValue(doc2, DocumentDTO.class)).thenReturn(docDto2);
         when(objectMapper.convertValue(processMock.get(), ProcessDTO.class)).thenReturn(processDTOMock);
 
         ProcessDTO processDTOReturned = processService.findById(randomId);
@@ -101,6 +112,34 @@ class ProcessServiceTest {
         assertEquals(processDTOCreated, processDTOMock);
     }
 
+    @Test
+    public void shouldUpdateProcessSuccessfully () throws Exception {
+        Integer randomId = new Random().nextInt();
+        Process oldProcessMock = returnProcess();
+        Process newProcessMock = new Process();
+        ProcessUpdateDTO processUpdateDTO = returnProcessUpdateDTO();
+
+        BeanUtils.copyProperties(oldProcessMock, newProcessMock);
+
+        newProcessMock.setTitle("Teste");
+        newProcessMock.setDescription("Teste");
+
+        Set<Process> processes = companyMock.getProcess();
+        ProcessCreateDTO processCreateDTOMock = returnProcessCreateDTO();
+        ProcessDTO processDTOMock = returnProcessDTO();
+
+        when(processRepository.findById(anyInt())).thenReturn(Optional.of(oldProcessMock));
+        when(processRepository.save(any(Process.class))).thenReturn(newProcessMock);
+        when(objectMapper.convertValue(any(Process.class), eq(ProcessDTO.class))).thenReturn(processDTOMock);
+
+        ProcessDTO processDTO = processService.update(oldProcessMock.getProcessId(), processUpdateDTO);
+
+        assertNotNull(processDTO);
+        assertNotEquals(oldProcessMock, processDTO);
+        assertNotEquals(oldProcessMock.getTitle(), processDTO.getTitle());
+        assertNotEquals(oldProcessMock.getDescription(), processDTO.getDescription());
+    }
+
     @ParameterizedTest
     @EnumSource(ProcessStatus.class)
     public void shouldSetStatusSuccessfully (ProcessStatus processStatus) throws Exception {
@@ -126,9 +165,16 @@ class ProcessServiceTest {
                 "Licitação de Obra de Capeamento de Via Pública em Porto Alegre");
     }
 
+    private static ProcessUpdateDTO returnProcessUpdateDTO() {
+        return new ProcessUpdateDTO(
+                "Licitação de Via Pública",
+                "Licitação de Obra de Capeamento de Via Pública em Belo Horizonte");
+    }
+
     private Process returnProcess() {
+        Integer randomId = new Random().nextInt();
         Process process = new Process();
-        process.setProcessId(1);
+        process.setProcessId(randomId);
         process.setProcessNumber(UUID.randomUUID().toString().substring(0, 6));
         process.setTitle("Licitação de Obra Pública");
         process.setDescription("Licitação de Obra de Capeamento de Via Pública em Porto Alegre");

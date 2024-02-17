@@ -92,7 +92,6 @@ public class ProcessService {
     }
 
     public ProcessDTO update(Integer idProcess, ProcessUpdateDTO processToUpdateDTO) throws Exception {
-
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
