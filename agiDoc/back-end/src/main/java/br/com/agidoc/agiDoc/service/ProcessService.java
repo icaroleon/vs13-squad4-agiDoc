@@ -126,15 +126,6 @@ public class ProcessService {
         return convertToDTO(process);
     }
 
-    public Process addDocumentToProcess(Integer idProcess, Document document) throws RegraDeNegocioException {
-        Process process = processRepository.findById(idProcess)
-                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
-
-        process.getDocuments().add(document);
-
-        return processRepository.save(process);
-    }
-
     private Process convertToEntity(Object dto) {
         return objectMapper.convertValue(dto, Process.class);
     }

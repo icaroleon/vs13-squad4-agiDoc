@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,10 +28,12 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ProcessService - Test")
+//@MockitoSettings(strictness = Strictness.LENIENT)
 class ProcessServiceTest {
 
     ProcessCreateDTO processCreateDTO;
@@ -101,16 +105,37 @@ class ProcessServiceTest {
                 .thenReturn(processMock);
         when(processRepository.save(any(Process.class))).thenReturn(processMock);
         when(companyMock.getProcess()).thenReturn(processes);
-        processes.add(processMock);
+        boolean successfullyAdd = processes.add(processMock);
         when(companyRepository.save(companyMock)).thenReturn(companyMock);
         when(objectMapper.convertValue(processMock, ProcessDTO.class)).thenReturn(processDTOMock);
 
         ProcessDTO processDTOCreated = processService.create(randomId, processCreateDTOMock);
 
+        assertEquals(true, successfullyAdd);
         assertEquals(1, companyMock.getProcess().size());
         assertNotNull(processDTOCreated);
         assertEquals(processDTOCreated, processDTOMock);
     }
+
+    @ParameterizedTest
+    @EnumSource(ProcessStatus.class)
+    public void shouldSetStatusSuccessfully (ProcessStatus processStatus) throws Exception {
+        Integer randomId = new Random().nextInt();
+        ProcessDTO processDTOMock = returnProcessDTO();
+        Process oldProcessMock = returnProcess();
+        Process newProcessMock = returnProcess();
+
+        when(processRepository.findById(randomId)).thenReturn(Optional.of(newProcessMock));
+        newProcessMock.setProcessStatus(processStatus);
+        when(processRepository.save(eq(newProcessMock))).thenReturn(newProcessMock);
+        when(objectMapper.convertValue(newProcessMock, ProcessDTO.class)).thenReturn(processDTOMock);
+
+        processService.setStatus(randomId, processStatus.ordinal());
+
+        assertNotEquals(oldProcessMock.getProcessStatus(), newProcessMock.getProcessStatus());
+        assertEquals(processStatus, newProcessMock.getProcessStatus());
+    }
+
 
     private Process returnProcess() {
         Process process = new Process();
@@ -118,8 +143,8 @@ class ProcessServiceTest {
         process.setProcessNumber(UUID.randomUUID().toString().substring(0, 6));
         process.setTitle("Licitação de Obra Pública");
         process.setDescription("Licitação de Obra de Capeamento de Via Pública em Porto Alegre");
-        process.setProcessStatus(ProcessStatus.IN_PROGRESS);
         process.setCompany(companyRepository.getById(1));
+        process.setProcessStatus(null);
 
         return process;
     }
@@ -130,7 +155,7 @@ class ProcessServiceTest {
         processDTO.setProcessNumber(UUID.randomUUID().toString().substring(0, 6));
         processDTO.setTitle("Licitação de Obra Pública");
         processDTO.setDescription("Licitação de Obra de Capeamento de Via Pública em Porto Alegre");
-        processDTO.setProcessStatus(ProcessStatus.IN_PROGRESS);
+        processDTO.setProcessStatus(null);
         processDTO.setCompany(companyRepository.getById(1));
 
         return processDTO;
