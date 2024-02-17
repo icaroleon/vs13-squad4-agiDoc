@@ -1,5 +1,6 @@
 package br.com.agidoc.agiDoc.service;
 
+import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.user.*;
 import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
 import br.com.agidoc.agiDoc.dto.user.UserDTO;
@@ -7,6 +8,7 @@ import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Status;
+import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.permission.Permission;
 import br.com.agidoc.agiDoc.repository.PermissionRepository;
 import br.com.agidoc.agiDoc.model.user.User;
@@ -33,7 +35,7 @@ public class UserService {
     private final PermissionRepository permissionRepository;
 
     public UserDTO create(UserCreateDTO userCreateDTO, Integer idCompany) throws RegraDeNegocioException {
-        if (companyService.getById(idCompany) != null) {
+        CompanyDTO companyDTO = companyService.getById(idCompany);
             User user = convertToEntity(userCreateDTO);
             user.setStatus(Status.ACTIVE);
 
@@ -62,9 +64,6 @@ public class UserService {
             userAssociationCreateDTO.setUserAssociationPK(userAssociationPK);
             this.userAssociationService.createAssociation(userAssociationCreateDTO);
             return userDTO;
-        } else {
-            throw new RegraDeNegocioException("Id company not found/exists.");
-        }
     }
 
     public Optional<String> updatePassword(UserUpdatePasswordDTO userUpdatePasswordDTO) throws Exception{

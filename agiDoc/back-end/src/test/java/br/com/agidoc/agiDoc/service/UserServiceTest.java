@@ -82,6 +82,8 @@ public class UserServiceTest {
         User userEntityMock = returnUser();
         UserDTO userDTOMock = returnUserDTO();
 
+        when(companyService.getById(companyDTOMock.getCompanyId())).thenReturn(companyDTOMock);
+
         when(objectMapper.convertValue(userCreateDTOMock, User.class)).thenReturn(userEntityMock);
         when(userRepository.save(any(User.class))).thenReturn(userEntityMock);
         when(objectMapper.convertValue(userEntityMock, UserDTO.class)).thenReturn(userDTOMock);
