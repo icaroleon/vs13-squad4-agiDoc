@@ -49,6 +49,18 @@ class ProcessServiceTest {
     @InjectMocks
     private ProcessService processService;
 
+    private static ProcessCreateDTO returnProcessCreateDTO() {
+        return new ProcessCreateDTO(
+                "Licitação de Obra Pública",
+                "Licitação de Obra de Capeamento de Via Pública em Porto Alegre");
+    }
+
+    static ProcessUpdateDTO returnProcessUpdateDTO() {
+        return new ProcessUpdateDTO(
+                "Licitação de Via Pública",
+                "Licitação de Obra de Capeamento de Via Pública em Belo Horizonte");
+    }
+
     @Test
     public void shouldListSuccessful() throws DatabaseException {
         List<Process> mockList = new ArrayList<>(Collections.nCopies(3, returnProcess()));
@@ -113,10 +125,11 @@ class ProcessServiceTest {
     }
 
     @Test
-    public void shouldUpdateProcessSuccessfully () throws Exception {
+    public void shouldUpdateProcessSuccessfully() throws Exception {
         Integer randomId = new Random().nextInt();
         Process oldProcessMock = returnProcess();
         Process newProcessMock = new Process();
+        ProcessDTO processDTOMock = returnProcessDTO();
         ProcessUpdateDTO processUpdateDTO = returnProcessUpdateDTO();
 
         BeanUtils.copyProperties(oldProcessMock, newProcessMock);
@@ -124,9 +137,6 @@ class ProcessServiceTest {
         newProcessMock.setTitle("Teste");
         newProcessMock.setDescription("Teste");
 
-        Set<Process> processes = companyMock.getProcess();
-        ProcessCreateDTO processCreateDTOMock = returnProcessCreateDTO();
-        ProcessDTO processDTOMock = returnProcessDTO();
 
         when(processRepository.findById(anyInt())).thenReturn(Optional.of(oldProcessMock));
         when(processRepository.save(any(Process.class))).thenReturn(newProcessMock);
@@ -142,7 +152,7 @@ class ProcessServiceTest {
 
     @ParameterizedTest
     @EnumSource(ProcessStatus.class)
-    public void shouldSetStatusSuccessfully (ProcessStatus processStatus) throws Exception {
+    public void shouldSetStatusSuccessfully(ProcessStatus processStatus) throws Exception {
         Integer randomId = new Random().nextInt();
         ProcessDTO processDTOMock = returnProcessDTO();
         Process oldProcessMock = returnProcess();
@@ -157,18 +167,6 @@ class ProcessServiceTest {
 
         assertNotEquals(oldProcessMock.getProcessStatus(), newProcessMock.getProcessStatus());
         assertEquals(processStatus, newProcessMock.getProcessStatus());
-    }
-
-    private static ProcessCreateDTO returnProcessCreateDTO() {
-        return new ProcessCreateDTO(
-                "Licitação de Obra Pública",
-                "Licitação de Obra de Capeamento de Via Pública em Porto Alegre");
-    }
-
-    private static ProcessUpdateDTO returnProcessUpdateDTO() {
-        return new ProcessUpdateDTO(
-                "Licitação de Via Pública",
-                "Licitação de Obra de Capeamento de Via Pública em Belo Horizonte");
     }
 
     private Process returnProcess() {

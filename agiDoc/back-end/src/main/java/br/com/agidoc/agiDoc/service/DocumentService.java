@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,17 +75,11 @@ public class DocumentService {
         Document document = documentRepository.findById(idDocument)
                 .orElseThrow(() -> new RegraDeNegocioException("Document not found with the provided ID"));
 
-//        document.setAttachment(documentUpdateDateDTO.getFile());
         document.setExpirationDate(documentUpdateDateDTO.getExpirationDate());
         documentRepository.save(document);
 
         return convertToDTO(document);
     }
-
-//    public void delete(Integer id) throws Exception {
-//        documentRepository.delete(id);
-//        //TODO decidir se haverá essa possibilidade
-//    }
 
     public DocumentDTO sign(Integer idDocument, Integer userId) throws Exception {
         Document document = documentRepository.findById(idDocument)
@@ -99,7 +94,7 @@ public class DocumentService {
     public List<DocumentDTO> convertListToDTO(List<Document> documentsList) {
         return documentsList.stream()
                 .map(document -> objectMapper.convertValue(document, DocumentDTO.class))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private Document convertToEntity(DocumentCreateDTO documentCreateDTO) {
