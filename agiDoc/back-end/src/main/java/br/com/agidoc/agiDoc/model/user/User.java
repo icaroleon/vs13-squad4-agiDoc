@@ -57,7 +57,7 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
-    private Status status;
+    private Status status  = Status.ACTIVE;
 
     @Column(name = "email")
     private String email;

@@ -30,6 +30,7 @@ public class UserCreateDTO {
     @Size(max = 100)
     private String password;
 
+    @Schema(required = true, example = "ADMIN_COMPETITOR")
     @NotNull
     private List<String> permission;
 

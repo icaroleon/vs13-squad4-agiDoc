@@ -35,9 +35,8 @@ public class UserService {
     private final PermissionRepository permissionRepository;
 
     public UserDTO create(UserCreateDTO userCreateDTO, Integer idCompany) throws RegraDeNegocioException {
-        CompanyDTO companyDTO = companyService.getById(idCompany);
+        //CompanyDTO companyDTO = companyService.getById(idCompany);
             User user = convertToEntity(userCreateDTO);
-            user.setStatus(Status.ACTIVE);
 
             if (userCreateDTO.getPermission().size() > 1) {
                 List<String> permissions = userCreateDTO.getPermission().stream()

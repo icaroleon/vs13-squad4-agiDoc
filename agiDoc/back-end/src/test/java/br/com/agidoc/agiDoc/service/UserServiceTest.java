@@ -14,6 +14,7 @@ import br.com.agidoc.agiDoc.model.user.Department;
 import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.CompanyRepository;
 
+import br.com.agidoc.agiDoc.repository.PermissionRepository;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.*;
 
@@ -47,7 +49,8 @@ public class UserServiceTest {
     private ObjectMapper objectMapper;
 
     @Mock
-    private UserAssociationService userAssociationService;
+    private PermissionRepository permissionRepository;
+
 
     @InjectMocks
     private UserService userService;
@@ -66,6 +69,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Should create a new user successfully")
     public void shouldCreateUserSuccessfully() throws RegraDeNegocioException, DatabaseException {
+
         CompanyCreateDTO companyCreateDTOMock = returnCompanyCreateDTO();
         Company companyEntityMock = returnCompany();
         CompanyDTO companyDTOMock = returnCompanyDTO();
@@ -74,7 +78,6 @@ public class UserServiceTest {
         when(companyRepository.save(any())).thenReturn(companyEntityMock);
         when(objectMapper.convertValue(companyEntityMock, CompanyDTO.class)).thenReturn(companyDTOMock);
         when(companyService.create(any(CompanyCreateDTO.class))).thenReturn(companyDTOMock);
-
 
         CompanyDTO companyDTOCreated = companyService.create(companyCreateDTOMock);
 
@@ -97,7 +100,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Should return Users")
-    public void shouldReturnUsersSuccessfully() throws RegraDeNegocioException, DatabaseException {
+    public void shouldReturnUsersSuccessfully() throws DatabaseException {
         List<User> listMock = List.of(returnUser(), returnUser(), returnUser());
 
         when(userRepository.findAll()).thenReturn(listMock);
@@ -137,6 +140,10 @@ public class UserServiceTest {
         userEntity.setStatus(Status.ACTIVE);
         userEntity.setEmail("joao@dbccompany.com.br");
         userEntity.setDepartment(Department.SECRETARIA_FAZENDA);
+
+//        Permission mockPermission = mock(Permission.class);
+//
+//        userEntity.getPermissions().add(mockPermission);
 
         return userEntity;
     }
