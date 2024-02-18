@@ -16,7 +16,6 @@ public class UserDTO {
     private String registration;
     private String name;
     private String user;
-    private PermissionType permissionType;
     private Permission permission;
     private String position;
     private Department department;
