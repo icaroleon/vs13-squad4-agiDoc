@@ -73,16 +73,6 @@ public class UserController implements IUserController{
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping("/login")
-//    public String login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
-//        Optional<User> byUsernameAndPassword = userService.login(userLoginDTO.getUser(), userLoginDTO.getPassword());
-//        if (byUsernameAndPassword.isPresent()) {
-//            return tokenService.getToken(byUsernameAndPassword.get());
-//        } else {
-//            throw new RegraDeNegocioException("User or password is not valid");
-//        }
-//    }
-
     @PostMapping("/login")
     public String login(@Valid @RequestBody UserLoginDTO userLoginDTO) throws Exception {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
