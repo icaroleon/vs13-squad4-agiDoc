@@ -16,6 +16,8 @@ import br.com.agidoc.agiDoc.model.user.pk.UserAssociationPK;
 import br.com.agidoc.agiDoc.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,14 +32,11 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
     private final UserAssociationService userAssociationService;
-    private final CompanyService companyService;
     private final ObjectMapper objectMapper;
     private final PermissionRepository permissionRepository;
 
     public UserDTO create(UserCreateDTO userCreateDTO, Integer idCompany) throws RegraDeNegocioException {
-        //CompanyDTO companyDTO = companyService.getById(idCompany);
             User user = convertToEntity(userCreateDTO);
-
             if (userCreateDTO.getPermission().size() > 1) {
                 List<String> permissions = userCreateDTO.getPermission().stream()
                         .map(p -> p.split(","))
@@ -92,7 +91,7 @@ public class UserService {
         return returnDTO(user);
     }
 
-    public Optional<User> findByIdAndReturnEntity(Integer id) throws RegraDeNegocioException {
+    public Optional<User> findByIdAndReturnEntity(Integer id) {
         Optional<User> user = userRepository.findById(id);
 
         return user;
@@ -102,12 +101,12 @@ public class UserService {
         return userRepository.findAll().stream().map(this::returnDTO).collect(Collectors.toList());
     }
 
-    public List<UserDTO> listByStatusActive() throws DatabaseException {
+    public List<UserDTO> listByStatusActive() {
         return userRepository.findUserByStatus(Status.ACTIVE).stream().map(this::returnDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<UserDTO> listByStatusInactive() throws DatabaseException {
+    public List<UserDTO> listByStatusInactive()  {
         return userRepository.findUserByStatus(Status.INACTIVE).stream().map(this::returnDTO)
                 .collect(Collectors.toList());
     }
@@ -144,17 +143,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> login(String username, String password) throws RegraDeNegocioException {
-
-        User user = userRepository.findUserByUser(username);
-
-        if (user.getStatus().ordinal() == 1) {
-            throw new RegraDeNegocioException("User not found.");
-        }
-
-        return userRepository.findUsersByUserAndPassword(username, password);
-    }
-
     public User convertToEntity(UserCreateDTO dto) throws RegraDeNegocioException {
         return objectMapper.convertValue(dto, User.class);
     }
@@ -183,3 +171,4 @@ public class UserService {
         return this.userRepository.findUserByUser(userName);
     }
 }
+
