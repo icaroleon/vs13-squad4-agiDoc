@@ -3,10 +3,7 @@ package br.com.agidoc.agiDoc.service;
 import br.com.agidoc.agiDoc.dto.company.CompanyCreateDTO;
 import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.company.CompanyUpdateDTO;
-import br.com.agidoc.agiDoc.dto.user.UserCreateDTO;
-import br.com.agidoc.agiDoc.dto.user.UserDTO;
-import br.com.agidoc.agiDoc.dto.user.UserUpdateDTO;
-import br.com.agidoc.agiDoc.dto.user.UserUpdatePasswordDTO;
+import br.com.agidoc.agiDoc.dto.user.*;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Status;
@@ -31,6 +28,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -90,6 +88,40 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Should create a new user with many permissions successfully")
+    public void shouldCreateUserManyPermissionsSuccessfully() throws RegraDeNegocioException, DatabaseException {
+
+        CompanyCreateDTO companyCreateDTOMock = returnCompanyCreateDTO();
+        CompanyDTO companyDTOMock = returnCompanyDTO();
+
+        when(companyService.create(any(CompanyCreateDTO.class))).thenReturn(companyDTOMock);
+
+        CompanyDTO companyDTOCreated = companyService.create(companyCreateDTOMock);
+
+        UserCreateDTO userCreateDTOMock = returnUserCreateDTO();
+        User userEntityMock = returnUser();
+        UserDTO userDTOMock = returnUserDTO();
+
+        List<String> permissions = new ArrayList<>();
+        permissions.add("ADMIN_COMPETITOR");
+        permissions.add("USER_COMPETITOR");
+
+        userCreateDTOMock.setPermission(permissions);
+
+        when(permissionRepository.getPermissionByName(anyString())).thenReturn(Optional.of(returnPermission()));
+
+        when(objectMapper.convertValue(userCreateDTOMock, User.class)).thenReturn(userEntityMock);
+        when(userRepository.save(any(User.class))).thenReturn(userEntityMock);
+        when(objectMapper.convertValue(userEntityMock, UserDTO.class)).thenReturn(userDTOMock);
+
+        UserDTO userDTOCreated = userService.create(userCreateDTOMock, companyDTOCreated.getCompanyId());
+
+        assertNotNull(userDTOCreated);
+        assertEquals(userDTOMock, userDTOCreated);
+    }
+
+
+    @Test
     @DisplayName("Should return Users")
     public void shouldReturnUsersSuccessfully() throws DatabaseException {
         List<User> listMock = List.of(returnUser(), returnUser(), returnUser());
@@ -101,6 +133,7 @@ public class UserServiceTest {
         assertNotNull(returnedDTOList);
         assertEquals(listMock.size(), returnedDTOList.size());
     }
+
 
     @Test
     @DisplayName("Should return User by username")
@@ -130,6 +163,7 @@ public class UserServiceTest {
 
         assertNotNull(userReturned);
     }
+
 
     @Test
     @DisplayName("Should return UserDTO by id")
@@ -193,7 +227,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Should return Logged User")
-    void shouldGetLoggedUser() throws RegraDeNegocioException {
+    public void shouldGetLoggedUser() throws RegraDeNegocioException {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         SecurityContextHolder.setContext(securityContext);
@@ -228,7 +262,7 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Should update User password")
-    void shouldUpdatePassword() throws Exception {
+    public void shouldUpdatePassword() throws Exception {
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         SecurityContextHolder.setContext(securityContext);
@@ -253,6 +287,32 @@ public class UserServiceTest {
         assertEquals("Password changed successfully.", userDTOReturned.get());
     }
 
+
+    @Test
+    @DisplayName("Should not update User password")
+    public void shouldNotUpdatePassword() throws Exception {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn("1");
+
+        User userMock = new User();
+        userMock.setIdUser(1);
+        userMock.setPassword("560dbef7d389278231aa6855dc93ec711b54efec5cfc15edbe130bbf021a8baa6893d1c4d8e078b9");
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(userMock));
+
+        UserUpdatePasswordDTO userWrongPasswordDTOMock = returnUserUpdatePasswordDTO();
+        userWrongPasswordDTOMock.setOldPassword("WrongPassword");
+        userWrongPasswordDTOMock.setNewPassword("560dbef7d389278231aa6855dc93ec711b54efec5cfc15edbe130bbf021a8baa6893d1c4d8e078b9");
+
+        Optional<String> userDTONotReturned = userService.updatePassword(userWrongPasswordDTOMock);
+
+        assertEquals( "Incorrect password.", userDTONotReturned.orElse(null));
+    }
+
+
     @Test
     @DisplayName("Should update User")
     public void shouldUpdateUser() throws RegraDeNegocioException {
@@ -274,13 +334,14 @@ public class UserServiceTest {
         when(userRepository.save(anyObject())).thenReturn(alteredUser);
         when(objectMapper.convertValue(any(), eq(UserDTO.class))).thenReturn(userDTOMock);
 
-        UserDTO userDTORetornada = userService.update(userMock.getIdUser(), userMock.getUser(), userUpdateDTOMock);
+        UserDTO userDTOReturned = userService.update(userMock.getIdUser(), userMock.getUser(), userUpdateDTOMock);
 
-        assertNotNull(userDTORetornada);
+        assertNotNull(userDTOReturned);
         assertNotEquals(userEntityOld, user);
-        assertNotEquals(userEntityOld.getUser(), userDTORetornada.getUser());
+        assertNotEquals(userEntityOld.getUser(), userDTOReturned.getUser());
 
     }
+
 
     private static UserCreateDTO returnUserCreateDTO() {
         List<String> permissions = new ArrayList<>();
@@ -316,6 +377,7 @@ public class UserServiceTest {
 
         return userEntity;
     }
+
 
     private static Permission returnPermission() {
         Permission permission = new Permission();
@@ -359,6 +421,7 @@ public class UserServiceTest {
         return companyEntity;
     }
 
+
     private static CompanyDTO returnCompanyDTO() {
         CompanyDTO companyDTO = new CompanyDTO();
         Integer randomId = new Random().nextInt();
@@ -372,6 +435,7 @@ public class UserServiceTest {
         return companyDTO;
     }
 
+
     private static CompanyCreateDTO returnCompanyCreateDTO() {
         CompanyCreateDTO companyCreateDTO = new CompanyCreateDTO(
                 "Public Company", "12345678910123", Type.INSTITUTION
@@ -380,11 +444,13 @@ public class UserServiceTest {
         return companyCreateDTO;
     }
 
+
     private static UserUpdatePasswordDTO returnUserUpdatePasswordDTO() {
         UserUpdatePasswordDTO userUpdatePasswordDTO = new UserUpdatePasswordDTO("godMod", "560dbef7d389278231aa6855dc93ec711b54efec5cfc15edbe130bbf021a8baa6893d1c4d8e078b9");
 
         return userUpdatePasswordDTO;
     }
+
 
     private static UserUpdateDTO returnUserUpdateDTO() {
         UserUpdateDTO userUpdateDTO = new UserUpdateDTO("Joao","joao33", "Software Developer", "joao33@email.com",Department.SECRETARIA_SAUDE);
