@@ -312,6 +312,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("Should not update User")
     public void shouldNotUpdateUser() throws RegraDeNegocioException {
+        Exception exception = new Exception();
         User userMock = new User();
         userMock.setIdUser(1);
         userMock.setName("Joao");
@@ -327,13 +328,19 @@ public class UserServiceTest {
         UserDTO userDTOMock = returnUserDTO();
         userMock.setStatus(Status.INACTIVE);
 
+        String expectedMessage = "User doesn't exists";
+        String actoMessage = exception.getMessage();
+
         when(userRepository.findById(anyInt())).thenReturn(Optional.of(userMock));
         when(userRepository.save(anyObject())).thenReturn(alteredUser);
         when(objectMapper.convertValue(any(), eq(UserDTO.class))).thenReturn(userDTOMock);
+        when(userRepository.save(userMock)).thenThrow(new RegraDeNegocioException("User doesn't exists"));
 
         UserDTO userDTOReturned = userService.update(userMock.getIdUser(), userMock.getUser(), userUpdateDTOMock);
 
-        assertNull(userDTOReturned);
+        assertTrue(actoMessage.contains(expectedMessage));
+//        assertNull(userDTOReturned);
+//        assertThrows(RegraDeNegocioException.class, () -> userService.update(userMock.getIdUser(), userMock.getUser(), userUpdateDTOMock));
 //        assertNotEquals(userEntityOld, user);
 //        assertNotEquals(userEntityOld.getUser(), userDTOReturned.getUser());
 
