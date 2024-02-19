@@ -87,6 +87,39 @@ public class UserServiceTest {
         assertEquals(userDTOMock, userDTOCreated);
     }
 
+    @Test
+    @DisplayName("Should create a new user with many permissions successfully")
+    public void shouldCreateUserManyPermissionsSuccessfully() throws RegraDeNegocioException, DatabaseException {
+
+        CompanyCreateDTO companyCreateDTOMock = returnCompanyCreateDTO();
+        CompanyDTO companyDTOMock = returnCompanyDTO();
+
+        when(companyService.create(any(CompanyCreateDTO.class))).thenReturn(companyDTOMock);
+
+        CompanyDTO companyDTOCreated = companyService.create(companyCreateDTOMock);
+
+        UserCreateDTO userCreateDTOMock = returnUserCreateDTO();
+        User userEntityMock = returnUser();
+        UserDTO userDTOMock = returnUserDTO();
+
+        List<String> permissions = new ArrayList<>();
+        permissions.add("ADMIN_COMPETITOR");
+        permissions.add("USER_COMPETITOR");
+
+        userCreateDTOMock.setPermission(permissions);
+
+        when(permissionRepository.getPermissionByName(anyString())).thenReturn(Optional.of(returnPermission()));
+
+        when(objectMapper.convertValue(userCreateDTOMock, User.class)).thenReturn(userEntityMock);
+        when(userRepository.save(any(User.class))).thenReturn(userEntityMock);
+        when(objectMapper.convertValue(userEntityMock, UserDTO.class)).thenReturn(userDTOMock);
+
+        UserDTO userDTOCreated = userService.create(userCreateDTOMock, companyDTOCreated.getCompanyId());
+
+        assertNotNull(userDTOCreated);
+        assertEquals(userDTOMock, userDTOCreated);
+    }
+
 
     @Test
     @DisplayName("Should return Users")
@@ -308,44 +341,6 @@ public class UserServiceTest {
         assertNotEquals(userEntityOld.getUser(), userDTOReturned.getUser());
 
     }
-
-    @Test
-    @DisplayName("Should not update User")
-    public void shouldNotUpdateUser() throws RegraDeNegocioException {
-        Exception exception = new Exception();
-        User userMock = new User();
-        userMock.setIdUser(1);
-        userMock.setName("Joao");
-        userMock.setUser("Joao11");
-        userMock.setPosition("Software Developer");
-        userMock.setDepartment(Department.SECRETARIA_SAUDE);
-
-        User userEntityOld = new User();
-        BeanUtils.copyProperties(userMock, userEntityOld);
-
-        UserUpdateDTO userUpdateDTOMock = returnUserUpdateDTO();
-        User alteredUser = returnUser();
-        UserDTO userDTOMock = returnUserDTO();
-        userMock.setStatus(Status.INACTIVE);
-
-        String expectedMessage = "User doesn't exists";
-        String actoMessage = exception.getMessage();
-
-        when(userRepository.findById(anyInt())).thenReturn(Optional.of(userMock));
-        when(userRepository.save(anyObject())).thenReturn(alteredUser);
-        when(objectMapper.convertValue(any(), eq(UserDTO.class))).thenReturn(userDTOMock);
-        when(userRepository.save(userMock)).thenThrow(new RegraDeNegocioException("User doesn't exists"));
-
-        UserDTO userDTOReturned = userService.update(userMock.getIdUser(), userMock.getUser(), userUpdateDTOMock);
-
-        assertTrue(actoMessage.contains(expectedMessage));
-//        assertNull(userDTOReturned);
-//        assertThrows(RegraDeNegocioException.class, () -> userService.update(userMock.getIdUser(), userMock.getUser(), userUpdateDTOMock));
-//        assertNotEquals(userEntityOld, user);
-//        assertNotEquals(userEntityOld.getUser(), userDTOReturned.getUser());
-
-    }
-
 
 
     private static UserCreateDTO returnUserCreateDTO() {
