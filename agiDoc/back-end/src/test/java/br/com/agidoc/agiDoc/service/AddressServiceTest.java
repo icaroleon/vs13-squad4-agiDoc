@@ -96,9 +96,9 @@ class AddressServiceTest {
         when(addressRepository.findById(anyInt())).thenReturn(Optional.of(addressEntityMock));
         when(objectMapper.convertValue(addressEntityMock, AddressDTO.class)).thenReturn(addressDTOMock);
 
-        AddressDTO addressDTO = addressService.listOne(idRandom);
+        AddressDTO addressDTOCurrent = addressService.listOne(idRandom);
 
-        assertNotNull(addressDTO);
+        assertNotNull(addressDTOCurrent);
     }
 
     @Test
