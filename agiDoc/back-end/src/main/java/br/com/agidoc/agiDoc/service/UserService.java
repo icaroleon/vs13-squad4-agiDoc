@@ -131,7 +131,7 @@ public class UserService {
             userToUpdate.setDepartment(userToUpdate.getDepartment());
             return returnDTO(userRepository.save(userToUpdate));
         } else {
-            throw new RegraDeNegocioException("Usuário not exists");
+            throw new RegraDeNegocioException("User doesn't exists");
         }
     }
 

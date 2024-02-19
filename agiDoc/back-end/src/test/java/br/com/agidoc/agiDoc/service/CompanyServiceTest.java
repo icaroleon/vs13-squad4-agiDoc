@@ -117,8 +117,8 @@ class CompanyServiceTest {
         assertNotNull(companyDTORetornada);
         assertNotEquals(companyEntityOld, company);
         assertNotEquals(companyEntityOld.getCompanyName(), companyDTORetornada.getCompanyName());
-
     }
+
 
     @Test
     @DisplayName("Should return Companys")
