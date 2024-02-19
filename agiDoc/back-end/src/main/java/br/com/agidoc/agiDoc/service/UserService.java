@@ -112,15 +112,13 @@ public class UserService {
     }
 
     public UserDTO update(Integer id, String userName,UserUpdateDTO userUpdateDTO) throws RegraDeNegocioException {
-        User userToUpdate = null;
+       User userToUpdate = null;
+        //User userToUpdate = new User();
         if(verifyId(id)){
             userToUpdate = returnUserById(id);
         }
         else if(!userName.replace(" ", "").isEmpty()){
             userToUpdate = findByName(userName);
-        }
-        if(userToUpdate == null){
-            throw new RegraDeNegocioException("User not found");
         }
         if (userToUpdate.getStatus().ordinal() == 0) {
             userToUpdate.setIdUser(userToUpdate.getIdUser());
@@ -131,7 +129,7 @@ public class UserService {
             userToUpdate.setDepartment(userToUpdate.getDepartment());
             return returnDTO(userRepository.save(userToUpdate));
         } else {
-            throw new RegraDeNegocioException("Usuário not exists");
+            throw new RegraDeNegocioException("User doesn't exists");
         }
     }
 
