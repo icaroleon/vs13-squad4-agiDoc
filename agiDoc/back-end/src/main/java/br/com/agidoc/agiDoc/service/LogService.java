@@ -23,7 +23,7 @@ public class LogService {
     private final LogRepository logRepository;
     private final ObjectMapper objectMapper;
 
-    private String NOT_FOUND_MESSAGE = "Id da pessoa não encontrado";
+    private String NOT_FOUND_MESSAGE = "User id not found";
 
     public List<LogDTO> listAllLogs() {
         return logRepository.findAll().stream().map(log -> objectMapper.convertValue(log, LogDTO.class)).collect(Collectors.toList());
