@@ -309,6 +309,37 @@ public class UserServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Should not update User")
+    public void shouldNotUpdateUser() throws RegraDeNegocioException {
+        User userMock = new User();
+        userMock.setIdUser(1);
+        userMock.setName("Joao");
+        userMock.setUser("Joao11");
+        userMock.setPosition("Software Developer");
+        userMock.setDepartment(Department.SECRETARIA_SAUDE);
+
+        User userEntityOld = new User();
+        BeanUtils.copyProperties(userMock, userEntityOld);
+
+        UserUpdateDTO userUpdateDTOMock = returnUserUpdateDTO();
+        User alteredUser = returnUser();
+        UserDTO userDTOMock = returnUserDTO();
+        userMock.setStatus(Status.INACTIVE);
+
+        when(userRepository.findById(anyInt())).thenReturn(Optional.of(userMock));
+        when(userRepository.save(anyObject())).thenReturn(alteredUser);
+        when(objectMapper.convertValue(any(), eq(UserDTO.class))).thenReturn(userDTOMock);
+
+        UserDTO userDTOReturned = userService.update(userMock.getIdUser(), userMock.getUser(), userUpdateDTOMock);
+
+        assertNull(userDTOReturned);
+//        assertNotEquals(userEntityOld, user);
+//        assertNotEquals(userEntityOld.getUser(), userDTOReturned.getUser());
+
+    }
+
+
 
     private static UserCreateDTO returnUserCreateDTO() {
         List<String> permissions = new ArrayList<>();
