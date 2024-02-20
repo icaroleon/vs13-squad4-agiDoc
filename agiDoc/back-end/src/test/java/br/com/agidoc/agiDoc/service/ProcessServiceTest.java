@@ -12,9 +12,12 @@ import br.com.agidoc.agiDoc.model.company.Type;
 import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
+import br.com.agidoc.agiDoc.model.user.Department;
+import br.com.agidoc.agiDoc.model.user.User;
 import br.com.agidoc.agiDoc.repository.CompanyRepository;
 import br.com.agidoc.agiDoc.repository.DocumentRepository;
 import br.com.agidoc.agiDoc.repository.ProcessRepository;
+import br.com.agidoc.agiDoc.repository.ProcessStatusReportRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +41,13 @@ import static org.mockito.Mockito.when;
 class ProcessServiceTest {
     @Mock
     Company companyMock = returnCompany();
+
+    @Mock
+    UserService userService;
+
+    @Mock
+    ProcessStatusReportService processStatusReportService;
+
     @Mock
     private ProcessRepository processRepository;
     @Mock
@@ -157,8 +167,10 @@ class ProcessServiceTest {
         ProcessDTO processDTOMock = returnProcessDTO();
         Process oldProcessMock = returnProcess();
         Process newProcessMock = returnProcess();
+        User user = returnUser();
 
         when(processRepository.findById(randomId)).thenReturn(Optional.of(newProcessMock));
+        when(userService.getLoggedUser()).thenReturn(Optional.of(user));
         newProcessMock.setProcessStatus(processStatus);
         when(processRepository.save(eq(newProcessMock))).thenReturn(newProcessMock);
         when(objectMapper.convertValue(newProcessMock, ProcessDTO.class)).thenReturn(processDTOMock);
@@ -207,4 +219,19 @@ class ProcessServiceTest {
         return companyMock;
     }
 
+    private static User returnUser() {
+        User userEntity = new User();
+
+        userEntity.setIdUser(1);
+        userEntity.setRegistration("aabb123");
+        userEntity.setName("Joao Silva");
+        userEntity.setUser("joao3352");
+        userEntity.setPassword("senhajoao3352");
+        userEntity.setPosition("Analista de Software");
+        userEntity.setStatus(Status.ACTIVE);
+        userEntity.setEmail("joao@dbccompany.com.br");
+        userEntity.setDepartment(Department.SECRETARIA_FAZENDA);
+
+        return userEntity;
+    }
 }

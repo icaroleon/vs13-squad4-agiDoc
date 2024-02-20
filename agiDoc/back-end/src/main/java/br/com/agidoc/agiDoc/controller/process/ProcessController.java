@@ -1,12 +1,16 @@
 package br.com.agidoc.agiDoc.controller.process;
 
+import br.com.agidoc.agiDoc.dto.log.LogDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessCreateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessUpdateDTO;
 import br.com.agidoc.agiDoc.dto.process.ProcessesDocumentsDTO;
+import br.com.agidoc.agiDoc.dto.processStatusReport.ProcessStatusReportDTO;
 import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.model.process.Process;
+import br.com.agidoc.agiDoc.model.report.ProcessStatusReport;
 import br.com.agidoc.agiDoc.service.ProcessService;
+import br.com.agidoc.agiDoc.service.ProcessStatusReportService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +32,7 @@ import java.util.List;
 public class ProcessController{
 
     private final ProcessService processService;
+    private final ProcessStatusReportService processStatusReportService;
 
     @GetMapping
     public ResponseEntity<List<ProcessDTO>> list() throws Exception {
@@ -55,6 +60,16 @@ public class ProcessController{
     public ResponseEntity<ProcessDTO> setStatus(@NotNull @PathVariable("idProcess") Integer idProcess,
                                               @NotNull @PathVariable("status") Integer statusWanted) throws Exception {
         return new ResponseEntity<>(processService.setStatus(idProcess, statusWanted), HttpStatus.OK);
+    }
+
+    @GetMapping("process-status-report-by-id/{id}")
+    public ResponseEntity<ProcessStatusReportDTO> listById(@NotNull @PathVariable("id") String id) throws Exception {
+        return new ResponseEntity<>(processStatusReportService.listById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("process-status-report")
+    public ResponseEntity<List<ProcessStatusReportDTO>> listProcessStatusReportDTO() {
+        return new ResponseEntity<>(processStatusReportService.listAllLogs(), HttpStatus.OK);
     }
 }
 
