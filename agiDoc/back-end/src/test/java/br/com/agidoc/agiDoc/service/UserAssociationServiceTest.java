@@ -37,11 +37,12 @@ class UserAssociationServiceTest {
 
         when(userAssociationRepository.save(any())).thenReturn(userAssociationEntityMock);
         userAssociationRepository.save(userAssociationEntityMock);
+        userAssociationService.createAssociation(userAssociationCreateDTOMock);
         verify(userAssociationRepository, times(1)).save(userAssociationEntityMock);
     }
 
     @Test
-    @DisplayName("Should delete a user association sucessfully")
+    @DisplayName("Should delete a user association successfully")
     public void shouldDeleteUserAssociationSuccessfully(){
         Integer idUser = new Random().nextInt();
         Integer idCompany = new Random().nextInt();
@@ -70,6 +71,14 @@ class UserAssociationServiceTest {
 
         assertNotNull(userAssociationEntityCurrent);
         assertEquals(userAssociationEntityCurrent, userAssociationEntityMock);
+    }
+
+    @Test
+    @DisplayName("should delete a user association by method")
+    public void shouldDeleteAUserAssociationByMethod(){
+        UserAssociationEntity userAssociationEntityMock = returnUserAssociationEntityMock();
+
+        userAssociationService.deleteEntity(userAssociationEntityMock);
     }
 
     private static UserAssociationCreateDTO returnUserAssociationCreateDTOMock(){
