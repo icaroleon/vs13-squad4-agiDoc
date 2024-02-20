@@ -72,10 +72,8 @@ public class CompanyService {
             companyToUpdate.setStatus(companyToUpdate.getStatus());
             companyToUpdate.setCompanyName(companyUpdateDTO.getCompanyName());
             companyRepository.save(companyToUpdate);
-        } else {
-            new RegraDeNegocioException("Empresa não existe");
-            return null;
         }
+
         return returnDTO(companyToUpdate);
     }
 

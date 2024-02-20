@@ -79,15 +79,21 @@ public class ContactService {
         ContactDTO contactDTO = null;
         if(object instanceof ContactCreateDTO){
             contactDTO = this.objectMapper.convertValue((ContactCreateDTO) object, ContactDTO.class);
-            contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactCreateDTO) object).getPhoneType()));
+            if(contactDTO != null){
+                contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactCreateDTO) object).getPhoneType()));
+            }
         }
         else if(object instanceof ContactUpdateDTO){
             contactDTO = this.objectMapper.convertValue((ContactUpdateDTO) object, ContactDTO.class);
-            contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactUpdateDTO) object).getPhoneType()));
+            if(contactDTO != null){
+                contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactUpdateDTO) object).getPhoneType()));
+            }
         }
         else if(object instanceof ContactEntity){
             contactDTO = this.objectMapper.convertValue((ContactEntity) object,ContactDTO.class);
-            contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactEntity) object).getPhoneType()));
+            if(contactDTO != null){
+                contactDTO.setPhoneType(ContactPhoneType.ofType(((ContactEntity) object).getPhoneType()));
+            }
         }
         return contactDTO;
     }

@@ -57,7 +57,6 @@ public class AddressService {
     }
 
     public void delete(Integer idAddress, Integer idCompany) throws Exception{
-        // falta adiconar delete de associations address:
         this.addressAssociationEntity.delete(idAddress, idCompany);
         this.addressRepository.deleteById(idAddress);
     }
@@ -78,6 +77,9 @@ public class AddressService {
         }
         else if(object instanceof AddressUpdateDTO){
             return this.objectMapper.convertValue((AddressUpdateDTO) object, AddressEntity.class);
+        }
+        else if(object instanceof AddressDTO){
+            return this.objectMapper.convertValue((AddressDTO) object, AddressEntity.class);
         }
         return null;
     }
