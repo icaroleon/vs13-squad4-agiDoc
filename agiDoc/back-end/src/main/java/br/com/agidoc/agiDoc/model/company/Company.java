@@ -37,6 +37,11 @@ public class Company {
     private Status status;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinTable(name = "PROCESS_ASSOCIATIONS",
+            joinColumns = {@JoinColumn(name = "ID_COMPANY", insertable = false,
+                    updatable = false, referencedColumnName = "ID_COMPANY")},
+            inverseJoinColumns = {@JoinColumn(name = "ID_PROCESS", insertable = false,
+                    updatable = false)})
     private Set<Process> process = new HashSet<>();
 }

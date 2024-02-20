@@ -1,8 +1,6 @@
 package br.com.agidoc.agiDoc.dto.user;
 
-import br.com.agidoc.agiDoc.model.permission.Permission;
 import br.com.agidoc.agiDoc.model.user.Department;
-import br.com.agidoc.agiDoc.model.user.PermissionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,12 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCreateDTO {
-    @Schema(required = true, example = "joaosilva123", deprecated = false)
+    @Schema(required = true, example = "Joao Silva", deprecated = false)
     @NotBlank
     @Size(max = 100)
     private String name;
 
-    @Schema(required = true, example = "senhajoao3352", deprecated = false)
+    @Schema(required = true, example = "joao3352", deprecated = false)
     @NotBlank
     @Size(max = 100)
     private String user;
@@ -32,12 +30,9 @@ public class UserCreateDTO {
     @Size(max = 100)
     private String password;
 
+    @Schema(required = true, example = "ADMIN_COMPETITOR")
     @NotNull
     private List<String> permission;
-
-//    @Schema(required = true, example = "0 = ADMIN, 1 = COMPETITOR, 2 = INSTITUTIONAL_USER")
-//    @NotNull
-//    private PermissionType permissionType;
 
     @Schema(required = true, example = "Analista de Software")
     @NotBlank
@@ -51,4 +46,5 @@ public class UserCreateDTO {
     @Schema(required = true, example = "SECRETARIA_EDUCACAO = 0, SECRETARIA_FAZENDA = 1, SECRETARIA_SAUDE = 2, SECRETARIA_ACAO_SOCIAL = 3")
     @NotNull
     private Department department;
+
 }

@@ -15,11 +15,9 @@ import br.com.agidoc.agiDoc.model.company.Company;
 import br.com.agidoc.agiDoc.model.document.Document;
 import br.com.agidoc.agiDoc.model.process.Process;
 import br.com.agidoc.agiDoc.model.process.ProcessStatus;
+import br.com.agidoc.agiDoc.model.report.ProcessStatusReport;
 import br.com.agidoc.agiDoc.model.user.User;
-import br.com.agidoc.agiDoc.repository.CompanyRepository;
-import br.com.agidoc.agiDoc.repository.CompanyWithProcessesAssociationRepository;
-import br.com.agidoc.agiDoc.repository.DocumentRepository;
-import br.com.agidoc.agiDoc.repository.ProcessRepository;
+import br.com.agidoc.agiDoc.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -28,6 +26,7 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +40,9 @@ public class ProcessService {
     private ObjectMapper objectMapper;
     private final DocumentRepository documentRepository;
     private final CompanyRepository companyRepository;
-    private final CompanyWithProcessesAssociationRepository companyWithProcessesAssociationRepository;
+    private final ProcessStatusReportRepository processStatusReportRepository;
+    private final UserService userService;
+    private final ProcessStatusReportService processStatusReportService;
 
     public List<ProcessDTO> list() throws DatabaseException {
         List<Process> processesList = processRepository.findAll();
@@ -78,9 +79,6 @@ public class ProcessService {
         Company company = companyRepository.findById(idCompany)
                 .orElseThrow(() -> new RegraDeNegocioException("Company not found with the provided ID"));
 
-        CompanyWithProcessesAssociationPK pk = new CompanyWithProcessesAssociationPK();
-        CompanyWithProcessesAssociation companyWithProcessesAssociation = new CompanyWithProcessesAssociation();
-
         Process process = convertToEntity(processCreateDto);
 
         Process savedProcess = processRepository.save(process);
@@ -89,20 +87,12 @@ public class ProcessService {
 
         companyRepository.save(company);
 
-        pk.setProcessId(savedProcess.getProcessId());
-        pk.setCompanyId(company.getCompanyId());
-
-        companyWithProcessesAssociation.setProcessesAssociationPK(pk);
-
-        companyWithProcessesAssociationRepository.save(companyWithProcessesAssociation);
-
         ProcessDTO processDTO = convertToDTO(savedProcess);
 
         return processDTO;
     }
 
     public ProcessDTO update(Integer idProcess, ProcessUpdateDTO processToUpdateDTO) throws Exception {
-
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
@@ -116,6 +106,9 @@ public class ProcessService {
     public ProcessDTO setStatus(Integer idProcess, Integer statusWanted) throws Exception {
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
+
+        User user = userService.getLoggedUser().get();
+        processStatusReportService.generateProcessStatusReport(process, statusWanted, user);
 
         switch (statusWanted) {
             case 0:
@@ -134,15 +127,6 @@ public class ProcessService {
         processRepository.save(process);
 
         return convertToDTO(process);
-    }
-
-    public Process addDocumentToProcess(Integer idProcess, Document document) throws RegraDeNegocioException {
-        Process process = processRepository.findById(idProcess)
-                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
-
-        process.getDocuments().add(document);
-
-        return processRepository.save(process);
     }
 
     private Process convertToEntity(Object dto) {

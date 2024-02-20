@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequestMapping("/document")
 @AllArgsConstructor
-@Tag(name = "Document", description = "CRUD of document")
+@Tag(name = "document", description = "CRUD of document")
 @RestController
 @Validated
 //TODO IMPLEMENTAR DOCUMENT CONTROLLER

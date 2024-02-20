@@ -14,7 +14,7 @@ public class AddressAssociationEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ADDRESSES_ASSOCIATIONS")
     @SequenceGenerator(name = "SEQ_ADDRESSES_ASSOCIATIONS", sequenceName = "SEQ_ADDRESSES_ASSOCIATIONS", allocationSize = 1)
     @Column(name = "id_address_association")
-    private Integer idContactAssociation;
+    private Integer idAddressAssociation;
 
     @Column(name = "id_address")
     private Integer idAddress;

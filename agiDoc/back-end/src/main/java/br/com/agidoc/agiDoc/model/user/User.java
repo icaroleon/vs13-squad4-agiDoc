@@ -48,10 +48,6 @@ public class User implements UserDetails {
     )
     private Set<Permission> permissions = new HashSet<>();
 
-//    @Enumerated(EnumType.ORDINAL)
-//    @Column(name = "permission")
-//    private PermissionType permissionType;
-
     @Column(name = "position")
     private String position;
 
@@ -61,7 +57,7 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
-    private Status status;
+    private Status status  = Status.ACTIVE;
 
     @Column(name = "email")
     private String email;

@@ -43,15 +43,22 @@ public class Process {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "PROCESS_ASSOCIATIONS", joinColumns = {@JoinColumn(name = "ID_PROCESS",
-            referencedColumnName = "ID_PROCESS")},
-            inverseJoinColumns = {@JoinColumn(name = "ID_COMPANY",
-                    referencedColumnName = "ID_COMPANY")})
-//    @JoinColumn(name = "ID_COMPANY", referencedColumnName = "ID_COMPANY")
+    @JoinTable(name = "PROCESS_ASSOCIATIONS",
+            joinColumns = {@JoinColumn(name = "ID_PROCESS", insertable = false,
+            updatable = false, referencedColumnName = "ID_PROCESS")},
+            inverseJoinColumns = {@JoinColumn(name = "ID_COMPANY", insertable = false,
+            updatable = false, referencedColumnName = "ID_COMPANY")}
+    )
     private Company company;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "process", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinTable(name = "DOCUMENTS_ASSOCIATIONS",
+            joinColumns = {@JoinColumn(name = "ID_PROCESS", insertable = false, updatable = false,
+            referencedColumnName = "ID_PROCESS")},
+            inverseJoinColumns = {@JoinColumn(name = "ID_DOCUMENT", insertable = false,
+            updatable = false)}
+    )
     private Set<Document> documents = new HashSet<>();
 
 }
