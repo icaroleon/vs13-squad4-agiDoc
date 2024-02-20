@@ -119,6 +119,7 @@ public class ContactAssociationsServiceTest {
 
     }
 
+
     @Test
     @DisplayName("Should return a contact or company successfully")
     public void testFindByIdContactOrIdCompany() throws Exception {
@@ -144,6 +145,7 @@ public class ContactAssociationsServiceTest {
         assertTrue(result);
     }
 
+
     @Test
     @DisplayName("Should convert to DTO successfully")
     public void shouldConvertToDTO() {
@@ -156,6 +158,7 @@ public class ContactAssociationsServiceTest {
 
         assertEquals(contactAssociationDTOMock, contactAssociationReturnedDTO);
     }
+
 
     @Test
     @DisplayName("Should convert to Entity successfully")
@@ -171,8 +174,6 @@ public class ContactAssociationsServiceTest {
     }
 
 
-
-
     private static Contact returnContact() {
         Contact contact = new Contact();
 
@@ -185,17 +186,20 @@ public class ContactAssociationsServiceTest {
         return contact;
     }
 
+
     private static ContactDTO returnContactDTO() {
         ContactDTO contactDTO = new ContactDTO(1, "Fulano", "fulano@email.com", "22999335522", ContactPhoneType.MOBILE);
 
         return contactDTO;
     }
 
+
     private static ContactCreateDTO returnContactCreateDTO() {
         ContactCreateDTO contactCreateDTO = new ContactCreateDTO("Fulano", "fulano@email.com", "22999335522", 2);
 
         return contactCreateDTO;
     }
+
 
     private static Company returnCompany() {
         Company companyEntity = new Company();
@@ -208,6 +212,7 @@ public class ContactAssociationsServiceTest {
 
         return companyEntity;
     }
+
 
     private static CompanyDTO returnCompanyDTO() {
         CompanyDTO companyDTO = new CompanyDTO();
@@ -231,6 +236,7 @@ public class ContactAssociationsServiceTest {
         return companyCreateDTO;
     }
 
+
     private static ContactAssociationEntity returnContactAssociation() {
         ContactAssociationEntity contactAssociation = new ContactAssociationEntity();
         contactAssociation.setIdContactAssociation(1);
@@ -240,15 +246,15 @@ public class ContactAssociationsServiceTest {
         return contactAssociation;
     };
 
+
     private static ContactAssociationDTO returnContactAssociationDTO() {
         ContactAssociationDTO contactAssociationDTO = new ContactAssociationDTO(1, 1,1 );
         return contactAssociationDTO;
     }
 
+
     private static ContactAssociationCreateDTO returnContactAssociationCreateDTO() {
         ContactAssociationCreateDTO contactAssociationCreateDTO = new ContactAssociationCreateDTO(1, 1);
         return contactAssociationCreateDTO;
     }
-
-
 }
