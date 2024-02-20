@@ -78,6 +78,9 @@ public class AddressService {
         else if(object instanceof AddressUpdateDTO){
             return this.objectMapper.convertValue((AddressUpdateDTO) object, AddressEntity.class);
         }
+        else if(object instanceof AddressDTO){
+            return this.objectMapper.convertValue((AddressDTO) object, AddressEntity.class);
+        }
         return null;
     }
 

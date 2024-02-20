@@ -3,6 +3,7 @@ package br.com.agidoc.agiDoc.service;
 import br.com.agidoc.agiDoc.dto.address.AddressCreateDTO;
 import br.com.agidoc.agiDoc.dto.address.AddressDTO;
 import br.com.agidoc.agiDoc.dto.address.AddressUpdateDTO;
+import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.address.entity.AddressEntity;
 import br.com.agidoc.agiDoc.repository.AddressRepository;
 import br.com.agidoc.agiDoc.repository.CompanyRepository;
@@ -155,8 +156,51 @@ class AddressServiceTest {
         assertEquals(addressEntityMock, addressEntityCurrent);
     }
 
+    @Test
+    @DisplayName("should return an entity per update")
+    public void shouldReturnAnEntityPerUpdate() throws Exception{
+        AddressEntity addressEntityMock = returnCreateAddressEntityMock();
+        AddressUpdateDTO addressUpdateDTO = returnAddressUpdateDTOMock();
 
-    private AddressDTO returnNewAddress(){
+        when(objectMapper.convertValue(addressUpdateDTO, AddressEntity.class)).thenReturn(addressEntityMock);
+
+        AddressEntity addressEntityCurrent = addressService.returnEntity(addressUpdateDTO);
+
+        assertNotNull(addressEntityCurrent);
+        assertEquals(addressEntityCurrent, addressEntityMock);
+
+        addressEntityCurrent = addressService.returnEntity(new Random());
+
+        assertNull(addressEntityCurrent);
+    }
+
+    @Test
+    @DisplayName("should return the DTO by update")
+    public void shouldReturnTheDTOByUpdate(){
+        AddressUpdateDTO addressUpdateDTOMock = returnAddressUpdateDTOMock();
+        AddressDTO addressDTOMock = returnAddressDTO();
+
+        when(objectMapper.convertValue(addressUpdateDTOMock, AddressDTO.class)).thenReturn(addressDTOMock);
+
+        AddressDTO addressDTOCurrent = addressService.returnDTO(addressUpdateDTOMock);
+
+        assertNotNull(addressDTOCurrent);
+        assertEquals(addressDTOCurrent, addressDTOMock);
+
+        addressDTOCurrent = addressService.returnDTO(new Random());
+
+        assertNull(addressDTOCurrent);
+    }
+
+    @Test
+    @DisplayName("An exception should be thrown")
+    public void shouldBeThrownException() {
+        Integer idRandom = new Random().nextInt();
+
+        assertThrows(RegraDeNegocioException.class, () -> addressService.findById(idRandom));
+    }
+
+    private static AddressDTO returnNewAddress(){
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setCity("São Paulo");
         addressDTO.setStreet("Rua Tenente");
