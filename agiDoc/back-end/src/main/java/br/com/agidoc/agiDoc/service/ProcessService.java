@@ -78,9 +78,6 @@ public class ProcessService {
         Company company = companyRepository.findById(idCompany)
                 .orElseThrow(() -> new RegraDeNegocioException("Company not found with the provided ID"));
 
-        CompanyWithProcessesAssociationPK pk = new CompanyWithProcessesAssociationPK();
-        CompanyWithProcessesAssociation companyWithProcessesAssociation = new CompanyWithProcessesAssociation();
-
         Process process = convertToEntity(processCreateDto);
 
         Process savedProcess = processRepository.save(process);
@@ -89,20 +86,12 @@ public class ProcessService {
 
         companyRepository.save(company);
 
-        pk.setProcessId(savedProcess.getProcessId());
-        pk.setCompanyId(company.getCompanyId());
-
-        companyWithProcessesAssociation.setProcessesAssociationPK(pk);
-
-        companyWithProcessesAssociationRepository.save(companyWithProcessesAssociation);
-
         ProcessDTO processDTO = convertToDTO(savedProcess);
 
         return processDTO;
     }
 
     public ProcessDTO update(Integer idProcess, ProcessUpdateDTO processToUpdateDTO) throws Exception {
-
         Process process = processRepository.findById(idProcess)
                 .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
 
@@ -134,15 +123,6 @@ public class ProcessService {
         processRepository.save(process);
 
         return convertToDTO(process);
-    }
-
-    public Process addDocumentToProcess(Integer idProcess, Document document) throws RegraDeNegocioException {
-        Process process = processRepository.findById(idProcess)
-                .orElseThrow(() -> new RegraDeNegocioException("Process not found with the provided ID"));
-
-        process.getDocuments().add(document);
-
-        return processRepository.save(process);
     }
 
     private Process convertToEntity(Object dto) {
