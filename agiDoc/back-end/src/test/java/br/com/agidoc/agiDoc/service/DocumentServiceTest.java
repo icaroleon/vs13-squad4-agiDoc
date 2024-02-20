@@ -251,6 +251,4 @@ class DocumentServiceTest {
 
         return userEntity;
     }
-
-
 }
