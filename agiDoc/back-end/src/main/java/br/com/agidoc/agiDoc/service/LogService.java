@@ -25,6 +25,10 @@ public class LogService {
 
     private String NOT_FOUND_MESSAGE = "User id not found";
 
+    public void create(Log log) {
+        logRepository.save(log);
+    }
+
     public List<LogDTO> listAllLogs() {
         return logRepository.findAll().stream().map(log -> objectMapper.convertValue(log, LogDTO.class)).collect(Collectors.toList());
     }
@@ -55,7 +59,7 @@ public class LogService {
         LocalDate dateAtual = LocalDate.now();
         LocalDate dateProcurada = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
 
-        if(dateProcurada.isAfter(dateAtual)) {
+        if (dateProcurada.isAfter(dateAtual)) {
             throw new Exception("Não há logs para dates futuras!");
         }
 

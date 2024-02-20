@@ -1,11 +1,13 @@
 package br.com.agidoc.agiDoc.controller.user;
 
-import br.com.agidoc.agiDoc.dto.company.CompanyDTO;
 import br.com.agidoc.agiDoc.dto.user.*;
-import br.com.agidoc.agiDoc.exception.DatabaseException;
 import br.com.agidoc.agiDoc.exception.RegraDeNegocioException;
 import br.com.agidoc.agiDoc.model.Status;
+import br.com.agidoc.agiDoc.model.log.Log;
+import br.com.agidoc.agiDoc.model.log.LogType;
 import br.com.agidoc.agiDoc.model.user.User;
+import br.com.agidoc.agiDoc.repository.LogRepository;
+import br.com.agidoc.agiDoc.service.LogService;
 import br.com.agidoc.agiDoc.service.TokenService;
 import br.com.agidoc.agiDoc.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,12 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +33,12 @@ import java.util.Optional;
 @RestController
 @Validated
 @RequestMapping("/user")
-public class UserController implements IUserController{
-    private final UserService userService;
-    private final TokenService tokenService;
+public class UserController implements IUserController {
     public final AuthenticationManager authenticationManager;
     public final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final TokenService tokenService;
+    private final LogService logService;
 
     @PostMapping
     public ResponseEntity<UserDTO> create(@RequestParam("Id company") Integer idCompany, @Valid @RequestBody UserCreateDTO userCreateDTO) throws Exception {
@@ -86,10 +91,21 @@ public class UserController implements IUserController{
                         usernamePasswordAuthenticationToken);
 
         User usuarioValidado = (User) authentication.getPrincipal();
-        if(usuarioValidado.getStatus() == Status.INACTIVE){
+        if (usuarioValidado.getStatus() == Status.INACTIVE) {
             throw new RegraDeNegocioException("Inactive user on the system.");
-        }
-        else{
+        } else {
+            Log log = new Log();
+            for (GrantedAuthority authority : usuarioValidado.getAuthorities()) {
+                try {
+                    LogType logType = LogType.valueOf(authority.getAuthority());
+                    log.setLogType(logType);
+                    log.setDate(LocalDate.now().toString());
+                    log.setDescription("Log realizado por " + usuarioValidado.getUsername() + " na data " + LocalDateTime.now());
+                    logService.create(log);
+                    break;
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
             return tokenService.generateToken(usuarioValidado);
         }
     }

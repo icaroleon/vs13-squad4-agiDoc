@@ -5,11 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogCreateDTO {
-    private String id;
+    @Enumerated(EnumType.STRING)
     private LogType logType;
     private String description;
     private String date;
